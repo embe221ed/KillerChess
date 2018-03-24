@@ -4,15 +4,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /*
- * Klasa Chessman, w module core do którego podpięty został Spring MVC. Poniżej prosty hello world napisany
- * dla frameworka Spring. Setter i getter wymagany przez Spring do prawidłowego działania metody getBean.
+ * Chessman class in core module. Spring MVC is connected with that module. Below is simple hello world
+ * in Spring. Setter and getter is neccessary for getBean method.
  */
 
 public class Chessman {
     private String chessman;
 
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/Beans.xml");
         Chessman chessman = (Chessman)context.getBean("helloWorld");
         chessman.getChessman();
     }
