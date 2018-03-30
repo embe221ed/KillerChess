@@ -5,8 +5,9 @@
        xsi:schemaLocation = "http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id = "helloWorld" class = "com.killerchess.core.Chessman">
+    <!-- TODO AK Resolve this problem (Chessman became abstract)
+    <bean id="helloWorld" class="com.killerchess.core.chessmans.Chessman">
         <property name = "chessman" value = "King!"/>
-    </bean>
+    </bean>-->
 
 </beans>
