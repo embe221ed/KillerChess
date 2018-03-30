@@ -1,4 +1,4 @@
-package com.killerchess.core;
+package com.killerchess.core.chessmans;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -8,7 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * in Spring. Setter and getter is neccessary for getBean method.
  */
 
-public class Chessman {
+public abstract class Chessman {
     private String chessman;
 
     public static void main(String[] args) {
