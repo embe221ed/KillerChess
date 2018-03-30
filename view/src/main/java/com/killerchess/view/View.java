@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+// simple class which main method displays starting window of app
+
 public class View extends Application {
 
     public static void main(String[] args) {

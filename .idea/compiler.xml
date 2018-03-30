@@ -11,10 +11,9 @@
         <module name="view" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="9">
+    <bytecodeTargetLevel target="10">
       <module name="core" target="10" />
       <module name="integration-tests" target="10" />
-      <module name="integration_tests" target="10" />
       <module name="KillerChess" target="10" />
       <module name="view" target="10" />
     </bytecodeTargetLevel>
