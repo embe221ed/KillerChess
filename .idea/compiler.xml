@@ -7,12 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="core" />
-        <module name="integration_tests" />
+        <module name="integration-tests" />
         <module name="view" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="9">
       <module name="core" target="10" />
+      <module name="integration-tests" target="10" />
       <module name="integration_tests" target="10" />
       <module name="KillerChess" target="10" />
       <module name="view" target="10" />

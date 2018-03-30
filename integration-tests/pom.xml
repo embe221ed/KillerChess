@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.killerchess.integration_tests</groupId>
-    <artifactId>integration_tests</artifactId>
+    <groupId>com.killerchess.integration-tests</groupId>
+    <artifactId>integration-tests</artifactId>
 
 
 </project>
