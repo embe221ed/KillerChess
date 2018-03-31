@@ -13,8 +13,8 @@ public abstract class Chessman {
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/Beans.xml");
-        Chessman chessman = (Chessman)context.getBean("helloWorld");
-        chessman.getChessman();
+//        Chessman chessman = (Chessman)context.getBean("helloWorld");
+//        chessman.getChessman();
     }
 
     public void printName() {
