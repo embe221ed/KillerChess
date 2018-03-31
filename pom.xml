@@ -16,7 +16,7 @@
     <modules>
         <module>core</module>
         <module>view</module>
-        <module>integration_tests</module>
+        <module>integration-tests</module>
     </modules>
 
 
