@@ -1,5 +1,5 @@
 package com.killerchess.core.controllers.app;
 
 public class AppController {
-    //just testing
+    //just testing_2
 }
