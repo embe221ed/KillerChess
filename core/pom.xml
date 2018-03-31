@@ -60,6 +60,11 @@
             <artifactId>postgresql</artifactId>
             <version>LATEST</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.0.4.RELEASE</version>
+        </dependency>
     </dependencies>
 
 </project>
