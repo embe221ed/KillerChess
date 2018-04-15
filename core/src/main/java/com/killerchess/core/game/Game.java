@@ -9,17 +9,17 @@ import javax.persistence.Table;
 @Table(name = "game")
 public class Game {
 
-    private int id;
+    private Integer id;
     private String host;
     private String guest;
 
     @Id
     @Column(name = "game_id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -39,5 +39,11 @@ public class Game {
 
     public void setGuest(String guest) {
         this.guest = guest;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        return id.equals (((Game) o).id);
     }
 }
