@@ -6,6 +6,12 @@
 .idea/**/tasks.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/
+*.iml
+
+# Maven
+log/
+target/
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
