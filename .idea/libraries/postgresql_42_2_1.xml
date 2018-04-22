@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="postgresql-42.2.1">
-    <CLASSES>
-      <root url="jar://C:/ProgramData/Microsoft/Windows/Start Menu/Programs/PostgreSQL/postgresql-42.2.2.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
