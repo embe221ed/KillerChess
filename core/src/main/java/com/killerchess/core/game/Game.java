@@ -9,18 +9,18 @@ import javax.persistence.Table;
 @Table(name = "game")
 public class Game {
 
-    private Integer id;
+    private Integer game_id;
     private String host;
     private String guest;
 
     @Id
     @Column(name = "game_id")
-    public Integer getId() {
-        return id;
+    public Integer getGame_id() {
+        return game_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setGame_id(Integer id) {
+        this.game_id = id;
     }
 
     @Column(name = "host")
@@ -44,6 +44,6 @@ public class Game {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        return id.equals (((Game) o).id);
+        return game_id.equals (((Game) o).game_id);
     }
 }
