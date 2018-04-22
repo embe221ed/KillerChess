@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 // simple class which main method displays starting window of app
 
@@ -29,6 +32,8 @@ public class View extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
         this.changeScene("/logging.fxml");
+        SessionFactory testSession = new Configuration().configure().buildSessionFactory();
+        Session session = testSession.openSession();
     }
 
     public void changeScene(String fxml) throws Exception {

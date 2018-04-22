@@ -13,6 +13,8 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <mapping class="com.killerchess.core.user.User"/>
-
+        <mapping class="com.killerchess.core.game.Game"/>
+        <mapping class="com.killerchess.core.game.GameState"/>
+        <mapping class="com.killerchess.core.game.Ranking"/>
     </session-factory>
 </hibernate-configuration>

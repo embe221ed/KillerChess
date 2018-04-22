@@ -9,11 +9,10 @@ import javax.persistence.EmbeddedId;
 @Table(name = "game_state")
 public class GameState {
 
-    @Column(name = "state")
     private String state;
-
     private GameStateIdentity gameStateIdentity;
 
+    @Column(name = "state")
     public String getState() {
         return state;
     }
@@ -26,8 +25,7 @@ public class GameState {
     public GameStateIdentity getGameStateIdentity() {
         return gameStateIdentity;
     }
-    public void setGameStateIdentity(GameStateIdentity gameStateIdentity) {
-        this.gameStateIdentity = gameStateIdentity;
-    }
+
+    public void setGameStateIdentity(GameStateIdentity gameStateIdentity) { this.gameStateIdentity = gameStateIdentity; }
 
 }

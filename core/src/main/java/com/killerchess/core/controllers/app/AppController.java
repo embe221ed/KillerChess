@@ -15,6 +15,7 @@ public class AppController {
             - one option is to check session (if the current person is logged in user etc)
             - second one is to pass parameters of user (username and password) as a function arguments and then check if he is authorized to see the Main Menu
          */
+        
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/gameRanking")
