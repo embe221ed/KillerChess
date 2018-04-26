@@ -26,10 +26,10 @@ public class RegistrationController {
     }
 
     public void handleCancelButtonClicked() {
-//        try {
-//            View.getInstance().changeScene("/logging.fxml");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            View.getInstance().changeScene("/logging.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

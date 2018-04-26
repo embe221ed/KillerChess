@@ -3,12 +3,15 @@ package com.killerchess.core.controllers.user;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/register")
-    public void register() {
+    public int register() {
         //here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne
+        return 1;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")

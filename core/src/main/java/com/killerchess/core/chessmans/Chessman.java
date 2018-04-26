@@ -12,7 +12,6 @@ public abstract class Chessman {
     private String chessman;
 
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/Beans.xml");
 //        Chessman chessman = (Chessman)context.getBean("helloWorld");
 //        chessman.getChessman();
     }

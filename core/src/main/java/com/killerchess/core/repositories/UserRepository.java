@@ -1,5 +1,7 @@
 package com.killerchess.core.repositories;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import java.util.List;
