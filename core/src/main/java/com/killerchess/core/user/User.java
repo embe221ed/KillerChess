@@ -5,12 +5,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-// Example Entity
+import java.io.Serializable;
 
 @Entity
 @Table(name = "game_user")
-public class User {
+public class User implements Serializable {
+
     private String login;
     private String password;
     private SessionFactory sessionFactory;
@@ -20,7 +20,6 @@ public class User {
     public String getLogin() {
         return this.login;
     }
-
     public void setLogin(String login) {
         this.login = login;
     }
@@ -29,9 +28,16 @@ public class User {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User that = (User) o;
+        if (!login.equals(that.login)) return false;
+        return login.equals(that.login);
+    }
 }

@@ -1,11 +1,8 @@
 package com.killerchess.core.game;
 
 import com.killerchess.core.user.User;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "ranking")
@@ -13,13 +10,21 @@ public class Ranking {
 
     private User user;
     private int points;
+    private String userLogin;
 
     @Id
-    @JoinColumn(name = "login")
+    public String getUserLogin() {
+        return userLogin;
+    }
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+    @OneToOne
+    @MapsId
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
@@ -28,7 +33,6 @@ public class Ranking {
     public int getPoints() {
         return points;
     }
-
     public void setPoints(int points) {
         this.points = points;
     }
