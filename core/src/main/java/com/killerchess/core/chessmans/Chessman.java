@@ -9,11 +9,27 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 
 public abstract class Chessman {
+
     private String chessman;
+    private ChessmanColourEnum colour;
+
+    public Chessman(ChessmanColourEnum colour) {
+        this.colour = colour;
+    }
 
     public static void main(String[] args) {
 //        Chessman chessman = (Chessman)context.getBean("helloWorld");
 //        chessman.getChessman();
+    }
+
+    public ChessmanColourEnum getColour() {
+        return colour;
+    }
+
+    public abstract Character getSymbol();
+
+    public void setColour(ChessmanColourEnum colour) {
+        this.colour = colour;
     }
 
     public void printName() {
