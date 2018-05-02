@@ -8,9 +8,9 @@ import com.killerchess.core.chessmans.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-class StateInterpreter {
+public class StateInterpreter {
 
-    ChessBoard convertJsonBoardToChessBoard(String jsonBoard) throws IOException {
+    public ChessBoard convertJsonBoardToChessBoard(String jsonBoard) throws IOException {
         var jsonNode = getJsonNodeFromJsonString(jsonBoard);
         var elements = jsonNode.elements();
 
