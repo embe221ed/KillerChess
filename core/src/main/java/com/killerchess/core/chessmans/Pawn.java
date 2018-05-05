@@ -27,8 +27,7 @@ public class Pawn extends Chessman {
 
         if (getColour().equals(ChessmanColourEnum.BLACK)) {
             Pair<Integer, Integer> possibleFieldToMove =
-                    new Pair<>(Integer.valueOf(pawnsRow - 1),
-                            Integer.valueOf(pawnsCol));
+                    new Pair<>(Integer.valueOf(pawnsRow - 1), Integer.valueOf(pawnsCol));
             if (isFieldWithinBoard(possibleFieldToMove)) {
                 if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
                     possibleMoves.add(possibleFieldToMove);
@@ -41,19 +40,15 @@ public class Pawn extends Chessman {
 
             if (pawnsRow.equals(6)) {
                 Pair<Integer, Integer> nextPossibleFieldToMove =
-                        new Pair<>(Integer.valueOf(pawnsRow - 2),
-                                Integer.valueOf(pawnsCol));
-
-                if (isFieldWithinBoard(nextPossibleFieldToMove)
-                        && isFieldEmpty(chessBoard, nextPossibleFieldToMove)) {
+                        new Pair<>(Integer.valueOf(pawnsRow - 2), Integer.valueOf(pawnsCol));
+                if (isFieldWithinBoard(nextPossibleFieldToMove) && isFieldEmpty(chessBoard, nextPossibleFieldToMove)) {
                     possibleMoves.add(nextPossibleFieldToMove);
                 }
             }
 
         } else if (getColour().equals(ChessmanColourEnum.WHITE)) {
             Pair<Integer, Integer> possibleFieldToMove =
-                    new Pair<>(Integer.valueOf(pawnsRow + 1),
-                            Integer.valueOf(pawnsCol));
+                    new Pair<>(Integer.valueOf(pawnsRow + 1), Integer.valueOf(pawnsCol));
             if (isFieldWithinBoard(possibleFieldToMove)) {
                 if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
                     possibleMoves.add(possibleFieldToMove);
@@ -66,11 +61,9 @@ public class Pawn extends Chessman {
 
             if (pawnsRow.equals(Integer.valueOf(1))) {
                 Pair<Integer, Integer> nextPossibleFieldToMove =
-                        new Pair<>(Integer.valueOf(pawnsRow + 2),
-                                Integer.valueOf(pawnsCol));
+                        new Pair<>(Integer.valueOf(pawnsRow + 2), Integer.valueOf(pawnsCol));
 
-                if (isFieldWithinBoard(nextPossibleFieldToMove)
-                        && isFieldEmpty(chessBoard, nextPossibleFieldToMove)) {
+                if (isFieldWithinBoard(nextPossibleFieldToMove) && isFieldEmpty(chessBoard, nextPossibleFieldToMove)) {
                     possibleMoves.add(nextPossibleFieldToMove);
                 }
             }
@@ -87,39 +80,43 @@ public class Pawn extends Chessman {
         if (getColour().equals(ChessmanColourEnum.BLACK)) {
             Pair<Integer, Integer> possibleFieldToCapture =
                     new Pair<>(Integer.valueOf(pawnsRow - 1), Integer.valueOf(pawnsCol) - 1);
-            if (isFieldWithinBoard(possibleFieldToCapture)
-                    && !isFieldEmpty(chessBoard, possibleFieldToCapture)) {
+            if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                    && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(ChessmanColourEnum.WHITE)) {
                 possibleCaptures.add(possibleFieldToCapture);
             }
 
             Pair<Integer, Integer> nextPossibleFieldToCapture =
                     new Pair<>(Integer.valueOf(pawnsRow - 1), Integer.valueOf(pawnsCol) + 1);
-            if (isFieldWithinBoard(nextPossibleFieldToCapture)
-                    && !isFieldEmpty(chessBoard, nextPossibleFieldToCapture)) {
+            if (isFieldWithinBoardAndNotEmpty(chessBoard, nextPossibleFieldToCapture)
+                    && chessBoard.getChessmanAt(nextPossibleFieldToCapture).getColour().equals(ChessmanColourEnum.WHITE)) {
                 possibleCaptures.add(nextPossibleFieldToCapture);
             }
 
         } else if (getColour().equals(ChessmanColourEnum.WHITE)) {
             Pair<Integer, Integer> possibleFieldToCapture =
                     new Pair<>(Integer.valueOf(pawnsRow + 1), Integer.valueOf(pawnsCol) - 1);
-            if (isFieldWithinBoard(possibleFieldToCapture)
-                    && !isFieldEmpty(chessBoard, possibleFieldToCapture)) {
+            if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                    && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(ChessmanColourEnum.BLACK)) {
                 possibleCaptures.add(possibleFieldToCapture);
             }
 
             Pair<Integer, Integer> nextPossibleFieldToCapture =
                     new Pair<>(Integer.valueOf(pawnsRow + 1), Integer.valueOf(pawnsCol) + 1);
-            if (isFieldWithinBoard(nextPossibleFieldToCapture)
-                    && !isFieldEmpty(chessBoard, nextPossibleFieldToCapture)) {
+            if (isFieldWithinBoardAndNotEmpty(chessBoard, nextPossibleFieldToCapture)
+                    && chessBoard.getChessmanAt(nextPossibleFieldToCapture).getColour().equals(ChessmanColourEnum.BLACK)) {
                 possibleCaptures.add(nextPossibleFieldToCapture);
             }
         }
         return possibleCaptures;
     }
 
+    private boolean isFieldWithinBoardAndNotEmpty(ChessBoard chessBoard,
+                                                  Pair<Integer, Integer> nextPossibleFieldToCapture) {
+        return isFieldWithinBoard(nextPossibleFieldToCapture) && !isFieldEmpty(chessBoard, nextPossibleFieldToCapture);
+    }
+
     public boolean isPromotionAvailable(Pair<Integer, Integer> position) {
         Integer pawnsRow = position.getKey();
-
         if (getColour().equals(ChessmanColourEnum.BLACK)) {
             return pawnsRow.equals(Integer.valueOf(0));
         } else if (getColour().equals(ChessmanColourEnum.WHITE)) {
