@@ -59,7 +59,6 @@ public class Pawn extends Chessman {
 
             if (pawnsRow.equals(1)) {
                 Pair<Integer, Integer> nextPossibleFieldToMove = new Pair<>(pawnsRow + 2, pawnsCol);
-
                 if (isFieldWithinBoard(nextPossibleFieldToMove) && isFieldEmpty(chessBoard, nextPossibleFieldToMove)) {
                     possibleMoves.add(nextPossibleFieldToMove);
                 }
@@ -76,36 +75,23 @@ public class Pawn extends Chessman {
 
         if (getColour().equals(ChessmanColourEnum.BLACK)) {
             Pair<Integer, Integer> possibleFieldToCapture = new Pair<>(pawnsRow - 1, pawnsCol - 1);
-            if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
-                    && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(ChessmanColourEnum.WHITE)) {
-                possibleCaptures.add(possibleFieldToCapture);
-            }
+            addPossibleCaptureIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
+                    ChessmanColourEnum.WHITE);
 
             Pair<Integer, Integer> nextPossibleFieldToCapture = new Pair<>(pawnsRow - 1, pawnsCol + 1);
-            if (isFieldWithinBoardAndNotEmpty(chessBoard, nextPossibleFieldToCapture)
-                    && chessBoard.getChessmanAt(nextPossibleFieldToCapture).getColour().equals(ChessmanColourEnum.WHITE)) {
-                possibleCaptures.add(nextPossibleFieldToCapture);
-            }
+            addPossibleCaptureIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, nextPossibleFieldToCapture,
+                    ChessmanColourEnum.WHITE);
 
         } else if (getColour().equals(ChessmanColourEnum.WHITE)) {
             Pair<Integer, Integer> possibleFieldToCapture = new Pair<>(pawnsRow + 1, pawnsCol - 1);
-            if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
-                    && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(ChessmanColourEnum.BLACK)) {
-                possibleCaptures.add(possibleFieldToCapture);
-            }
+            addPossibleCaptureIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
+                    ChessmanColourEnum.BLACK);
 
             Pair<Integer, Integer> nextPossibleFieldToCapture = new Pair<>(pawnsRow + 1, pawnsCol + 1);
-            if (isFieldWithinBoardAndNotEmpty(chessBoard, nextPossibleFieldToCapture)
-                    && chessBoard.getChessmanAt(nextPossibleFieldToCapture).getColour().equals(ChessmanColourEnum.BLACK)) {
-                possibleCaptures.add(nextPossibleFieldToCapture);
-            }
+            addPossibleCaptureIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
+                    ChessmanColourEnum.BLACK);
         }
         return possibleCaptures;
-    }
-
-    private boolean isFieldWithinBoardAndNotEmpty(ChessBoard chessBoard,
-                                                  Pair<Integer, Integer> nextPossibleFieldToCapture) {
-        return isFieldWithinBoard(nextPossibleFieldToCapture) && !isFieldEmpty(chessBoard, nextPossibleFieldToCapture);
     }
 
     public boolean isPromotionAvailable(Pair<Integer, Integer> position) {
@@ -121,5 +107,20 @@ public class Pawn extends Chessman {
     @Override
     public Integer getPointsValue() {
         return PAWN_VALUE;
+    }
+
+    private void addPossibleCaptureIfWithinBoardAndMatchesColour(ChessBoard chessBoard,
+                                                                 Set<Pair<Integer, Integer>> possibleCaptures,
+                                                                 Pair<Integer, Integer> possibleFieldToCapture,
+                                                                 ChessmanColourEnum colour) {
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colour)) {
+            possibleCaptures.add(possibleFieldToCapture);
+        }
+    }
+
+    private boolean isFieldWithinBoardAndNotEmpty(ChessBoard chessBoard,
+                                                  Pair<Integer, Integer> nextPossibleFieldToCapture) {
+        return isFieldWithinBoard(nextPossibleFieldToCapture) && !isFieldEmpty(chessBoard, nextPossibleFieldToCapture);
     }
 }

@@ -22,50 +22,87 @@ public class Rook extends Chessman {
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        Set<Pair<Integer, Integer>> possibleCaptures = new HashSet<>();
+        Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
         Integer rookRow = position.getKey();
         Integer rookCol = position.getValue();
 
-        Pair<Integer, Integer> possibleFieldToCapture;
+        Pair<Integer, Integer> possibleFieldToMove;
+
         for (int row = rookRow; row < 8; row++) {
-            possibleFieldToCapture = new Pair<>(row, rookCol);
-            if (isFieldEmpty(chessBoard, possibleFieldToCapture)) {
-                possibleCaptures.add(possibleFieldToCapture);
+            possibleFieldToMove = new Pair<>(row, rookCol);
+            if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
+                possibleMoves.add(possibleFieldToMove);
             } else {
                 break;
             }
         }
         for (int row = rookRow; row >= 0; row--) {
-            possibleFieldToCapture = new Pair<>(row, rookCol);
-            if (isFieldEmpty(chessBoard, possibleFieldToCapture)) {
-                possibleCaptures.add(possibleFieldToCapture);
+            possibleFieldToMove = new Pair<>(row, rookCol);
+            if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
+                possibleMoves.add(possibleFieldToMove);
             } else {
                 break;
             }
         }
         for (int col = rookCol; col < 8; col++) {
-            possibleFieldToCapture = new Pair<>(rookRow, col);
-            if (isFieldEmpty(chessBoard, possibleFieldToCapture)) {
-                possibleCaptures.add(possibleFieldToCapture);
+            possibleFieldToMove = new Pair<>(rookRow, col);
+            if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
+                possibleMoves.add(possibleFieldToMove);
             } else {
                 break;
             }
         }
         for (int col = rookCol; col >= 0; col--) {
-            possibleFieldToCapture = new Pair<>(rookRow, col);
-            if (isFieldEmpty(chessBoard, possibleFieldToCapture)) {
-                possibleCaptures.add(possibleFieldToCapture);
+            possibleFieldToMove = new Pair<>(rookRow, col);
+            if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
+                possibleMoves.add(possibleFieldToMove);
             } else {
                 break;
             }
         }
 
-        return possibleCaptures;
+        return possibleMoves;
     }
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        return null;
+        ChessmanColourEnum colorToCapture = (getColour().equals(ChessmanColourEnum.BLACK)) ?
+                ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
+
+        Set<Pair<Integer, Integer>> possibleCaptures = new HashSet<>();
+        Integer rookRow = position.getKey();
+        Integer rookCol = position.getValue();
+
+        for (int row = rookRow; row < 8; row++) {
+            if (!addNonEmptyChessmanFromOppositeColorToPossibleCaptures(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
+                break;
+        }
+        for (int row = rookRow; row >= 0; row--) {
+            if (!addNonEmptyChessmanFromOppositeColorToPossibleCaptures(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
+                break;
+        }
+        for (int col = rookCol; col < 8; col++) {
+            if (!addNonEmptyChessmanFromOppositeColorToPossibleCaptures(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
+                break;
+        }
+        for (int col = rookCol; col >= 0; col--) {
+            if (!addNonEmptyChessmanFromOppositeColorToPossibleCaptures(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
+                break;
+        }
+
+        return possibleCaptures;
+    }
+
+    private boolean addNonEmptyChessmanFromOppositeColorToPossibleCaptures(
+            ChessBoard chessBoard, ChessmanColourEnum colorToCapture,
+            Set<Pair<Integer, Integer>> possibleCaptures, Integer rookCol, int row) {
+        Pair<Integer, Integer> possibleFieldToCapture = new Pair<>(row, rookCol);
+        if (!isFieldEmpty(chessBoard, possibleFieldToCapture)) {
+            if (chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
+                possibleCaptures.add(possibleFieldToCapture);
+            return false;
+        }
+        return true;
     }
 
     @Override
