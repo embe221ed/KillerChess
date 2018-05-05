@@ -15,4 +15,13 @@ public class ChessBoard {
     public Chessman getChessmanAt(int row, int col) {
         return chessBoard.get(row).get(col);
     }
+
+    public int getChessBoardColumnsSize() {
+        return chessBoard.size();
+    }
+
+    public int getChessBoardRowsSize() {
+        return chessBoard.get(0).size();
+    }
+
 }
