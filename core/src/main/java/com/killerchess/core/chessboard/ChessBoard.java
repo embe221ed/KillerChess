@@ -24,4 +24,7 @@ public class ChessBoard {
         return chessBoard.get(0).size();
     }
 
+    public ArrayList<ArrayList<Chessman>> getChessBoardCopy() {
+        return new ArrayList<>(chessBoard);
+    }
 }
