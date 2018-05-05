@@ -207,8 +207,8 @@ class PawnTest extends TestCase {
         int pawnCol = 1;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
-        var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
-        Set possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        Set possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(0, possibleCaptures.size());
     }
 
@@ -219,8 +219,8 @@ class PawnTest extends TestCase {
         int pawnCol = 1;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
-        var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
-        Set possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        Set possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
         Set<Pair<Integer, Integer>> expectedCaptures = new HashSet<>();
@@ -235,8 +235,8 @@ class PawnTest extends TestCase {
         int pawnCol = 1;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
-        var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
-        Set possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        Set possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
         Set<Pair<Integer, Integer>> expectedCaptures = new HashSet<>();
@@ -251,8 +251,8 @@ class PawnTest extends TestCase {
         int pawnCol = 1;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
-        var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
-        Set possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        Set possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(2, possibleCaptures.size());
 
         Set<Pair<Integer, Integer>> expectedCaptures = new HashSet<>();
