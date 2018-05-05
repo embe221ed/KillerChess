@@ -2,6 +2,7 @@ package com.killerchess.core.chessboard.state.interpreter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessmans.*;
 
@@ -19,6 +20,31 @@ public class StateInterpreter {
         elements.forEachRemaining(node -> chessBoard.add(getChessmanListFromLine(node)));
 
         return new ChessBoard(chessBoard);
+    }
+
+    public ObjectNode convertChessBoardToJsonBoard(ChessBoard chessBoard) {
+        var colSize = chessBoard.getChessBoardColumnsSize();
+        var rowSize = chessBoard.getChessBoardRowsSize();
+
+        var mapper = new ObjectMapper();
+        var jsonChessBoard = mapper.createObjectNode();
+
+        for (var i = 0; i < colSize; ++i) {
+            var currentRowArrayNode = mapper.createArrayNode();
+
+            for (var j = 0; j < rowSize; ++j) {
+                var currentChessman = chessBoard.getChessmanAt(i, j);
+                var symbolValue = currentChessman.getSymbol().toString();
+                var colourValue = currentChessman.getColour().getSymbol();
+                var currentChessmanStringValue = symbolValue + colourValue;
+                currentRowArrayNode.add(currentChessmanStringValue);
+            }
+
+            var currentNodeKey = Integer.valueOf(i + 1).toString();
+            jsonChessBoard.putPOJO(currentNodeKey, currentRowArrayNode);
+        }
+
+        return jsonChessBoard;
     }
 
     private JsonNode getJsonNodeFromJsonString(String jsonBoard) throws IOException {
