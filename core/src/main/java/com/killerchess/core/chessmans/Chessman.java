@@ -29,6 +29,8 @@ public abstract class Chessman {
 
     public abstract Character getSymbol();
 
+    public abstract Integer getPointsValue();
+
     public void setColour(ChessmanColourEnum colour) {
         this.colour = colour;
     }
