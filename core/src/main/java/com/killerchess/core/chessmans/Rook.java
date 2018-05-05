@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class Rook extends Chessman {
 
+    private static final Integer ROOK_VALUE = 5;
     private static final Character ROOK_SYMBOL = 'R';
 
     public Rook(ChessmanColourEnum colour) {
@@ -65,5 +66,10 @@ public class Rook extends Chessman {
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         return null;
+    }
+
+    @Override
+    public Integer getPointsValue() {
+        return ROOK_VALUE;
     }
 }

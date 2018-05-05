@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class EmptyField extends Chessman {
 
+    private static final Integer EMPTY_FIELD__VALUE = 0;
     private static final Character EMPTY_FIELD_SYMBOL = 'X';
 
     public EmptyField(ChessmanColourEnum colour) {
@@ -26,5 +27,10 @@ public class EmptyField extends Chessman {
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         return null;
+    }
+
+    @Override
+    public Integer getPointsValue() {
+        return EMPTY_FIELD__VALUE;
     }
 }

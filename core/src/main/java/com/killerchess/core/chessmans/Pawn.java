@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class Pawn extends Chessman {
 
+    private static final Integer PAWN_VALUE = 1;
     private static final Character PAWN_SYMBOL = 'P';
 
     public Pawn(ChessmanColourEnum colour) {
@@ -115,5 +116,10 @@ public class Pawn extends Chessman {
             return pawnsRow.equals(7);
         }
         return false;
+    }
+
+    @Override
+    public Integer getPointsValue() {
+        return PAWN_VALUE;
     }
 }

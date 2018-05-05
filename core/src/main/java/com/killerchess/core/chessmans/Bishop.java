@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class Bishop extends Chessman {
 
+    private static final Integer BISHOP_VALUE = 3;
     private static final Character BISHOP_SYMBOL = 'B';
 
     public Bishop(ChessmanColourEnum colour) {
@@ -26,5 +27,10 @@ public class Bishop extends Chessman {
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         return null;
+    }
+
+    @Override
+    public Integer getPointsValue() {
+        return BISHOP_VALUE;
     }
 }

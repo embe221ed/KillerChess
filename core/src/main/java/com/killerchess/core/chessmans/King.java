@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class King extends Chessman {
 
+    private static final Integer KING_VALUE = 7;
     private static final Character KING_SYMBOL = 'K';
 
     public King(ChessmanColourEnum colour) {
@@ -26,5 +27,10 @@ public class King extends Chessman {
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         return null;
+    }
+
+    @Override
+    public Integer getPointsValue() {
+        return KING_VALUE;
     }
 }

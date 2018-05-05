@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class Horse extends Chessman {
 
+    private static final Integer HORSE_VALUE = 3;
     private static final Character HORSE_SYMBOL = 'H';
 
     public Horse(ChessmanColourEnum colour) {
@@ -26,5 +27,10 @@ public class Horse extends Chessman {
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         return null;
+    }
+
+    @Override
+    public Integer getPointsValue() {
+        return HORSE_VALUE;
     }
 }
