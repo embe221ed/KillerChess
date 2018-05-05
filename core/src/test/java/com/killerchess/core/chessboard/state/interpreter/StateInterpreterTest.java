@@ -18,32 +18,32 @@ class StateInterpreterTest extends TestCase {
 
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(DEFAULT_ARRANGEMENT_JSON);
 
-        assertEquals(chessBoard.getChessmanAt(0, 0).getSymbol(), Character.valueOf('R'));
-        assertEquals(chessBoard.getChessmanAt(0, 1).getSymbol(), Character.valueOf('H'));
-        assertEquals(chessBoard.getChessmanAt(0, 2).getSymbol(), Character.valueOf('B'));
-        assertEquals(chessBoard.getChessmanAt(0, 3).getSymbol(), Character.valueOf('Q'));
-        assertEquals(chessBoard.getChessmanAt(0, 4).getSymbol(), Character.valueOf('K'));
-        assertEquals(chessBoard.getChessmanAt(0, 5).getSymbol(), Character.valueOf('B'));
-        assertEquals(chessBoard.getChessmanAt(0, 6).getSymbol(), Character.valueOf('H'));
-        assertEquals(chessBoard.getChessmanAt(0, 7).getSymbol(), Character.valueOf('R'));
+        assertEquals(Character.valueOf('R'), chessBoard.getChessmanAt(0, 0).getSymbol());
+        assertEquals(Character.valueOf('H'), chessBoard.getChessmanAt(0, 1).getSymbol());
+        assertEquals(Character.valueOf('B'), chessBoard.getChessmanAt(0, 2).getSymbol());
+        assertEquals(Character.valueOf('Q'), chessBoard.getChessmanAt(0, 3).getSymbol());
+        assertEquals(Character.valueOf('K'), chessBoard.getChessmanAt(0, 4).getSymbol());
+        assertEquals(Character.valueOf('B'), chessBoard.getChessmanAt(0, 5).getSymbol());
+        assertEquals(Character.valueOf('H'), chessBoard.getChessmanAt(0, 6).getSymbol());
+        assertEquals(Character.valueOf('R'), chessBoard.getChessmanAt(0, 7).getSymbol());
 
-        assertEquals(chessBoard.getChessmanAt(7, 0).getSymbol(), Character.valueOf('R'));
-        assertEquals(chessBoard.getChessmanAt(7, 1).getSymbol(), Character.valueOf('H'));
-        assertEquals(chessBoard.getChessmanAt(7, 2).getSymbol(), Character.valueOf('B'));
-        assertEquals(chessBoard.getChessmanAt(7, 3).getSymbol(), Character.valueOf('Q'));
-        assertEquals(chessBoard.getChessmanAt(7, 4).getSymbol(), Character.valueOf('K'));
-        assertEquals(chessBoard.getChessmanAt(7, 5).getSymbol(), Character.valueOf('B'));
-        assertEquals(chessBoard.getChessmanAt(7, 6).getSymbol(), Character.valueOf('H'));
-        assertEquals(chessBoard.getChessmanAt(7, 7).getSymbol(), Character.valueOf('R'));
+        assertEquals(Character.valueOf('R'), chessBoard.getChessmanAt(7, 0).getSymbol());
+        assertEquals(Character.valueOf('H'), chessBoard.getChessmanAt(7, 1).getSymbol());
+        assertEquals(Character.valueOf('B'), chessBoard.getChessmanAt(7, 2).getSymbol());
+        assertEquals(Character.valueOf('Q'), chessBoard.getChessmanAt(7, 3).getSymbol());
+        assertEquals(Character.valueOf('K'), chessBoard.getChessmanAt(7, 4).getSymbol());
+        assertEquals(Character.valueOf('B'), chessBoard.getChessmanAt(7, 5).getSymbol());
+        assertEquals(Character.valueOf('H'), chessBoard.getChessmanAt(7, 6).getSymbol());
+        assertEquals(Character.valueOf('R'), chessBoard.getChessmanAt(7, 7).getSymbol());
 
         for (int i = 0; i < 8; ++i) {
-            assertEquals(chessBoard.getChessmanAt(1, i).getSymbol(), Character.valueOf('P'));
-            assertEquals(chessBoard.getChessmanAt(6, i).getSymbol(), Character.valueOf('P'));
+            assertEquals(Character.valueOf('P'), chessBoard.getChessmanAt(1, i).getSymbol());
+            assertEquals(Character.valueOf('P'), chessBoard.getChessmanAt(6, i).getSymbol());
 
-            assertEquals(chessBoard.getChessmanAt(2, i).getSymbol(), Character.valueOf('X'));
-            assertEquals(chessBoard.getChessmanAt(3, i).getSymbol(), Character.valueOf('X'));
-            assertEquals(chessBoard.getChessmanAt(4, i).getSymbol(), Character.valueOf('X'));
-            assertEquals(chessBoard.getChessmanAt(5, i).getSymbol(), Character.valueOf('X'));
+            assertEquals(Character.valueOf('X'), chessBoard.getChessmanAt(2, i).getSymbol());
+            assertEquals(Character.valueOf('X'), chessBoard.getChessmanAt(3, i).getSymbol());
+            assertEquals(Character.valueOf('X'), chessBoard.getChessmanAt(4, i).getSymbol());
+            assertEquals(Character.valueOf('X'), chessBoard.getChessmanAt(5, i).getSymbol());
         }
     }
 
