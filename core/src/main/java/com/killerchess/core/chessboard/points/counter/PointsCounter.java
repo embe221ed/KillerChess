@@ -16,8 +16,8 @@ public class PointsCounter {
     }
 
     public Integer countWhitePlayerPoints(String jsonInputBoard, String jsonOutputBoard) throws IOException {
-        int defaultPoints = countPointsOnBoardForColour(jsonInputBoard, ChessmanColourEnum.BLACK);
-        int finalPoints = countPointsOnBoardForColour(jsonOutputBoard, ChessmanColourEnum.BLACK);
+        var defaultPoints = countPointsOnBoardForColour(jsonInputBoard, ChessmanColourEnum.BLACK);
+        var finalPoints = countPointsOnBoardForColour(jsonOutputBoard, ChessmanColourEnum.BLACK);
         return defaultPoints - finalPoints;
     }
 
@@ -29,7 +29,7 @@ public class PointsCounter {
 
     private int countPointsOnBoardForColour(String jsonBoard, ChessmanColourEnum colour) throws IOException {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(jsonBoard).getChessBoardCopy();
-        AtomicInteger points = new AtomicInteger(0);
+        var points = new AtomicInteger(0);
         chessBoard.forEach(currentRow -> currentRow.stream()
                 .filter(chessman -> chessman.getColour().equals(colour))
                 .forEach(chessman -> points.addAndGet(chessman.getPointsValue())));
