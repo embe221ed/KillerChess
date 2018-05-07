@@ -21,11 +21,11 @@ public class LoginController {
         }
     }
     public void handleRegisterButtonClicked() {
-//        try {
-//            System.out.println("Register button clicked");
-//            View.getInstance().changeScene("/registration.fxml");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            System.out.println("Register button clicked");
+            View.getInstance().changeScene("/registration.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
