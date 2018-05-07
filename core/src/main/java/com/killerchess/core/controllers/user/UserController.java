@@ -1,12 +1,20 @@
 package com.killerchess.core.controllers.user;
 
+import com.killerchess.core.services.UserService;
+import com.killerchess.core.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class UserController {
+
+    @Autowired
+    private UserService service;
 
     @RequestMapping("/")
     public String index() {
@@ -14,9 +22,9 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/register")
-    public int register() {
+    public List<User> register() {
         //here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne
-        return 1;
+        return service.findAll();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register")
