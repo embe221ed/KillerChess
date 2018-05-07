@@ -2,6 +2,7 @@ package com.killerchess.core.user;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Component
 @Entity
 @Table(name = "game_user")
 public class User implements Serializable {
@@ -21,12 +23,17 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
+    private final SessionFactory sessionFactory;
+
     @Autowired
-    private SessionFactory sessionFactory;
+    public User(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public String getLogin() {
         return this.login;
     }
+
     public void setLogin(String login) {
         this.login = login;
     }
@@ -34,6 +41,7 @@ public class User implements Serializable {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }

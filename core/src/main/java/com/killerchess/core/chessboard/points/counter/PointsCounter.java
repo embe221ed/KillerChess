@@ -2,17 +2,20 @@ package com.killerchess.core.chessboard.points.counter;
 
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Component
 public class PointsCounter {
 
-    private StateInterpreter stateInterpreter;
+    private final StateInterpreter stateInterpreter;
 
-    public PointsCounter() {
-        //TODO AK Inject StateInterpreter when Injection available
-        stateInterpreter = new StateInterpreter();
+    @Autowired
+    public PointsCounter(StateInterpreter stateInterpreter) {
+        this.stateInterpreter = stateInterpreter;
     }
 
     public Integer countWhitePlayerPoints(String jsonInputBoard, String jsonOutputBoard) throws IOException {
