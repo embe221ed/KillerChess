@@ -66,6 +66,9 @@ public class Horse extends Chessman {
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
+        ChessmanColourEnum colorToCapture = (getColour().equals(ChessmanColourEnum.BLACK)) ?
+                ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
+
         Set<Pair<Integer, Integer>> possibleCaptures = new HashSet<>();
         Integer rookRow = position.getKey();
         Integer rookCol = position.getValue();
@@ -74,35 +77,43 @@ public class Horse extends Chessman {
 
         // 1
         possibleFieldToCapture = new Pair<>(rookRow - 2, rookCol + 1);
-        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture))
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
             possibleCaptures.add(possibleFieldToCapture);
         // 2
         possibleFieldToCapture = new Pair<>(rookRow - 2, rookCol - 1);
-        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture))
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
             possibleCaptures.add(possibleFieldToCapture);
         // 3
         possibleFieldToCapture = new Pair<>(rookRow - 1, rookCol + 2);
-        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture))
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
             possibleCaptures.add(possibleFieldToCapture);
         // 4
         possibleFieldToCapture = new Pair<>(rookRow - 1, rookCol - 2);
-        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture))
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
             possibleCaptures.add(possibleFieldToCapture);
         // 5
         possibleFieldToCapture = new Pair<>(rookRow + 1, rookCol - 2);
-        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture))
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
             possibleCaptures.add(possibleFieldToCapture);
         // 6
         possibleFieldToCapture = new Pair<>(rookRow + 1, rookCol + 2);
-        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture))
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
             possibleCaptures.add(possibleFieldToCapture);
         // 7
         possibleFieldToCapture = new Pair<>(rookRow + 2, rookCol + 1);
-        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture))
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
             possibleCaptures.add(possibleFieldToCapture);
         // 8
         possibleFieldToCapture = new Pair<>(rookRow + 2, rookCol - 1);
-        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture))
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
+                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
             possibleCaptures.add(possibleFieldToCapture);
 
         return possibleCaptures;
