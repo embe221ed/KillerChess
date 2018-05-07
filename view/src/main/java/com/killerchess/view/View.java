@@ -13,8 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 // simple class which main method displays starting window of app
 
 @SpringBootApplication
-@ComponentScan({"com.killerchess.core.controllers",
-        "com.killerchess.core.services"})
+@ComponentScan({"com.killerchess.core.controllers", "com.killerchess.core.services"})
 @EnableJpaRepositories({"com.killerchess.core.repositories"})
 @EntityScan({"com.killerchess.core"})
 public class View extends Application {
@@ -39,8 +38,6 @@ public class View extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
         this.changeScene("/logging.fxml");
-//        SessionFactory testSession = new Configuration().configure().buildSessionFactory();
-//        Session session = testSession.openSession();
     }
 
     public void changeScene(String fxml) throws Exception {

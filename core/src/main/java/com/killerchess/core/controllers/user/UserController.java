@@ -13,21 +13,30 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @Autowired
-    private UserService service;
+    private static final String REGISTER_PATH = "/register";
+    private static final String LOGIN_PATH = "/login";
 
+    private final UserService service;
+
+    @Autowired
+    public UserController(UserService service) {
+        this.service = service;
+    }
+
+
+    // To delete after testing
     @RequestMapping("/")
     public String index() {
         return "Hello world!";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/register")
+    @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH)
     public List<User> register() {
         //here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne
         return service.findAll();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/register")
+    @RequestMapping(method = RequestMethod.POST, value = REGISTER_PATH)
     public void register(@RequestParam(value = "username") String name,
                          @RequestParam(value = "encryptedPassword") String encryptedPassword) throws Exception {
         //here we need to "register" new user and maybe return info, that registration succeded or failed
@@ -45,12 +54,12 @@ public class UserController {
         */
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/login")
+    @RequestMapping(method = RequestMethod.GET, value = LOGIN_PATH)
     public void login() {
         //same as register GET method, but login
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/login")
+    @RequestMapping(method = RequestMethod.POST, value = LOGIN_PATH)
     public void login(@RequestParam(value = "username") String name,
                       @RequestParam(value = "encryptedPassword") String encryptedPassword) throws Exception {
         //here we need to "login" our User or not (if something will go wrong) and of course depending on result, redirectng to main menu or to loginView once again

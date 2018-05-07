@@ -8,21 +8,4 @@ import org.springframework.stereotype.Repository;
 //drugą opcją jest przypisanie odpowiedniego "query" do metody
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-
-//    przykłąd przypisania query do metody
-//    oczywiście u nas nie ma atrybutu "age", ale to tylko przykład
-//    @Query("select u from User u where u.age = ?1")
-//    List<User> findUsersByAge(int age);
-//
-//    User save(User newUser);
-//
-//    User findOne(String id);
-//
-//    List<User> findAll();
-//
-//    long count();
-//
-//    void delete(User userToDelete);
-//
-//    boolean exists(String primaryKey);
 }

@@ -5,5 +5,5 @@ import com.killerchess.core.user.User;
 import java.util.List;
 
 public interface IUserService {
-    public List<User> findAll();
+    List<User> findAll();
 }

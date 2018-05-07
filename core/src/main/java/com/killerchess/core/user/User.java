@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "game_user")
@@ -44,5 +45,10 @@ public class User implements Serializable {
         User that = (User) o;
         if (!login.equals(that.login)) return false;
         return login.equals(that.login);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(login, password, sessionFactory);
     }
 }
