@@ -75,20 +75,20 @@ public class Pawn extends Chessman {
 
         if (getColour().equals(ChessmanColourEnum.BLACK)) {
             Pair<Integer, Integer> possibleFieldToCapture = new Pair<>(pawnsRow - 1, pawnsCol - 1);
-            addPossibleCaptureIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
+            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
                     ChessmanColourEnum.WHITE);
 
             Pair<Integer, Integer> nextPossibleFieldToCapture = new Pair<>(pawnsRow - 1, pawnsCol + 1);
-            addPossibleCaptureIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, nextPossibleFieldToCapture,
+            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, nextPossibleFieldToCapture,
                     ChessmanColourEnum.WHITE);
 
         } else if (getColour().equals(ChessmanColourEnum.WHITE)) {
             Pair<Integer, Integer> possibleFieldToCapture = new Pair<>(pawnsRow + 1, pawnsCol - 1);
-            addPossibleCaptureIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
+            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
                     ChessmanColourEnum.BLACK);
 
             Pair<Integer, Integer> nextPossibleFieldToCapture = new Pair<>(pawnsRow + 1, pawnsCol + 1);
-            addPossibleCaptureIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
+            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
                     ChessmanColourEnum.BLACK);
         }
         return possibleCaptures;
@@ -107,20 +107,5 @@ public class Pawn extends Chessman {
     @Override
     public Integer getPointsValue() {
         return PAWN_VALUE;
-    }
-
-    private void addPossibleCaptureIfWithinBoardAndMatchesColour(ChessBoard chessBoard,
-                                                                 Set<Pair<Integer, Integer>> possibleCaptures,
-                                                                 Pair<Integer, Integer> possibleFieldToCapture,
-                                                                 ChessmanColourEnum colour) {
-        if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
-                && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colour)) {
-            possibleCaptures.add(possibleFieldToCapture);
-        }
-    }
-
-    private boolean isFieldWithinBoardAndNotEmpty(ChessBoard chessBoard,
-                                                  Pair<Integer, Integer> nextPossibleFieldToCapture) {
-        return isFieldWithinBoard(nextPossibleFieldToCapture) && !isFieldEmpty(chessBoard, nextPossibleFieldToCapture);
     }
 }

@@ -62,9 +62,62 @@ public abstract class Chessman {
                 && fieldCol >= 0 && fieldCol <= 7;
     }
 
-    public boolean isFieldEmpty(ChessBoard chessBoard, Pair<Integer, Integer> possibleFieldToMove) {
-        Integer fieldRow = possibleFieldToMove.getKey();
-        Integer fieldCol = possibleFieldToMove.getValue();
+    public boolean isFieldEmpty(ChessBoard chessBoard, Pair<Integer, Integer> field) {
+        Integer fieldRow = field.getKey();
+        Integer fieldCol = field.getValue();
         return chessBoard.getChessmanAt(fieldRow, fieldCol).getSymbol().equals('X');
+    }
+
+    public boolean isFieldWithinBoardAndEmpty(ChessBoard chessBoard, Pair<Integer, Integer> field) {
+        return isFieldWithinBoard(field)
+                && isFieldEmpty(chessBoard, field);
+    }
+
+    public boolean isFieldWithinBoardAndNotEmpty(ChessBoard chessBoard,
+                                                 Pair<Integer, Integer> field) {
+        return isFieldWithinBoard(field) && !isFieldEmpty(chessBoard, field);
+    }
+
+    public boolean addNonEmptyChessmanFromGivenColorToFieldSet(
+            ChessBoard chessBoard, ChessmanColourEnum color,
+            Set<Pair<Integer, Integer>> fieldSet, Integer col, int row) {
+        Pair<Integer, Integer> field = new Pair<>(row, col);
+        if (!isFieldEmpty(chessBoard, field)) {
+            if (chessBoard.getChessmanAt(field).getColour().equals(color))
+                fieldSet.add(field);
+            return false;
+        }
+        return true;
+    }
+
+    public void addFieldIfWithinBoardAndMatchesColour(ChessBoard chessBoard,
+                                                      Set<Pair<Integer, Integer>> fieldSet,
+                                                      Pair<Integer, Integer> field,
+                                                      ChessmanColourEnum colour) {
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, field)
+                && chessBoard.getChessmanAt(field).getColour().equals(colour)) {
+            fieldSet.add(field);
+        }
+    }
+
+    public boolean addEmptyFieldAndCheckBlockade(ChessBoard chessBoard, Set<Pair<Integer, Integer>> field,
+                                                 Pair<Integer, Integer> fieldSet, boolean isBlocked) {
+        if (isFieldEmpty(chessBoard, fieldSet)) {
+            field.add(fieldSet);
+        } else {
+            isBlocked = true;
+        }
+        return isBlocked;
+    }
+
+    public boolean addNonEmptyFieldAndCheckBlockade(ChessBoard chessBoard, Set<Pair<Integer, Integer>> fieldSet,
+                                                    Pair<Integer, Integer> field, boolean isBlocked,
+                                                    ChessmanColourEnum color) {
+        if (!isFieldEmpty(chessBoard, field)) {
+            if (chessBoard.getChessmanAt(field).getColour().equals(color))
+                fieldSet.add(field);
+            isBlocked = true;
+        }
+        return isBlocked;
     }
 }

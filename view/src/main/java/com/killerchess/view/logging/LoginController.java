@@ -1,7 +1,6 @@
 package com.killerchess.view.logging;
 
 import com.killerchess.view.View;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -20,6 +19,7 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
     public void handleRegisterButtonClicked() {
         try {
             System.out.println("Register button clicked");

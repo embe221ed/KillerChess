@@ -2,12 +2,7 @@ package com.killerchess.core.game;
 
 import com.killerchess.core.user.User;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "game")
@@ -32,13 +27,17 @@ public class Game {
     public User getHost() {
         return host;
     }
+
     public void setHost(User host) {
         this.host = host;
     }
 
     @ManyToOne
     @JoinColumn(name = "guest")
-    public User getGuest() { return guest; }
+    public User getGuest() {
+        return guest;
+    }
+
     public void setGuest(User guest) {
         this.guest = guest;
     }

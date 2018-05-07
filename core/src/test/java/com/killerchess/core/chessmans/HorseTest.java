@@ -1,5 +1,7 @@
-import static org.junit.jupiter.api.Assertions.*;
+package com.killerchess.core.chessmans;
 
-class HorseTest {
+import junit.framework.TestCase;
+
+class HorseTest extends TestCase {
 
 }
