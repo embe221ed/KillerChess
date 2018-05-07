@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
+    @RequestMapping("/")
+    public String index() {
+        return "Hello world!";
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/register")
     public int register() {
         //here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne

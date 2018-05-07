@@ -1,15 +1,15 @@
 package com.killerchess.core.repositories;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
+import com.killerchess.core.user.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 //w przyszłości można dodawać więcej metod, wedle uznania (odpowiednie nazewnictwo załatwia nam implementację)
 //drugą opcją jest przypisanie odpowiedniego "query" do metody
-public interface UserRepository<User, String>
-        extends Repository<User, String> {
+@Repository
+public interface UserRepository extends JpaRepository<User, String> {
 
 //    przykłąd przypisania query do metody
 //    oczywiście u nas nie ma atrybutu "age", ale to tylko przykład
@@ -20,9 +20,9 @@ public interface UserRepository<User, String>
 
     User findOne(String id);
 
-    Iterable<User> findAll();
+    List<User> findAll();
 
-    Long count();
+    long count();
 
     void delete(User userToDelete);
 
