@@ -1,11 +1,9 @@
 package com.killerchess.core.repositories;
 
-import org.springframework.data.repository.Repository;
+import com.killerchess.core.game.Game;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface GameRepository <Game, Integer> extends Repository<Game, Integer> {
-
-    Game save(Game game);
-    Game findOne(Integer gameId);
-    void delete(Game gameToDelete);
-    boolean exists(String primaryKey);
+@Repository
+public interface GameRepository extends JpaRepository<Game, Integer> {
 }

@@ -1,26 +1,21 @@
 package com.killerchess.view;
 
-import com.killerchess.core.RepositoryConfig;
-import com.killerchess.core.repositories.UserRepository;
-import com.killerchess.core.user.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
-
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 // simple class which main method displays starting window of app
 
-@Import(RepositoryConfig.class)
 @SpringBootApplication
+@ComponentScan({"com.killerchess.core.controllers", "com.killerchess.core.services"})
+@EnableJpaRepositories({"com.killerchess.core.repositories"})
+@EntityScan({"com.killerchess.core"})
 public class View extends Application {
 
     private static View instance;
@@ -43,8 +38,6 @@ public class View extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
         this.changeScene("/logging.fxml");
-        SessionFactory testSession = new Configuration().configure().buildSessionFactory();
-        Session session = testSession.openSession();
     }
 
     public void changeScene(String fxml) throws Exception {
@@ -60,3 +53,4 @@ public class View extends Application {
         stage.show();
     }
 }
+
