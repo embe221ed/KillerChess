@@ -2,22 +2,25 @@ package com.killerchess.core.chessboard.points.counter;
 
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Component
 public class PointsCounter {
 
-    private StateInterpreter stateInterpreter;
+    private final StateInterpreter stateInterpreter;
 
-    public PointsCounter() {
-        //TODO AK Inject StateInterpreter when Injection available
-        stateInterpreter = new StateInterpreter();
+    @Autowired
+    public PointsCounter(StateInterpreter stateInterpreter) {
+        this.stateInterpreter = stateInterpreter;
     }
 
     public Integer countWhitePlayerPoints(String jsonInputBoard, String jsonOutputBoard) throws IOException {
-        int defaultPoints = countPointsOnBoardForColour(jsonInputBoard, ChessmanColourEnum.BLACK);
-        int finalPoints = countPointsOnBoardForColour(jsonOutputBoard, ChessmanColourEnum.BLACK);
+        var defaultPoints = countPointsOnBoardForColour(jsonInputBoard, ChessmanColourEnum.BLACK);
+        var finalPoints = countPointsOnBoardForColour(jsonOutputBoard, ChessmanColourEnum.BLACK);
         return defaultPoints - finalPoints;
     }
 
@@ -29,7 +32,7 @@ public class PointsCounter {
 
     private int countPointsOnBoardForColour(String jsonBoard, ChessmanColourEnum colour) throws IOException {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(jsonBoard).getChessBoardCopy();
-        AtomicInteger points = new AtomicInteger(0);
+        var points = new AtomicInteger(0);
         chessBoard.forEach(currentRow -> currentRow.stream()
                 .filter(chessman -> chessman.getColour().equals(colour))
                 .forEach(chessman -> points.addAndGet(chessman.getPointsValue())));
