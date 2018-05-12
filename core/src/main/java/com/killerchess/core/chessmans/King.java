@@ -21,6 +21,11 @@ public class King extends Chessman {
     }
 
     @Override
+    public Integer getPointsValue() {
+        return KING_VALUE;
+    }
+
+    @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         var possibleMoves = new HashSet<Pair<Integer, Integer>>();
         var rookRow = position.getKey();
@@ -43,8 +48,9 @@ public class King extends Chessman {
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        var colorToCapture = (getColour().equals(ChessmanColourEnum.BLACK)) ?
-                ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
+        var colorToCapture = getColour().equals(ChessmanColourEnum.BLACK)
+                ? ChessmanColourEnum.WHITE
+                : ChessmanColourEnum.BLACK;
 
         var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
         var rookRow = position.getKey();
@@ -64,10 +70,5 @@ public class King extends Chessman {
         }
 
         return possibleCaptures;
-    }
-
-    @Override
-    public Integer getPointsValue() {
-        return KING_VALUE;
     }
 }

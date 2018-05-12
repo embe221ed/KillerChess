@@ -20,7 +20,7 @@ public class ChessBoard {
     public Chessman getChessmanAt(Pair<Integer, Integer> position) {
         int row = position.getKey();
         int col = position.getValue();
-        return chessBoard.get(row).get(col);
+        return getChessmanAt(row, col);
     }
 
     public int getChessBoardColumnsSize() {

@@ -20,6 +20,11 @@ public class EmptyField extends Chessman {
     }
 
     @Override
+    public Integer getPointsValue() {
+        return EMPTY_FIELD__VALUE;
+    }
+
+    @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         return null;
     }
@@ -27,10 +32,5 @@ public class EmptyField extends Chessman {
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         return null;
-    }
-
-    @Override
-    public Integer getPointsValue() {
-        return EMPTY_FIELD__VALUE;
     }
 }

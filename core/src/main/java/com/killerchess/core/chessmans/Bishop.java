@@ -21,12 +21,63 @@ public class Bishop extends Chessman {
     }
 
     @Override
+    public Integer getPointsValue() {
+        return BISHOP_VALUE;
+    }
+
+    @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         var possibleMoves = new HashSet<Pair<Integer, Integer>>();
         var rookRow = position.getKey();
         var rookCol = position.getValue();
 
         Pair<Integer, Integer> possibleFieldToMove;
+
+        var isUpperLeftBlockadeSet = false;
+        var isUpperRightBlockadeSet = false;
+        var isBottomLeftBlockadeSet = false;
+        var isBottomRightBlockadeSet = false;
+
+
+        for (int row = rookRow + 1; row < 8; row++) {
+            if (!isUpperRightBlockadeSet) {
+                possibleFieldToMove = new Pair<>(row, rookCol + (row - rookRow));
+                isUpperRightBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isUpperRightBlockadeSet);
+            }
+            if (!isBottomRightBlockadeSet) {
+                possibleFieldToMove = new Pair<>(row, rookCol - (row - rookRow));
+                isBottomRightBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isBottomRightBlockadeSet);
+            }
+        }
+        for (int row = rookRow - 1; row >= 0; row--) {
+            if (!isUpperLeftBlockadeSet) {
+                possibleFieldToMove = new Pair<>(row, rookCol + (rookRow - row));
+                isUpperLeftBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isUpperLeftBlockadeSet);
+            }
+            if (!isBottomLeftBlockadeSet) {
+                possibleFieldToMove = new Pair<>(row, rookCol - (rookRow - row));
+                isBottomLeftBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isBottomLeftBlockadeSet);
+            }
+        }
+
+        return possibleMoves;
+    }
+
+    @Override
+    public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
+        var colorToCapture = getColour().equals(ChessmanColourEnum.BLACK)
+                ? ChessmanColourEnum.WHITE
+                : ChessmanColourEnum.BLACK;
+
+        var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
+        var rookRow = position.getKey();
+        var rookCol = position.getValue();
+
+        Pair<Integer, Integer> possibleFieldToCapture;
 
         var upperLeftBlockade = false;
         var upperRightBlockade = false;
@@ -36,79 +87,29 @@ public class Bishop extends Chessman {
 
         for (int row = rookRow + 1; row < 8; row++) {
             if (!upperRightBlockade) {
-                possibleFieldToMove = new Pair<>(row, rookCol + (row - rookRow));
-                upperRightBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, upperRightBlockade);
-            }
-            if (!bottomRightBlockade) {
-                possibleFieldToMove = new Pair<>(row, rookCol - (row - rookRow));
-                bottomRightBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, bottomRightBlockade);
-            }
-        }
-        for (int row = rookRow - 1; row >= 0; row--) {
-            if (!upperLeftBlockade) {
-                possibleFieldToMove = new Pair<>(row, rookCol + (rookRow - row));
-                upperLeftBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, upperLeftBlockade);
-            }
-            if (!bottomLeftBlockade) {
-                possibleFieldToMove = new Pair<>(row, rookCol - (rookRow - row));
-                bottomLeftBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, bottomLeftBlockade);
-            }
-        }
-
-        return possibleMoves;
-    }
-
-    @Override
-    public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        var colorToCapture = (getColour().equals(ChessmanColourEnum.BLACK)) ?
-                ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
-
-        var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
-        var rookRow = position.getKey();
-        var rookCol = position.getValue();
-
-        Pair<Integer, Integer> possibleFieldToCapture;
-
-        boolean upperLeftBlockade = false;
-        boolean upperRightBlockade = false;
-        boolean bottomLeftBlockade = false;
-        boolean bottomRightBlockade = false;
-
-
-        for (int row = rookRow + 1; row < 8; row++) {
-            if (!upperRightBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol + (row - rookRow));
-                upperRightBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                upperRightBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, upperRightBlockade, colorToCapture);
             }
             if (!bottomRightBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol - (row - rookRow));
-                bottomRightBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                bottomRightBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, bottomRightBlockade, colorToCapture);
             }
         }
         for (int row = rookRow - 1; row >= 0; row--) {
             if (!upperLeftBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol + (rookRow - row));
-                upperLeftBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                upperLeftBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, upperLeftBlockade, colorToCapture);
             }
             if (!bottomLeftBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol - (rookRow - row));
-                bottomLeftBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                bottomLeftBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, bottomLeftBlockade, colorToCapture);
             }
         }
 
         return possibleCaptures;
-    }
-
-    @Override
-    public Integer getPointsValue() {
-        return BISHOP_VALUE;
     }
 }

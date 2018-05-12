@@ -21,6 +21,11 @@ public class Rook extends Chessman {
     }
 
     @Override
+    public Integer getPointsValue() {
+        return ROOK_VALUE;
+    }
+
+    @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         var possibleMoves = new HashSet<Pair<Integer, Integer>>();
         var rookRow = position.getKey();
@@ -66,35 +71,31 @@ public class Rook extends Chessman {
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        var colorToCapture = (getColour().equals(ChessmanColourEnum.BLACK)) ?
-                ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
+        var colorToCapture = getColour().equals(ChessmanColourEnum.BLACK)
+                ? ChessmanColourEnum.WHITE
+                : ChessmanColourEnum.BLACK;
 
         var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
         var rookRow = position.getKey();
         var rookCol = position.getValue();
 
         for (int row = rookRow + 1; row < 8; row++) {
-            if (addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
+            if (addNonEmptyChessmanFromGivenColorToFieldSetAndUpdateBlockade(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
                 break;
         }
         for (int row = rookRow - 1; row >= 0; row--) {
-            if (addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
+            if (addNonEmptyChessmanFromGivenColorToFieldSetAndUpdateBlockade(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
                 break;
         }
         for (int col = rookCol + 1; col < 8; col++) {
-            if (addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
+            if (addNonEmptyChessmanFromGivenColorToFieldSetAndUpdateBlockade(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
                 break;
         }
         for (int col = rookCol - 1; col >= 0; col--) {
-            if (addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
+            if (addNonEmptyChessmanFromGivenColorToFieldSetAndUpdateBlockade(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
                 break;
         }
 
         return possibleCaptures;
-    }
-
-    @Override
-    public Integer getPointsValue() {
-        return ROOK_VALUE;
     }
 }

@@ -25,31 +25,31 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenWhitePawnIsOnTheEndOfBoardThenItsPromotedTest() {
+    void whitePawnIsOnTheEndOfBoardThenItsPromoted() {
         var position = new Pair<>(7, 5);
         assertTrue(whitePawn.isPromotionAvailable(position));
     }
 
     @Test
-    void whenWhitePawnIsNotOnTheEndOfBoardThenItsNotPromotedTest() {
+    void whitePawnIsNotOnTheEndOfBoardThenItsNotPromoted() {
         var position = new Pair<>(5, 5);
         assertFalse(whitePawn.isPromotionAvailable(position));
     }
 
     @Test
-    void whenBlackPawnIsOnTheEndOfBoardThenItsPromotedTest() {
+    void blackPawnIsOnTheEndOfBoardThenItsPromoted() {
         var position = new Pair<>(0, 5);
         assertTrue(blackPawn.isPromotionAvailable(position));
     }
 
     @Test
-    void whenBlackPawnIsNotOnTheEndOfBoardThenItsNotPromotedTest() {
+    void blackPawnIsNotOnTheEndOfBoardThenItsNotPromoted() {
         var position = new Pair<>(5, 5);
         assertFalse(blackPawn.isPromotionAvailable(position));
     }
 
     @Test
-    void whenWhitePawnHasNoMoves() throws IOException {
+    void whitePawnHasNoMoves() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"PW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"QW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 0;
@@ -63,7 +63,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenWhitePawnHasOneMove() throws IOException {
+    void whitePawnHasOneMove() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"PW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 0;
@@ -81,7 +81,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenWhitePawnHasTwoMoves() throws IOException {
+    void whitePawnHasTwoMoves() throws IOException {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"PW\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var pawnRow = 1;
         var pawnCol = 0;
@@ -100,7 +100,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenBlackPawnHasNoMoves() throws IOException {
+    void blackPawnHasNoMoves() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"QB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"PB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 0;
@@ -114,7 +114,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenBlackPawnHasOneMove() throws IOException {
+    void blackPawnHasOneMove() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"PB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 0;
@@ -132,7 +132,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenBlackPawnHasTwoMoves() throws IOException {
+    void blackPawnHasTwoMoves() throws IOException {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"PB\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var pawnRow = 6;
         var pawnCol = 0;
@@ -151,7 +151,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenWhitePawnHasNoCaptures() throws IOException {
+    void whitePawnHasNoCaptures() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"PW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 0;
@@ -165,7 +165,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenWhitePawnHasOneRightCapture() throws IOException {
+    void whitePawnHasOneRightCapture() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"PW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"XX\",     \"QB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 0;
@@ -183,7 +183,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenWhitePawnHasOneLeftCapture() throws IOException {
+    void whitePawnHasOneLeftCapture() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"XX\",     \"PW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"QB\",     \"XX\",     \"HW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 1;
@@ -201,7 +201,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenWhitePawnHasTwoCaptures() throws IOException {
+    void whitePawnHasTwoCaptures() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"XX\",     \"PW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"QB\",     \"XX\",     \"HB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 1;
@@ -220,7 +220,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenBlackPawnHasNoCaptures() throws IOException {
+    void blackPawnHasNoCaptures() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"QB\",     \"XX\",     \"HB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"XX\",     \"PB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 1;
@@ -234,7 +234,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenBlackPawnHasOneRightCapture() throws IOException {
+    void blackPawnHasOneRightCapture() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"QB\",     \"XX\",     \"HW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"XX\",     \"PB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 1;
@@ -252,7 +252,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenBlackPawnHasOneLeftCapture() throws IOException {
+    void blackPawnHasOneLeftCapture() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"QW\",     \"XX\",     \"HB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"XX\",     \"PB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 1;
@@ -270,7 +270,7 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whenBlackPawnHasTwoCaptures() throws IOException {
+    void blackPawnHasTwoCaptures() throws IOException {
         var boardArrangement = "{   \"1\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"2\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"3\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"4\" : [     \"QW\",     \"XX\",     \"HW\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"5\" : [     \"XX\",     \"PB\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"6\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"7\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ],   \"8\" : [     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\",     \"XX\"   ] }";
         var pawnRow = 4;
         var pawnCol = 1;

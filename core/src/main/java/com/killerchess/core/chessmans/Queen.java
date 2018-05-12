@@ -21,6 +21,11 @@ public class Queen extends Chessman {
     }
 
     @Override
+    public Integer getPointsValue() {
+        return QUEEN_VALUE;
+    }
+
+    @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         var possibleMoves = new HashSet<Pair<Integer, Integer>>();
         var rookRow = position.getKey();
@@ -28,46 +33,46 @@ public class Queen extends Chessman {
 
         Pair<Integer, Integer> possibleFieldToMove;
 
-        var upperLeftBlockade = false;
-        var upperRightBlockade = false;
-        var bottomLeftBlockade = false;
-        var bottomRightBlockade = false;
-        var middleLeftBlockade = false;
-        var middleRightBlockade = false;
+        var isUpperLeftBlockadeSet = false;
+        var isUpperRightBlockadeSet = false;
+        var isBottomLeftBlockadeSet = false;
+        var isBottomRightBlockadeSet = false;
+        var isMiddleLeftBlockadeSet = false;
+        var isMiddleRightBlockadeSet = false;
 
 
         for (int row = rookRow + 1; row < 8; row++) {
-            if (!upperRightBlockade) {
+            if (!isUpperRightBlockadeSet) {
                 possibleFieldToMove = new Pair<>(row, rookCol + (row - rookRow));
-                upperRightBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, upperRightBlockade);
+                isUpperRightBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isUpperRightBlockadeSet);
             }
-            if (!bottomRightBlockade) {
+            if (!isBottomRightBlockadeSet) {
                 possibleFieldToMove = new Pair<>(row, rookCol - (row - rookRow));
-                bottomRightBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, bottomRightBlockade);
+                isBottomRightBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isBottomRightBlockadeSet);
             }
-            if (!middleRightBlockade) {
+            if (!isMiddleRightBlockadeSet) {
                 possibleFieldToMove = new Pair<>(row, rookCol);
-                middleRightBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, middleRightBlockade);
+                isMiddleRightBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isMiddleRightBlockadeSet);
             }
         }
         for (int row = rookRow - 1; row >= 0; row--) {
-            if (!upperLeftBlockade) {
+            if (!isUpperLeftBlockadeSet) {
                 possibleFieldToMove = new Pair<>(row, rookCol + (rookRow - row));
-                upperLeftBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, upperLeftBlockade);
+                isUpperLeftBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isUpperLeftBlockadeSet);
             }
-            if (!bottomLeftBlockade) {
+            if (!isBottomLeftBlockadeSet) {
                 possibleFieldToMove = new Pair<>(row, rookCol - (rookRow - row));
-                bottomLeftBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, bottomLeftBlockade);
+                isBottomLeftBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isBottomLeftBlockadeSet);
             }
-            if (!middleLeftBlockade) {
+            if (!isMiddleLeftBlockadeSet) {
                 possibleFieldToMove = new Pair<>(row, rookCol);
-                middleLeftBlockade = addEmptyFieldAndCheckBlockade(chessBoard, possibleMoves,
-                        possibleFieldToMove, middleLeftBlockade);
+                isMiddleLeftBlockadeSet = addEmptyFieldAndUpdateBlockade(chessBoard, possibleMoves,
+                        possibleFieldToMove, isMiddleLeftBlockadeSet);
             }
         }
         for (int col = rookCol + 1; col < 8; col++) {
@@ -92,8 +97,9 @@ public class Queen extends Chessman {
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        var colorToCapture = (getColour().equals(ChessmanColourEnum.BLACK)) ?
-                ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
+        var colorToCapture = getColour().equals(ChessmanColourEnum.BLACK)
+                ? ChessmanColourEnum.WHITE
+                : ChessmanColourEnum.BLACK;
 
         var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
         var rookRow = position.getKey();
@@ -112,34 +118,34 @@ public class Queen extends Chessman {
         for (int row = rookRow + 1; row < 8; row++) {
             if (!upperRightBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol + (row - rookRow));
-                upperRightBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                upperRightBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, upperRightBlockade, colorToCapture);
             }
             if (!bottomRightBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol - (row - rookRow));
-                bottomRightBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                bottomRightBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, bottomRightBlockade, colorToCapture);
             }
             if (!middleRightBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol);
-                middleRightBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                middleRightBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, middleRightBlockade, colorToCapture);
             }
         }
         for (int row = rookRow - 1; row >= 0; row--) {
             if (!upperLeftBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol + (rookRow - row));
-                upperLeftBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                upperLeftBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, upperLeftBlockade, colorToCapture);
             }
             if (!bottomLeftBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol - (rookRow - row));
-                bottomLeftBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                bottomLeftBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, bottomLeftBlockade, colorToCapture);
             }
             if (!middleLeftBlockade) {
                 possibleFieldToCapture = new Pair<>(row, rookCol);
-                middleLeftBlockade = addNonEmptyFieldAndCheckBlockade(chessBoard, possibleCaptures,
+                middleLeftBlockade = addNonEmptyFieldAndUpdateBlockade(chessBoard, possibleCaptures,
                         possibleFieldToCapture, middleLeftBlockade, colorToCapture);
             }
         }
@@ -161,10 +167,5 @@ public class Queen extends Chessman {
         }
 
         return possibleCaptures;
-    }
-
-    @Override
-    public Integer getPointsValue() {
-        return QUEEN_VALUE;
     }
 }
