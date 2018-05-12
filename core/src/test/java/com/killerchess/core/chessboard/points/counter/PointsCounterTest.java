@@ -18,7 +18,7 @@ class PointsCounterTest extends TestCase {
 
     @BeforeAll
     public void setUp() {
-        //pointsCounter = new PointsCounter();
+        pointsCounter = new PointsCounter();
     }
 
     @Test
