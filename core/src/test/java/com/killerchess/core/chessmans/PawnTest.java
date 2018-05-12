@@ -25,25 +25,25 @@ class PawnTest extends TestCase {
     }
 
     @Test
-    void whitePawnIsOnTheEndOfBoardThenItsPromoted() {
+    void whenWhitePawnIsOnTheEndOfBoardThenItsPromoted() {
         var position = new Pair<>(7, 5);
         assertTrue(whitePawn.isPromotionAvailable(position));
     }
 
     @Test
-    void whitePawnIsNotOnTheEndOfBoardThenItsNotPromoted() {
+    void whenWhitePawnIsNotOnTheEndOfBoardThenItsNotPromoted() {
         var position = new Pair<>(5, 5);
         assertFalse(whitePawn.isPromotionAvailable(position));
     }
 
     @Test
-    void blackPawnIsOnTheEndOfBoardThenItsPromoted() {
+    void whenBlackPawnIsOnTheEndOfBoardThenItsPromoted() {
         var position = new Pair<>(0, 5);
         assertTrue(blackPawn.isPromotionAvailable(position));
     }
 
     @Test
-    void blackPawnIsNotOnTheEndOfBoardThenItsNotPromoted() {
+    void whenBlackPawnIsNotOnTheEndOfBoardThenItsNotPromoted() {
         var position = new Pair<>(5, 5);
         assertFalse(blackPawn.isPromotionAvailable(position));
     }

@@ -32,10 +32,11 @@ public class Pawn extends Chessman {
         var pawnsCol = position.getValue();
 
         Pair<Integer, Integer> possibleFieldToMove = null;
-
-        if (getColour().equals(ChessmanColourEnum.BLACK)) {
+        ChessmanColourEnum colour = getColour();
+        
+        if (colour.equals(ChessmanColourEnum.BLACK)) {
             possibleFieldToMove = new Pair<>(pawnsRow - 1, pawnsCol);
-        } else if (getColour().equals(ChessmanColourEnum.WHITE)) {
+        } else if (colour.equals(ChessmanColourEnum.WHITE)) {
             possibleFieldToMove = new Pair<>(pawnsRow + 1, pawnsCol);
         }
 
@@ -49,13 +50,13 @@ public class Pawn extends Chessman {
             return possibleMoves;
         }
 
-        if (getColour().equals(ChessmanColourEnum.BLACK) && pawnsRow.equals(6)) {
+        if (colour.equals(ChessmanColourEnum.BLACK) && pawnsRow.equals(6)) {
             possibleFieldToMove = new Pair<>(pawnsRow - 2, pawnsCol);
             if (isFieldWithinBoard(possibleFieldToMove) && isFieldEmpty(chessBoard, possibleFieldToMove)) {
                 possibleMoves.add(possibleFieldToMove);
             }
 
-        } else if (getColour().equals(ChessmanColourEnum.WHITE) && pawnsRow.equals(1)) {
+        } else if (colour.equals(ChessmanColourEnum.WHITE) && pawnsRow.equals(1)) {
             possibleFieldToMove = new Pair<>(pawnsRow + 2, pawnsCol);
             if (isFieldWithinBoard(possibleFieldToMove) && isFieldEmpty(chessBoard, possibleFieldToMove)) {
                 possibleMoves.add(possibleFieldToMove);
