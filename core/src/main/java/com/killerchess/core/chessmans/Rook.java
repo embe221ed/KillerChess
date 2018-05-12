@@ -22,9 +22,9 @@ public class Rook extends Chessman {
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
-        Integer rookRow = position.getKey();
-        Integer rookCol = position.getValue();
+        var possibleMoves = new HashSet<Pair<Integer, Integer>>();
+        var rookRow = position.getKey();
+        var rookCol = position.getValue();
 
         Pair<Integer, Integer> possibleFieldToMove;
 
@@ -66,12 +66,12 @@ public class Rook extends Chessman {
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        ChessmanColourEnum colorToCapture = (getColour().equals(ChessmanColourEnum.BLACK)) ?
+        var colorToCapture = (getColour().equals(ChessmanColourEnum.BLACK)) ?
                 ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
 
-        Set<Pair<Integer, Integer>> possibleCaptures = new HashSet<>();
-        Integer rookRow = position.getKey();
-        Integer rookCol = position.getValue();
+        var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
+        var rookRow = position.getKey();
+        var rookCol = position.getValue();
 
         for (int row = rookRow + 1; row < 8; row++) {
             if (addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, rookCol, row))

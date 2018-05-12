@@ -22,12 +22,12 @@ public class Pawn extends Chessman {
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
+        var possibleMoves = new HashSet<Pair<Integer, Integer>>();
         var pawnsRow = position.getKey();
         var pawnsCol = position.getValue();
 
         if (getColour().equals(ChessmanColourEnum.BLACK)) {
-            Pair<Integer, Integer> possibleFieldToMove = new Pair<>(pawnsRow - 1, pawnsCol);
+            var possibleFieldToMove = new Pair<>(pawnsRow - 1, pawnsCol);
             if (isFieldWithinBoard(possibleFieldToMove)) {
                 if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
                     possibleMoves.add(possibleFieldToMove);
@@ -39,14 +39,14 @@ public class Pawn extends Chessman {
             }
 
             if (pawnsRow.equals(6)) {
-                Pair<Integer, Integer> nextPossibleFieldToMove = new Pair<>(pawnsRow - 2, pawnsCol);
-                if (isFieldWithinBoard(nextPossibleFieldToMove) && isFieldEmpty(chessBoard, nextPossibleFieldToMove)) {
-                    possibleMoves.add(nextPossibleFieldToMove);
+                possibleFieldToMove = new Pair<>(pawnsRow - 2, pawnsCol);
+                if (isFieldWithinBoard(possibleFieldToMove) && isFieldEmpty(chessBoard, possibleFieldToMove)) {
+                    possibleMoves.add(possibleFieldToMove);
                 }
             }
 
         } else if (getColour().equals(ChessmanColourEnum.WHITE)) {
-            Pair<Integer, Integer> possibleFieldToMove = new Pair<>(pawnsRow + 1, pawnsCol);
+            var possibleFieldToMove = new Pair<>(pawnsRow + 1, pawnsCol);
             if (isFieldWithinBoard(possibleFieldToMove)) {
                 if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
                     possibleMoves.add(possibleFieldToMove);
@@ -58,9 +58,9 @@ public class Pawn extends Chessman {
             }
 
             if (pawnsRow.equals(1)) {
-                Pair<Integer, Integer> nextPossibleFieldToMove = new Pair<>(pawnsRow + 2, pawnsCol);
-                if (isFieldWithinBoard(nextPossibleFieldToMove) && isFieldEmpty(chessBoard, nextPossibleFieldToMove)) {
-                    possibleMoves.add(nextPossibleFieldToMove);
+                possibleFieldToMove = new Pair<>(pawnsRow + 2, pawnsCol);
+                if (isFieldWithinBoard(possibleFieldToMove) && isFieldEmpty(chessBoard, possibleFieldToMove)) {
+                    possibleMoves.add(possibleFieldToMove);
                 }
             }
         }
@@ -69,28 +69,24 @@ public class Pawn extends Chessman {
 
     @Override
     public Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position) {
-        Set<Pair<Integer, Integer>> possibleCaptures = new HashSet<>();
+        var colorToCapture = (getColour().equals(ChessmanColourEnum.BLACK)) ?
+                ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
+
+        var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
         var pawnsRow = position.getKey();
         var pawnsCol = position.getValue();
 
-        if (getColour().equals(ChessmanColourEnum.BLACK)) {
-            Pair<Integer, Integer> possibleFieldToCapture = new Pair<>(pawnsRow - 1, pawnsCol - 1);
-            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
-                    ChessmanColourEnum.WHITE);
+        var searchRow = (colorToCapture.equals(ChessmanColourEnum.WHITE)) ? (pawnsRow - 1) : (pawnsRow + 1);
 
-            Pair<Integer, Integer> nextPossibleFieldToCapture = new Pair<>(pawnsRow - 1, pawnsCol + 1);
-            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, nextPossibleFieldToCapture,
-                    ChessmanColourEnum.WHITE);
+        var possibleFieldToCapture = new Pair<>(searchRow, pawnsCol - 1);
+        addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
+                colorToCapture);
 
-        } else if (getColour().equals(ChessmanColourEnum.WHITE)) {
-            Pair<Integer, Integer> possibleFieldToCapture = new Pair<>(pawnsRow + 1, pawnsCol - 1);
-            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
-                    ChessmanColourEnum.BLACK);
+        possibleFieldToCapture = new Pair<>(searchRow, pawnsCol + 1);
+        addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
+                colorToCapture);
 
-            Pair<Integer, Integer> nextPossibleFieldToCapture = new Pair<>(pawnsRow + 1, pawnsCol + 1);
-            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, nextPossibleFieldToCapture,
-                    ChessmanColourEnum.BLACK);
-        }
+
         return possibleCaptures;
     }
 

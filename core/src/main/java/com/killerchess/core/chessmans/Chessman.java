@@ -56,15 +56,15 @@ public abstract class Chessman {
     public abstract Set<Pair<Integer, Integer>> getPossibleCaptures(ChessBoard chessBoard, Pair<Integer, Integer> position);
 
     public boolean isFieldWithinBoard(Pair<Integer, Integer> field) {
-        Integer fieldRow = field.getKey();
-        Integer fieldCol = field.getValue();
+        var fieldRow = field.getKey();
+        var fieldCol = field.getValue();
         return fieldRow >= 0 && fieldRow <= 7
                 && fieldCol >= 0 && fieldCol <= 7;
     }
 
     public boolean isFieldEmpty(ChessBoard chessBoard, Pair<Integer, Integer> field) {
-        Integer fieldRow = field.getKey();
-        Integer fieldCol = field.getValue();
+        var fieldRow = field.getKey();
+        var fieldCol = field.getValue();
         return chessBoard.getChessmanAt(fieldRow, fieldCol).getSymbol().equals('X');
     }
 
@@ -81,7 +81,7 @@ public abstract class Chessman {
     public boolean addNonEmptyChessmanFromGivenColorToFieldSet(
             ChessBoard chessBoard, ChessmanColourEnum color,
             Set<Pair<Integer, Integer>> fieldSet, Integer col, int row) {
-        Pair<Integer, Integer> field = new Pair<>(row, col);
+        var field = new Pair<>(row, col);
         if (!isFieldEmpty(chessBoard, field)) {
             if (chessBoard.getChessmanAt(field).getColour().equals(color))
                 fieldSet.add(field);

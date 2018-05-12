@@ -9,7 +9,6 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Set;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class HorseTest extends TestCase {
@@ -23,32 +22,32 @@ class HorseTest extends TestCase {
 
     @Test
     void whenWhiteHorseHasNoMoves() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whiteHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteHorse instanceof Horse);
         assertEquals(whiteHorse.getColour(), ChessmanColourEnum.WHITE);
-        Set possibleMoves = whiteHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = whiteHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(0, possibleMoves.size());
     }
 
     @Test
     void whenWhiteHorseHasSomeMoves() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whiteHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteHorse instanceof Horse);
         assertEquals(whiteHorse.getColour(), ChessmanColourEnum.WHITE);
-        Set possibleMoves = whiteHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = whiteHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(2, possibleMoves.size());
 
-        Set<Pair<Integer, Integer>> expectedMoves = new HashSet<>();
+        var expectedMoves = new HashSet<Pair<Integer, Integer>>();
         expectedMoves.add(new Pair<>(1, 2));
         expectedMoves.add(new Pair<>(5, 4));
         assertEquals(expectedMoves, possibleMoves);
@@ -56,18 +55,18 @@ class HorseTest extends TestCase {
 
     @Test
     void whenWhiteHorseHasAllMoves() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whiteHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteHorse instanceof Horse);
         assertEquals(whiteHorse.getColour(), ChessmanColourEnum.WHITE);
-        Set possibleMoves = whiteHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = whiteHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(8, possibleMoves.size());
 
-        Set<Pair<Integer, Integer>> expectedMoves = new HashSet<>();
+        var expectedMoves = new HashSet<Pair<Integer, Integer>>();
         expectedMoves.add(new Pair<>(1, 2));
         expectedMoves.add(new Pair<>(1, 4));
         expectedMoves.add(new Pair<>(2, 1));
@@ -81,33 +80,33 @@ class HorseTest extends TestCase {
 
     @Test
     void whenBlackHorseHasNoMoves() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackHorse instanceof Horse);
         assertEquals(blackHorse.getColour(), ChessmanColourEnum.BLACK);
-        Set possibleMoves = blackHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = blackHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(0, possibleMoves.size());
 
     }
 
     @Test
     void whenBlackHorseHasSomeMoves() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackHorse instanceof Horse);
         assertEquals(blackHorse.getColour(), ChessmanColourEnum.BLACK);
-        Set possibleMoves = blackHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = blackHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(2, possibleMoves.size());
 
-        Set<Pair<Integer, Integer>> expectedMoves = new HashSet<>();
+        var expectedMoves = new HashSet<Pair<Integer, Integer>>();
         expectedMoves.add(new Pair<>(1, 2));
         expectedMoves.add(new Pair<>(5, 4));
         assertEquals(expectedMoves, possibleMoves);
@@ -115,18 +114,18 @@ class HorseTest extends TestCase {
 
     @Test
     void whenBlackHorseHasAllMoves() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackHorse instanceof Horse);
         assertEquals(blackHorse.getColour(), ChessmanColourEnum.BLACK);
-        Set possibleMoves = blackHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = blackHorse.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(8, possibleMoves.size());
 
-        Set<Pair<Integer, Integer>> expectedMoves = new HashSet<>();
+        var expectedMoves = new HashSet<Pair<Integer, Integer>>();
         expectedMoves.add(new Pair<>(1, 2));
         expectedMoves.add(new Pair<>(1, 4));
         expectedMoves.add(new Pair<>(2, 1));
@@ -140,32 +139,32 @@ class HorseTest extends TestCase {
 
     @Test
     void whenWhiteHorseHasNoCaptures() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whiteHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteHorse instanceof Horse);
         assertEquals(whiteHorse.getColour(), ChessmanColourEnum.WHITE);
-        Set possibleCaptures = whiteHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = whiteHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(0, possibleCaptures.size());
     }
 
     @Test
     void whenWhiteHorseHasSomeCaptures() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"QB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"QB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whiteHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteHorse instanceof Horse);
         assertEquals(whiteHorse.getColour(), ChessmanColourEnum.WHITE);
-        Set possibleCaptures = whiteHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = whiteHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(2, possibleCaptures.size());
 
-        Set<Pair<Integer, Integer>> expectedCaptures = new HashSet<>();
+        var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
         expectedCaptures.add(new Pair<>(1, 2));
         expectedCaptures.add(new Pair<>(4, 5));
         assertEquals(expectedCaptures, possibleCaptures);
@@ -173,18 +172,18 @@ class HorseTest extends TestCase {
 
     @Test
     void whenWhiteHorseHasAllCaptures() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PB\",\"XX\",\"KB\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PB\",\"XX\",\"KB\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whiteHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteHorse instanceof Horse);
         assertEquals(whiteHorse.getColour(), ChessmanColourEnum.WHITE);
-        Set possibleCaptures = whiteHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = whiteHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(8, possibleCaptures.size());
 
-        Set<Pair<Integer, Integer>> expectedCaptures = new HashSet<>();
+        var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
         expectedCaptures.add(new Pair<>(1, 2));
         expectedCaptures.add(new Pair<>(1, 4));
         expectedCaptures.add(new Pair<>(2, 1));
@@ -198,32 +197,32 @@ class HorseTest extends TestCase {
 
     @Test
     void whenBlackHorseHasNoCaptures() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KB\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KB\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackHorse instanceof Horse);
         assertEquals(blackHorse.getColour(), ChessmanColourEnum.BLACK);
-        Set possibleCaptures = blackHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = blackHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(0, possibleCaptures.size());
     }
 
     @Test
     void whenBlackHorseHasSomeCaptures() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KB\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KB\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackHorse instanceof Horse);
         assertEquals(blackHorse.getColour(), ChessmanColourEnum.BLACK);
-        Set possibleCaptures = blackHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = blackHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(2, possibleCaptures.size());
 
-        Set<Pair<Integer, Integer>> expectedCaptures = new HashSet<>();
+        var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
         expectedCaptures.add(new Pair<>(1, 4));
         expectedCaptures.add(new Pair<>(4, 5));
         assertEquals(expectedCaptures, possibleCaptures);
@@ -231,18 +230,18 @@ class HorseTest extends TestCase {
 
     @Test
     void whenBlackHorseHasAllCaptures() throws IOException {
-        String boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
-        int kingRow = 3;
-        int kingCol = 3;
+        var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
+        var kingRow = 3;
+        var kingCol = 3;
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackHorse = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackHorse instanceof Horse);
         assertEquals(blackHorse.getColour(), ChessmanColourEnum.BLACK);
-        Set possibleCaptures = blackHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = blackHorse.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
         assertEquals(8, possibleCaptures.size());
 
-        Set<Pair<Integer, Integer>> expectedCaptures = new HashSet<>();
+        var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
         expectedCaptures.add(new Pair<>(1, 2));
         expectedCaptures.add(new Pair<>(1, 4));
         expectedCaptures.add(new Pair<>(2, 1));
