@@ -88,7 +88,7 @@ public class Pawn extends Chessman {
                     ChessmanColourEnum.BLACK);
 
             Pair<Integer, Integer> nextPossibleFieldToCapture = new Pair<>(pawnsRow + 1, pawnsCol + 1);
-            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture,
+            addFieldIfWithinBoardAndMatchesColour(chessBoard, possibleCaptures, nextPossibleFieldToCapture,
                     ChessmanColourEnum.BLACK);
         }
         return possibleCaptures;

@@ -74,19 +74,19 @@ public class Rook extends Chessman {
         Integer rookCol = position.getValue();
 
         for (int row = rookRow + 1; row < 8; row++) {
-            if (!addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
+            if (addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
                 break;
         }
         for (int row = rookRow - 1; row >= 0; row--) {
-            if (!addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
+            if (addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, rookCol, row))
                 break;
         }
         for (int col = rookCol + 1; col < 8; col++) {
-            if (!addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
+            if (addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
                 break;
         }
         for (int col = rookCol - 1; col >= 0; col--) {
-            if (!addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
+            if (addNonEmptyChessmanFromGivenColorToFieldSet(chessBoard, colorToCapture, possibleCaptures, col, rookRow))
                 break;
         }
 

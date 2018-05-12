@@ -57,6 +57,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(whitePawn instanceof Pawn);
+        assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
         Set possibleMoves = whitePawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(0, possibleMoves.size());
     }
@@ -69,6 +71,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(whitePawn instanceof Pawn);
+        assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
         Set possibleMoves = whitePawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(1, possibleMoves.size());
 
@@ -85,6 +89,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(whitePawn instanceof Pawn);
+        assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
         Set possibleMoves = whitePawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(2, possibleMoves.size());
 
@@ -102,6 +108,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(blackPawn instanceof Pawn);
+        assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
         Set possibleMoves = blackPawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(0, possibleMoves.size());
     }
@@ -114,6 +122,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(blackPawn instanceof Pawn);
+        assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
         Set possibleMoves = blackPawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(1, possibleMoves.size());
 
@@ -130,6 +140,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(blackPawn instanceof Pawn);
+        assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
         Set possibleMoves = blackPawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(2, possibleMoves.size());
 
@@ -147,6 +159,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(whitePawn instanceof Pawn);
+        assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
         Set possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(0, possibleCaptures.size());
     }
@@ -159,6 +173,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(whitePawn instanceof Pawn);
+        assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
         Set possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
@@ -175,6 +191,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(whitePawn instanceof Pawn);
+        assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
         Set possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
@@ -191,6 +209,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(whitePawn instanceof Pawn);
+        assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
         Set possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(2, possibleCaptures.size());
 
@@ -208,6 +228,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(blackPawn instanceof Pawn);
+        assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
         Set possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(0, possibleCaptures.size());
     }
@@ -220,6 +242,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(blackPawn instanceof Pawn);
+        assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
         Set possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
@@ -236,6 +260,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(blackPawn instanceof Pawn);
+        assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
         Set possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
@@ -252,6 +278,8 @@ class PawnTest extends TestCase {
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(boardArrangement);
 
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
+        assertTrue(blackPawn instanceof Pawn);
+        assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
         Set possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
         assertEquals(2, possibleCaptures.size());
 

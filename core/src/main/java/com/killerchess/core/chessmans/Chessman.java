@@ -85,9 +85,9 @@ public abstract class Chessman {
         if (!isFieldEmpty(chessBoard, field)) {
             if (chessBoard.getChessmanAt(field).getColour().equals(color))
                 fieldSet.add(field);
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void addFieldIfWithinBoardAndMatchesColour(ChessBoard chessBoard,
@@ -102,7 +102,7 @@ public abstract class Chessman {
 
     public boolean addEmptyFieldAndCheckBlockade(ChessBoard chessBoard, Set<Pair<Integer, Integer>> field,
                                                  Pair<Integer, Integer> fieldSet, boolean isBlocked) {
-        if (isFieldEmpty(chessBoard, fieldSet)) {
+        if (isFieldWithinBoardAndEmpty(chessBoard, fieldSet)) {
             field.add(fieldSet);
         } else {
             isBlocked = true;
@@ -113,7 +113,7 @@ public abstract class Chessman {
     public boolean addNonEmptyFieldAndCheckBlockade(ChessBoard chessBoard, Set<Pair<Integer, Integer>> fieldSet,
                                                     Pair<Integer, Integer> field, boolean isBlocked,
                                                     ChessmanColourEnum color) {
-        if (!isFieldEmpty(chessBoard, field)) {
+        if (isFieldWithinBoardAndNotEmpty(chessBoard, field)) {
             if (chessBoard.getChessmanAt(field).getColour().equals(color))
                 fieldSet.add(field);
             isBlocked = true;
