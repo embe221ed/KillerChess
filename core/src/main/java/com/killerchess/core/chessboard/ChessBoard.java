@@ -1,6 +1,7 @@
 package com.killerchess.core.chessboard;
 
 import com.killerchess.core.chessmans.Chessman;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,12 @@ public class ChessBoard {
 
     public Chessman getChessmanAt(int row, int col) {
         return chessBoard.get(row).get(col);
+    }
+
+    public Chessman getChessmanAt(Pair<Integer, Integer> position) {
+        int row = position.getKey();
+        int col = position.getValue();
+        return getChessmanAt(row, col);
     }
 
     public int getChessBoardColumnsSize() {

@@ -16,14 +16,12 @@ import java.util.Objects;
 @Table(name = "game_user")
 public class User implements Serializable {
 
+    private final SessionFactory sessionFactory;
     @Id
     @Column(name = "login")
     private String login;
-
     @Column(name = "password")
     private String password;
-
-    private final SessionFactory sessionFactory;
 
     @Autowired
     public User(SessionFactory sessionFactory) {
