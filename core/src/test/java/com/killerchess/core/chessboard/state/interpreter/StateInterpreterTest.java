@@ -5,7 +5,6 @@ import com.killerchess.core.chessmans.*;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 class StateInterpreterTest extends TestCase {
@@ -13,7 +12,7 @@ class StateInterpreterTest extends TestCase {
     private static final String DEFAULT_ARRANGEMENT_JSON = "{\"1\":[\"RW\",\"HW\",\"BW\",\"QW\",\"KW\",\"BW\",\"HW\",\"RW\"],\"2\":[\"PW\",\"PW\",\"PW\",\"PW\",\"PW\",\"PW\",\"PW\",\"PW\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"PB\",\"PB\",\"PB\",\"PB\",\"PB\",\"PB\",\"PB\",\"PB\"],\"8\":[\"RB\",\"HB\",\"BB\",\"QB\",\"KB\",\"BB\",\"HB\",\"RB\"]}";
 
     @Test
-    void stateInterpreterConvertsDefaultArrangementJsonToChessBoardTest() throws IOException {
+    void stateInterpreterConvertsDefaultArrangementJsonToChessBoardTest() {
         StateInterpreter stateInterpreter = new StateInterpreter();
 
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(DEFAULT_ARRANGEMENT_JSON);
@@ -48,7 +47,7 @@ class StateInterpreterTest extends TestCase {
     }
 
     @Test
-    void stateInterpreterConvertsColoursTest() throws IOException {
+    void stateInterpreterConvertsColoursTest() {
         StateInterpreter stateInterpreter = new StateInterpreter();
 
         var chessBoard = stateInterpreter.convertJsonBoardToChessBoard(DEFAULT_ARRANGEMENT_JSON);

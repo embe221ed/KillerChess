@@ -5,8 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.io.IOException;
-
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PointsCounterTest extends TestCase {
 
@@ -22,19 +20,19 @@ class PointsCounterTest extends TestCase {
     }
 
     @Test
-    void whenWhitePlayerCapturesBlackChessmenOf14PointsThenHisFinalScoreIs14Points() throws IOException {
+    void whenWhitePlayerCapturesBlackChessmenOf14PointsThenHisFinalScoreIs14Points() {
         var whitePlayerPoints = pointsCounter.countWhitePlayerPoints(DEFAULT_ARRANGEMENT_JSON, OUTPUT_ARRANGEMENT_JSON);
         assertEquals(Integer.valueOf(14), whitePlayerPoints);
     }
 
     @Test
-    void whenBlackPlayerCapturesWhiteChessmenOf15PointsThenHisFinalScoreIs15Points() throws IOException {
+    void whenBlackPlayerCapturesWhiteChessmenOf15PointsThenHisFinalScoreIs15Points() {
         var blackPlayerPoints = pointsCounter.countBlackPlayerPoints(DEFAULT_ARRANGEMENT_JSON, OUTPUT_ARRANGEMENT_JSON);
         assertEquals(Integer.valueOf(15), blackPlayerPoints);
     }
 
     @Test
-    void whenInputBoardIsSameAsOutpuBoardThenFinalScoreOfBothPlayerIsZero() throws IOException {
+    void whenInputBoardIsSameAsOutpuBoardThenFinalScoreOfBothPlayerIsZero() {
         var whitePlayerPoints =
                 pointsCounter.countWhitePlayerPoints(DEFAULT_ARRANGEMENT_JSON, DEFAULT_ARRANGEMENT_JSON);
         assertEquals(Integer.valueOf(0), whitePlayerPoints);

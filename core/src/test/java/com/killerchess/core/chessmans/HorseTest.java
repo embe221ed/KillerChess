@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.io.IOException;
 import java.util.HashSet;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -21,7 +20,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void whiteHorseHasNoMoves() throws IOException {
+    void whiteHorseHasNoMoves() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -35,7 +34,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void whiteHorseHasSomeMoves() throws IOException {
+    void whiteHorseHasSomeMoves() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -54,7 +53,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void whiteHorseHasAllMoves() throws IOException {
+    void whiteHorseHasAllMoves() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -79,7 +78,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void blackHorseHasNoMoves() throws IOException {
+    void blackHorseHasNoMoves() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -94,7 +93,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void blackHorseHasSomeMoves() throws IOException {
+    void blackHorseHasSomeMoves() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -113,7 +112,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void blackHorseHasAllMoves() throws IOException {
+    void blackHorseHasAllMoves() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -138,7 +137,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void whiteHorseHasNoCaptures() throws IOException {
+    void whiteHorseHasNoCaptures() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -152,7 +151,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void whiteHorseHasSomeCaptures() throws IOException {
+    void whiteHorseHasSomeCaptures() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"QB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -171,7 +170,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void whiteHorseHasAllCaptures() throws IOException {
+    void whiteHorseHasAllCaptures() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HW\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PB\",\"XX\",\"KB\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -196,7 +195,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void blackHorseHasNoCaptures() throws IOException {
+    void blackHorseHasNoCaptures() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PB\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KB\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -210,7 +209,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void blackHorseHasSomeCaptures() throws IOException {
+    void blackHorseHasSomeCaptures() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KB\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PB\",\"XX\",\"XX\",\"XX\",\"PB\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"KB\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
@@ -229,7 +228,7 @@ class HorseTest extends TestCase {
     }
 
     @Test
-    void blackHorseHasAllCaptures() throws IOException {
+    void blackHorseHasAllCaptures() {
         var boardArrangement = "{\"1\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"2\":[\"XX\",\"XX\",\"KW\",\"XX\",\"PW\",\"XX\",\"XX\",\"XX\"],\"3\":[\"XX\",\"PW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"HB\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"QW\",\"XX\",\"XX\",\"XX\",\"PW\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"PW\",\"XX\",\"KW\",\"XX\",\"XX\",\"XX\"],\"7\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"8\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"]}";
         var kingRow = 3;
         var kingCol = 3;
