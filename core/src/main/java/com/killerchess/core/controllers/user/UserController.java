@@ -25,20 +25,19 @@ import java.util.Optional;
 public class UserController {
 
     private static final String REGISTER_PATH = "/register";
-    private static final String REGISTER_PATH_SAMPLE = "/registersample";
+    private static final String REGISTER_PATH_SAMPLE = "/registerSample";
     private static final String LOGIN_PATH = "/login";
 
-    @Autowired
-    private UserService service;
+
+    private final UserService service;
+    private final RegisterService registerService;
 
     @Autowired
-    private RegisterService registerService;
-
-    // To delete after testing
-    @RequestMapping("/")
-    public String index() {
-        return "Hello world!";
+    public UserController(UserService userService, RegisterService registerService) {
+        this.service = userService;
+        this.registerService = registerService;
     }
+
 
     @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH)
     public List<User> register() {
@@ -54,17 +53,21 @@ public class UserController {
             RegisterDTO registerDTO = new RegisterDTO();
             registerDTO.setUsername(request.getParameter(FieldNames.USERNAME.getName()));
             registerDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
-            return ResponseEntity.ok(new RegisterResponseEntity(Optional.of(registerService.getResult(registerDTO)), ApiExceptionEnum.SUCCESS).toResponseMap());
+            return ResponseEntity.ok(new RegisterResponseEntity(
+                    Optional.of(registerService.getResult(registerDTO)),
+                    ApiExceptionEnum.SUCCESS).toResponseMap());
         } catch (RestApiException e) {
-            return ResponseEntity.status(e.getHttpStatusCode()).body(e.toResponseEntity(FieldNames.REGISTER.getName()).toResponseMap());
+            return ResponseEntity.status(e.getHttpStatusCode()).body(e.toResponseEntity(
+                    FieldNames.REGISTER.getName()).toResponseMap());
         } catch (Throwable e) {
             UndefinedException undefinedException = new UndefinedException(e);
-            return ResponseEntity.status(undefinedException.getHttpStatusCode()).body(undefinedException.toResponseEntity(FieldNames.REGISTER.getName()).toResponseMap());
+            return ResponseEntity.status(undefinedException.getHttpStatusCode()).body(
+                    undefinedException.toResponseEntity(FieldNames.REGISTER.getName()).toResponseMap());
         }
     }
-    /*
+
     public void register(@RequestParam(value = "username") String name,
-                         @RequestParam(value = "encryptedPassword") String encryptedPassword) throws Exception {*/
+                         @RequestParam(value = "encryptedPassword") String encryptedPassword) {
         //here we need to "register" new user and maybe return info, that registration succeded or failed
         /*
         sample code:
@@ -78,7 +81,7 @@ public class UserController {
 
         }
         */
-    /*}*/
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = LOGIN_PATH)
     public void login() {
@@ -87,7 +90,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = LOGIN_PATH)
     public void login(@RequestParam(value = "username") String name,
-                      @RequestParam(value = "encryptedPassword") String encryptedPassword) throws Exception {
+                      @RequestParam(value = "encryptedPassword") String encryptedPassword) {
         //here we need to "login" our User or not (if something will go wrong) and of course depending on result, redirectng to main menu or to loginView once again
         /*
         sample code:

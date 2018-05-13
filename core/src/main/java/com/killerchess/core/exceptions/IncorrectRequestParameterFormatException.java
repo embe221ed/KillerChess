@@ -11,6 +11,6 @@ public class IncorrectRequestParameterFormatException extends RestApiException {
 
     @Override
     public String getDefaultMessage() {
-        return super.getDefaultMessage() + parameter + "\"";
+        return super.getDefaultMessage() + parameter;
     }
 }

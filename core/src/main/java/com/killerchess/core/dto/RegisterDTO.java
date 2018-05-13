@@ -6,7 +6,7 @@ import com.killerchess.core.response.api.ResponseField;
 import com.killerchess.core.response.api.ResponseMap;
 import com.killerchess.core.util.FieldNames;
 
-public class RegisterDTO extends ApiResponseData {
+public class RegisterDTO implements ApiResponseData {
 
     //TODO in this place we must add lombok
     private String username;
@@ -30,7 +30,7 @@ public class RegisterDTO extends ApiResponseData {
 
 
     @Override
-    public ResponseMap toResponseMap() {
+    public ResponseMap mapToResponseMap() {
         ResponseMap responseMap = new ResponseMap();
         responseMap.put(new ResponseField(FieldNames.USERNAME.getName(), 0), username);
         responseMap.put(new ResponseField(FieldNames.PASSWORD.getName(), 1), password);

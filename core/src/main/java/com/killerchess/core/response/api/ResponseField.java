@@ -5,11 +5,6 @@ public class ResponseField implements Comparable<ResponseField> {
     private String name;
     private Integer position;
 
-    public ResponseField(String name) {
-        this.name = name;
-        this.position = Integer.MAX_VALUE;
-    }
-
     public ResponseField(String name, Integer position) {
         this.name = name;
         this.position = position;

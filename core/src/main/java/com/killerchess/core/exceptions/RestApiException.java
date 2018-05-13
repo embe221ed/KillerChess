@@ -8,14 +8,10 @@ import java.util.Optional;
 
 public abstract class RestApiException extends Exception {
 
-    protected ApiExceptionEnum apiExceptionEnum;
+    private ApiExceptionEnum apiExceptionEnum;
 
-    public RestApiException(ApiExceptionEnum apiExceptionEnum) {
+    RestApiException(ApiExceptionEnum apiExceptionEnum) {
         this.apiExceptionEnum = apiExceptionEnum;
-    }
-
-    public boolean isRejected() {
-        return true;
     }
 
     public String getName() {
@@ -42,7 +38,7 @@ public abstract class RestApiException extends Exception {
         return null;
     }
 
-    protected ApiResponseEntity generateRegisterResponse() {
+    private ApiResponseEntity generateRegisterResponse() {
         return new RegisterResponseEntity(Optional.empty(), apiExceptionEnum);
     }
 }

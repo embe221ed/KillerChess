@@ -2,12 +2,12 @@ package com.killerchess.core.response.api;
 
 public abstract class ApiResponseEntity {
 
-    protected String message;
-    protected int errorCode;
-    protected boolean success;
-    protected int httpStatusCode;
+    private String message;
+    private int errorCode;
+    private boolean success;
+    private int httpStatusCode;
 
-    public ApiResponseEntity(String message, int errorCode, int httpStatusCode, boolean success) {
+    ApiResponseEntity(String message, int errorCode, int httpStatusCode, boolean success) {
         this.message = message;
         this.errorCode = errorCode;
         this.success = success;
