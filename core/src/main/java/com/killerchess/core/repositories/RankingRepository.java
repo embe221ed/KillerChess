@@ -1,10 +1,9 @@
 package com.killerchess.core.repositories;
 
-import com.killerchess.core.game.Game;
+import com.killerchess.core.game.RankingRegistry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GameRepository extends JpaRepository<Game, Integer> {
-
+public interface RankingRepository extends JpaRepository<RankingRegistry, String> {
 }

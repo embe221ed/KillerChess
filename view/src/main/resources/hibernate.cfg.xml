@@ -15,6 +15,6 @@
         <mapping class="com.killerchess.core.user.User"/>
         <mapping class="com.killerchess.core.game.Game"/>
         <mapping class="com.killerchess.core.game.GameState"/>
-        <mapping class="com.killerchess.core.game.Ranking"/>
+        <mapping class="com.killerchess.core.game.RankingRegistry"/>
     </session-factory>
 </hibernate-configuration>
