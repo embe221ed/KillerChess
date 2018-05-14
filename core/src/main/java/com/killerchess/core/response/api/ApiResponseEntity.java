@@ -1,6 +1,6 @@
 package com.killerchess.core.response.api;
 
-public abstract class ApiResponseEntity {
+public abstract class ApiResponseEntity implements ApiResponseData{
 
     private String message;
     private int errorCode;
@@ -46,5 +46,5 @@ public abstract class ApiResponseEntity {
         this.success = success;
     }
 
-    public abstract ResponseMap toResponseMap();
+    public abstract ResponseMap mapToResponseMap();
 }

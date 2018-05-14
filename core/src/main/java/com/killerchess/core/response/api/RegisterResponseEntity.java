@@ -19,7 +19,7 @@ public class RegisterResponseEntity extends ApiResponseEntity {
     }
 
     @Override
-    public ResponseMap toResponseMap() {
+    public ResponseMap mapToResponseMap() {
         ResponseMap responseMap = new ResponseMap();
         responseMap.put(new ResponseField(FieldNames.SUCCESS.getName(), 0),
                 ApiExceptionEnum.SUCCESS.isSuccess());

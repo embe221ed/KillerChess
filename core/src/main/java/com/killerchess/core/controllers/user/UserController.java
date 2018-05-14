@@ -55,14 +55,14 @@ public class UserController {
             registerDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
             return ResponseEntity.ok(new RegisterResponseEntity(
                     Optional.of(registerService.getResult(registerDTO)),
-                    ApiExceptionEnum.SUCCESS).toResponseMap());
+                    ApiExceptionEnum.SUCCESS).mapToResponseMap());
         } catch (RestApiException e) {
             return ResponseEntity.status(e.getHttpStatusCode()).body(e.toResponseEntity(
-                    FieldNames.REGISTER.getName()).toResponseMap());
+                    FieldNames.REGISTER.getName()).mapToResponseMap());
         } catch (Throwable e) {
             UndefinedException undefinedException = new UndefinedException(e);
             return ResponseEntity.status(undefinedException.getHttpStatusCode()).body(
-                    undefinedException.toResponseEntity(FieldNames.REGISTER.getName()).toResponseMap());
+                    undefinedException.toResponseEntity(FieldNames.REGISTER.getName()).mapToResponseMap());
         }
     }
 
