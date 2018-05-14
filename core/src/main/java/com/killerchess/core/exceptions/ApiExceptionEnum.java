@@ -1,17 +1,19 @@
 package com.killerchess.core.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 public enum ApiExceptionEnum {
 
-    SUCCESS("SUCCESS", "", HttpStatusCode.HTTP_OK.getStatusCode(), 0, true),
+    SUCCESS("SUCCESS", "", HttpStatus.OK.value(), 0, true),
     AUTHENTICATION_FAILED("AUTHENTICATION_FAILED", "Authentication failed",
-            HttpStatusCode.FORBIDDEN.getStatusCode(), 1, false),
+            HttpStatus.FORBIDDEN.value(), 1, false),
     INVALID_SECRET_KEY("INVALID_SECRET_KEY", "Secret key value is invalid",
-            HttpStatusCode.FORBIDDEN.getStatusCode(), 2, false),
+            HttpStatus.FORBIDDEN.value(), 2, false),
     INCORRECT_REQUEST_PARAMETER_FORMAT("INCORRECT_REQUEST_PARAMETER_FORMAT",
             "Incorrect request parameter format, field name: ",
-            HttpStatusCode.BAD_REQUEST.getStatusCode(), 3, false),
+            HttpStatus.BAD_REQUEST.value(), 3, false),
     UNDEFINED("UNDEFINED", "Request failed",
-            HttpStatusCode.INTERNAL_SERVER_ERROR.getStatusCode(), 99, false);
+            HttpStatus.INTERNAL_SERVER_ERROR.value(), 99, false);
 
 
     private String name;
