@@ -50,9 +50,10 @@ public class UserController {
             RegisterDTO registerDTO = new RegisterDTO();
             registerDTO.setUsername(request.getParameter(FieldNames.USERNAME.getName()));
             registerDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
-            registerService.getResult(registerDTO);
+            registerService.validate(registerDTO);
         } catch (RestApiException e) {
-            return new ResponseEntity(HttpStatus.resolve(e.getHttpStatusCode()));
+            e.printStackTrace();
+            return new ResponseEntity(e.getHttpStatusCode());
         } catch (Throwable e) {
             UndefinedException undefinedException = new UndefinedException(e);
             System.out.println(undefinedException.getMessage());

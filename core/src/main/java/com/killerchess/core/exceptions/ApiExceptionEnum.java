@@ -4,25 +4,25 @@ import org.springframework.http.HttpStatus;
 
 public enum ApiExceptionEnum {
 
-    SUCCESS("SUCCESS", "", HttpStatus.OK.value(), 0, true),
+    SUCCESS("SUCCESS", "", HttpStatus.OK, 0, true),
     AUTHENTICATION_FAILED("AUTHENTICATION_FAILED", "Authentication failed",
-            HttpStatus.FORBIDDEN.value(), 1, false),
+            HttpStatus.FORBIDDEN, 1, false),
     INVALID_SECRET_KEY("INVALID_SECRET_KEY", "Secret key value is invalid",
-            HttpStatus.FORBIDDEN.value(), 2, false),
+            HttpStatus.FORBIDDEN, 2, false),
     INCORRECT_REQUEST_PARAMETER_FORMAT("INCORRECT_REQUEST_PARAMETER_FORMAT",
             "Incorrect request parameter format, field name: ",
-            HttpStatus.BAD_REQUEST.value(), 3, false),
+            HttpStatus.BAD_REQUEST, 3, false),
     UNDEFINED("UNDEFINED", "Request failed",
-            HttpStatus.INTERNAL_SERVER_ERROR.value(), 99, false);
+            HttpStatus.INTERNAL_SERVER_ERROR, 99, false);
 
 
     private String name;
     private String defaultMessage;
-    private Integer httpDefaultCode;
+    private HttpStatus httpDefaultCode;
     private Integer statusCode;
     private boolean success;
 
-    ApiExceptionEnum(String name, String defaultMessage, Integer httpDefaultCode, Integer statusCode, Boolean success) {
+    ApiExceptionEnum(String name, String defaultMessage, HttpStatus httpDefaultCode, Integer statusCode, Boolean success) {
         this.name = name;
         this.defaultMessage = defaultMessage;
         this.httpDefaultCode = httpDefaultCode;
@@ -47,7 +47,7 @@ public enum ApiExceptionEnum {
         return statusCode;
     }
 
-    public Integer getHttpDefaultCode() {
+    public HttpStatus getHttpDefaultCode() {
         return httpDefaultCode;
     }
 }

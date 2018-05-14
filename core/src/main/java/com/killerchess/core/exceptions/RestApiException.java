@@ -1,5 +1,7 @@
 package com.killerchess.core.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 public abstract class RestApiException extends Exception {
 
     private ApiExceptionEnum apiExceptionEnum;
@@ -16,7 +18,7 @@ public abstract class RestApiException extends Exception {
         return apiExceptionEnum.getDefaultMessage();
     }
 
-    public Integer getHttpStatusCode() {
+    public HttpStatus getHttpStatusCode() {
         return apiExceptionEnum.getHttpDefaultCode();
     }
 
