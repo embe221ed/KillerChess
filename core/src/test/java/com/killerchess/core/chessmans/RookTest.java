@@ -2,7 +2,6 @@ package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import javafx.util.Pair;
-import junit.framework.TestCase;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -10,13 +9,16 @@ import org.junit.jupiter.api.TestInstance;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RookTest extends TestCase {
+class RookTest {
 
     private StateInterpreter stateInterpreter;
 
     @BeforeAll
-    public void setUp() {
+    void setUp() {
         stateInterpreter = new StateInterpreter();
     }
 
