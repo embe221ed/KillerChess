@@ -1,10 +1,6 @@
 package com.killerchess.core.exceptions;
 
-import com.killerchess.core.response.api.ApiResponseEntity;
-import com.killerchess.core.response.api.RegisterResponseEntity;
-import com.killerchess.core.util.FieldNames;
-
-import java.util.Optional;
+import org.springframework.http.HttpStatus;
 
 public abstract class RestApiException extends Exception {
 
@@ -22,7 +18,7 @@ public abstract class RestApiException extends Exception {
         return apiExceptionEnum.getDefaultMessage();
     }
 
-    public Integer getHttpStatusCode() {
+    public HttpStatus getHttpStatusCode() {
         return apiExceptionEnum.getHttpDefaultCode();
     }
 
@@ -30,15 +26,4 @@ public abstract class RestApiException extends Exception {
         return apiExceptionEnum.getStatusCode();
     }
 
-    //TODO here we will add other enums. In a future "if" can be replaced be "switch case".
-    public ApiResponseEntity toResponseEntity(String restApiEnum) {
-        if (restApiEnum != null && restApiEnum.equals(FieldNames.REGISTER.getName())) {
-            return generateRegisterResponse();
-        }
-        return null;
-    }
-
-    private ApiResponseEntity generateRegisterResponse() {
-        return new RegisterResponseEntity(Optional.empty(), apiExceptionEnum);
-    }
 }

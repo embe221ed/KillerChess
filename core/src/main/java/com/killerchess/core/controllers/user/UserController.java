@@ -1,16 +1,14 @@
 package com.killerchess.core.controllers.user;
 
 import com.killerchess.core.dto.RegisterDTO;
-import com.killerchess.core.exceptions.ApiExceptionEnum;
 import com.killerchess.core.exceptions.RestApiException;
 import com.killerchess.core.exceptions.UndefinedException;
-import com.killerchess.core.response.api.RegisterResponseEntity;
-import com.killerchess.core.response.api.ResponseMap;
 import com.killerchess.core.services.RegisterService;
 import com.killerchess.core.services.UserService;
 import com.killerchess.core.user.User;
 import com.killerchess.core.util.FieldNames;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -48,22 +45,21 @@ public class UserController {
     //This method is example. We can use HttpServletResponse as a method parameter instead of ResponseEntity.
     //It's depends of situation. If we want to have a file in response or sth like that, we will user HttpServletResponse.
     @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH_SAMPLE)
-    public ResponseEntity<ResponseMap> register(HttpServletRequest request) {
+    public ResponseEntity register(HttpServletRequest request) {
         try {
             RegisterDTO registerDTO = new RegisterDTO();
             registerDTO.setUsername(request.getParameter(FieldNames.USERNAME.getName()));
             registerDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
-            return ResponseEntity.ok(new RegisterResponseEntity(
-                    Optional.of(registerService.getResult(registerDTO)),
-                    ApiExceptionEnum.SUCCESS).mapToResponseMap());
+            registerService.validate(registerDTO);
         } catch (RestApiException e) {
-            return ResponseEntity.status(e.getHttpStatusCode()).body(e.toResponseEntity(
-                    FieldNames.REGISTER.getName()).mapToResponseMap());
+            e.printStackTrace();
+            return new ResponseEntity(e.getHttpStatusCode());
         } catch (Throwable e) {
             UndefinedException undefinedException = new UndefinedException(e);
-            return ResponseEntity.status(undefinedException.getHttpStatusCode()).body(
-                    undefinedException.toResponseEntity(FieldNames.REGISTER.getName()).mapToResponseMap());
+            System.out.println(undefinedException.getMessage());
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     public void register(@RequestParam(value = "username") String name,
