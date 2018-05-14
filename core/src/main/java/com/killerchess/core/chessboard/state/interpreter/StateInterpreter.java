@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class StateInterpreter {
 
-    public ChessBoard convertJsonBoardToChessBoard(String jsonBoard) throws IOException {
+    public ChessBoard convertJsonBoardToChessBoard(String jsonBoard) {
         var jsonNode = getJsonNodeFromJsonString(jsonBoard);
         var elements = jsonNode.elements();
 
@@ -47,9 +47,13 @@ public class StateInterpreter {
         return jsonChessBoard;
     }
 
-    private JsonNode getJsonNodeFromJsonString(String jsonBoard) throws IOException {
+    private JsonNode getJsonNodeFromJsonString(String jsonBoard) {
         var mapper = new ObjectMapper();
-        return mapper.readTree(jsonBoard);
+        try {
+            return mapper.readTree(jsonBoard);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private ArrayList<Chessman> getChessmanListFromLine(JsonNode node) {
