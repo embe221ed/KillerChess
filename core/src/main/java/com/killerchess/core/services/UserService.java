@@ -1,6 +1,5 @@
 package com.killerchess.core.services;
 
-import com.killerchess.core.exceptions.ApiExceptionEnum;
 import com.killerchess.core.exceptions.AuthenticationFailedException;
 import com.killerchess.core.game.RankingRegistry;
 import com.killerchess.core.repositories.RankingRepository;
