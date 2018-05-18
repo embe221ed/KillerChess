@@ -3,6 +3,7 @@ package com.killerchess.core.controllers.game;
 import com.killerchess.core.exceptions.AuthenticationFailedException;
 import com.killerchess.core.services.GameService;
 import com.killerchess.core.services.UserService;
+import com.killerchess.core.util.FieldNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,18 @@ public class GameController {
             userService.isValidUser(guestName);
         }
         catch(AuthenticationFailedException e){
-            return new ResponseEntity(HttpStatus.resolve(e.getHttpStatusCode()));
+            return new ResponseEntity(e.getHttpStatusCode());
         }
 
-        if(gameType.equals("pvp")) {
-            gameService.initNewGame(hostName, guestName);
+        try {
+            if (gameType.equals(FieldNames.PVP.getName())) {
+                gameService.initNewGame(hostName, guestName);
+            }
         }
+        catch(Exception e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
 
        return new ResponseEntity(HttpStatus.OK);
     }
@@ -58,13 +65,16 @@ public class GameController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/gameBoard")
-    public void gameBoard(Integer gameId, String gameState) {
+    public ResponseEntity gameBoard(Integer gameId, String gameState) {
 
         try {
             gameService.saveSpecificGameState(gameId, gameState);
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -22,7 +22,7 @@ public class GameService {
         this.gameStateRepository = gameStateRepository;
     }
 
-    public void initNewGame(String hostName, String guestName){
+    public void initNewGame(String hostName, String guestName)throws Exception{
 
         Game newGame = new Game();
         newGame.setHost(userRepository.findByLogin(hostName));
@@ -48,7 +48,7 @@ public class GameService {
         return gameState.getState();
     }
 
-    public void saveSpecificGameState(Integer gameId, String gameStateStr) {
+    public void saveSpecificGameState(Integer gameId, String gameStateStr)throws Exception {
 
         GameState gameStateInstance = new GameState();
         gameStateInstance.setState(gameStateStr);
