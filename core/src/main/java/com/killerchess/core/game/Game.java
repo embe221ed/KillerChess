@@ -8,18 +8,18 @@ import javax.persistence.*;
 @Table(name = "game")
 public class Game {
 
-    private Integer game_id;
+    private Integer gameId;
     private User host;
     private User guest;
 
     @Id
-    @Column(name = "game_id")
-    public Integer getGame_id() {
-        return game_id;
+    @Column(name = "gameId")
+    public Integer getGameId() {
+        return gameId;
     }
 
-    public void setGame_id(Integer id) {
-        this.game_id = id;
+    public void setGameId(Integer id) {
+        this.gameId = id;
     }
 
     @ManyToOne
@@ -45,6 +45,6 @@ public class Game {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        return game_id.equals (((Game) o).game_id);
+        return gameId.equals (((Game) o).gameId);
     }
 }

@@ -5,8 +5,8 @@ public enum FieldNames {
     ERROR_CODE("ErrorCode"),
     USERNAME("Username"),
     PASSWORD("Password"),
-    REGISTER("Register");
-
+    REGISTER("Register"),
+    PVP("pvp");
     private final String name;
 
     FieldNames(String name) {

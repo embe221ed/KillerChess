@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 //drugą opcją jest przypisanie odpowiedniego "query" do metody
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
+    User findByLogin(String login);
 }

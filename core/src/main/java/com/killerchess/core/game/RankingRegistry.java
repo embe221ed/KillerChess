@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "ranking")
-public class Ranking {
+public class RankingRegistry {
 
     private User user;
     private int points;
