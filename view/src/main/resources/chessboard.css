@@ -1,0 +1,11 @@
+.white-cell{
+	-fx-background-color: white;
+	-fx-border-color: gold; 
+	-fx-border-width: 2.0px;
+}
+
+.black-cell{
+	-fx-background-color: black;
+	-fx-border-color: gold; 
+	-fx-border-width: 2.0px;
+}
