@@ -2,22 +2,23 @@ package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import javafx.util.Pair;
-import junit.framework.TestCase;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.util.HashSet;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PawnTest extends TestCase {
+class PawnTest {
 
     private Pawn whitePawn;
     private Pawn blackPawn;
     private StateInterpreter stateInterpreter;
 
     @BeforeAll
-    public void setUp() {
+    void setUp() {
         whitePawn = new Pawn(ChessmanColourEnum.WHITE);
         blackPawn = new Pawn(ChessmanColourEnum.BLACK);
         stateInterpreter = new StateInterpreter();
