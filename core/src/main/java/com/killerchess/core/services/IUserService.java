@@ -8,4 +8,8 @@ import java.util.List;
 public interface IUserService {
     List<User> findAll();
     Boolean isValidUser(String userLogin) throws AuthenticationFailedException;
+
+    User save(User entity);
+
+    User find(User entity);
 }

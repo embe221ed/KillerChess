@@ -1,7 +1,6 @@
 package com.killerchess.core.controllers.user;
 
-import com.killerchess.core.dto.RegisterDTO;
-import com.killerchess.core.exceptions.RestApiException;
+import com.killerchess.core.dto.UserDTO;
 import com.killerchess.core.exceptions.UndefinedException;
 import com.killerchess.core.services.RegisterService;
 import com.killerchess.core.services.UserService;
@@ -26,20 +25,19 @@ public class UserController {
     private static final String LOGIN_PATH = "/login";
 
 
-    private final UserService service;
+    private final UserService userService;
     private final RegisterService registerService;
 
     @Autowired
     public UserController(UserService userService, RegisterService registerService) {
-        this.service = userService;
+        this.userService = userService;
         this.registerService = registerService;
     }
-
 
     @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH)
     public List<User> register() {
         //here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne
-        return service.findAll();
+        return userService.findAll();
     }
 
     //This method is example. We can use HttpServletResponse as a method parameter instead of ResponseEntity.
@@ -47,13 +45,10 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH_SAMPLE)
     public ResponseEntity register(HttpServletRequest request) {
         try {
-            RegisterDTO registerDTO = new RegisterDTO();
-            registerDTO.setUsername(request.getParameter(FieldNames.USERNAME.getName()));
-            registerDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
-            registerService.validate(registerDTO);
-        } catch (RestApiException e) {
-            e.printStackTrace();
-            return new ResponseEntity(e.getHttpStatusCode());
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUsername(request.getParameter(FieldNames.USERNAME.getName()));
+            userDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
+            registerService.validate(userDTO);
         } catch (Throwable e) {
             UndefinedException undefinedException = new UndefinedException(e);
             System.out.println(undefinedException.getMessage());
@@ -62,43 +57,57 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    public void register(@RequestParam(value = "username") String name,
-                         @RequestParam(value = "encryptedPassword") String encryptedPassword) {
-        //here we need to "register" new user and maybe return info, that registration succeded or failed
-        /*
-        sample code:
+    @RequestMapping(method = RequestMethod.POST, value = REGISTER_PATH)
+    public ResponseEntity register(@RequestParam(value = "username") String name,
+                                   @RequestParam(value = "password") String password,
+                                   HttpServletRequest request) {
         try {
-            User newUser = new User();
-            newUser.username = username;
-            newUser.encryptedPassword = encryptedPassword;
-            userRepository.save(newUser);
+            request.getSession();
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUsername(name);
+            userDTO.setPassword(password);
+            if (registerService.validate(userDTO)) {
+                User user = new User();
+                user.setLogin(name);
+                user.setPassword(password);
+                userService.save(user);
+                return new ResponseEntity(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
             }
-        catch(Exception  e){
-
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        */
     }
 
     @RequestMapping(method = RequestMethod.GET, value = LOGIN_PATH)
-    public void login() {
+    public void login(HttpServletRequest request) {
         //same as register GET method, but login
+        request.getSession();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = LOGIN_PATH)
-    public void login(@RequestParam(value = "username") String name,
-                      @RequestParam(value = "encryptedPassword") String encryptedPassword) {
-        //here we need to "login" our User or not (if something will go wrong) and of course depending on result, redirectng to main menu or to loginView once again
-        /*
-        sample code:
+    public ResponseEntity login(@RequestParam(value = "username") String name,
+                                @RequestParam(value = "password") String password,
+                                HttpServletRequest request) {
         try {
-            User loggingUser = new User();
-            newUser.username = username;
-            newUser.encryptedPassword = encryptedPassword;
-            Boolean giveCredentials = userRepository.exists(newUser);
+            request.getSession();
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUsername(name);
+            userDTO.setPassword(password);
+            if (userService.isValidUser(userDTO.getUsername())) {
+                User user = new User();
+                user.setLogin(userDTO.getUsername());
+                user = userService.find(user);
+                if (user.getPassword().equals(userDTO.getPassword())) {
+                    return new ResponseEntity(HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                }
             }
-        catch(Exception  e){
-
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        */
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
