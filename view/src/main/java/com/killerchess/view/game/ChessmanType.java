@@ -23,7 +23,6 @@ public enum ChessmanType {
                 return EMPTY;
         }
     }
-
     ChessmanType(int moveDir){
         this.moveDir = moveDir;
     }
