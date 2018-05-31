@@ -5,18 +5,18 @@ import javafx.scene.shape.Rectangle;
 
 public class Tile extends Rectangle {
 
-    private ChesmanImage chesmanImage;
+    private ChessmanImage chessmanImage;
 
     public boolean hasPiece(){
-        return chesmanImage != null;
+        return chessmanImage != null;
     }
 
-    public ChesmanImage getChesmanImage() {
-        return chesmanImage;
+    public ChessmanImage getChessmanImage() {
+        return chessmanImage;
     }
 
-    public void setChesmanImage(ChesmanImage chesmanImage) {
-        this.chesmanImage = chesmanImage;
+    public void setChessmanImage(ChessmanImage chessmanImage) {
+        this.chessmanImage = chessmanImage;
     }
 
     public Tile(boolean light, int x, int y){
