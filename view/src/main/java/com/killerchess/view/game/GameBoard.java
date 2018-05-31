@@ -3,6 +3,7 @@ package com.killerchess.view.game;
 import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
+import com.killerchess.core.chessmans.ChessmanColourEnum;
 import javafx.util.Pair;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -49,9 +50,12 @@ public class GameBoard extends Application {
         return root;
     }
 
-    private ChessmanImage createChesmanImageFromChesman(Chessman chessman, int x, int y){
-        ChessmanImage chessmanImage = createChessmanImage(chessman,1,  x, y);
-        /*chessmanImage.setOnMouseReleased(e -> {
+    private ChessmanImage createChesmanImageFromChesman(Chessman chessman, int x, int y) {
+        ChessmanType chessmanType = ChessmanType.getTypeFromSymbol(chessman.getSymbol());
+        ChessmanColourEnum chessmanColour = chessman.getColour();
+        ChessmanImage chessmanImage = createChessmanImage(chessman, chessmanType, chessmanColour, 1, x, y);
+
+        chessmanImage.setOnMouseReleased(e -> {
             int newX = toBoard(chessmanImage.getLayoutX());
             int newY = toBoard(chessmanImage.getLayoutY());
 
@@ -63,18 +67,21 @@ public class GameBoard extends Application {
                     break;
                 case NORMAL:
                     chessmanImage.move(newX, newY);
+                    System.out.println(newX);
+                    System.out.println(newY);
                     break;
                 case KILL:
 
             }
-        });*/
+        });
 
         return chessmanImage;
     }
 
-    private ChessmanImage createChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
-        return new ChessmanImage(chessman, chessmanStyleNumber, x, y);
-    }
+    private ChessmanImage createChessmanImage(Chessman chessman, ChessmanType type, ChessmanColourEnum colour, int chessmanStyleNumber, int x, int y){
+        return new ChessmanImage(chessman, type, colour, chessmanStyleNumber, x, y);
+        }
+
 
     private int toBoard(double pixel){
         return (int)(pixel + TILE_SIZE / 2) / TILE_SIZE;
@@ -83,8 +90,7 @@ public class GameBoard extends Application {
     private MoveResult tryMove(ChessmanImage chessmanImage, int newX, int newY){
         double prevChessmanX = chessmanImage.getPrevMouseX();
         double prevChessmanY = chessmanImage.getPrevMouseY();
-        if (chessmanImage.getChessman().getPossibleMoves(chessBoard, new Pair<>(toBoard(prevChessmanX),toBoard(prevChessmanY))).contains(new Pair<>(newX, newY))){
-            System.out.println("CHUUUUUUUJ");
+        if (chessmanImage.getChessman().getPossibleMoves(chessBoard, new Pair<>(toBoard(prevChessmanY),toBoard(prevChessmanX))).contains(new Pair<>(newY, newX))){
             return new MoveResult(MoveType.NORMAL);
         }
         else{

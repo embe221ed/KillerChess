@@ -34,22 +34,27 @@ public class ChessmanImage extends StackPane {
         return prevMouseY;
     }
 
-    public ChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
-        this.type = ChessmanType.getTypeFromSymbol(chessman.getSymbol());
+    public ChessmanImage(Chessman chessman, ChessmanType type, ChessmanColourEnum colour, int chessmanStyleNumber, int x, int y){
+        this.type = type;
         this.chessman = chessman;
-
-        ChessmanColourEnum chessmanColour = chessman.getColour();
-        move(x * TILE_SIZE + 7, y * TILE_SIZE + 7);
-
+        relocate(x * GameBoard.TILE_SIZE + 7, y * GameBoard.TILE_SIZE + 7);
+        File file;
         if(type != ChessmanType.EMPTY) {
-            createImageFromFile(chessmanColour, chessmanStyleNumber);
-          /*  setOnMousePressed(e ->{
+            String chessmanTypeLowerCase = type.name().toLowerCase();
+            String filePath = new StringBuilder("view/images/type_").append(chessmanStyleNumber).
+                    append("_").append(colour).append("_").append(chessmanTypeLowerCase).append(".png").toString();
+            file = new File(filePath);
+            setImage(file);
+
+            setOnMousePressed(e ->{
                 mouseX = e.getSceneX();
                 mouseY = e.getSceneY();
+                prevMouseX = (int)(e.getSceneX()/100) * 100 + 7;
+                prevMouseY = (int)(e.getSceneY()/100) * 100 + 7;
             });
             setOnMouseDragged(e ->{
-                relocate(e.getSceneX() - mouseX + prevMouseX, e.getScreenY() -  mouseY + prevMouseY);
-            });*/
+                relocate(e.getSceneX(), e.getScreenY());
+            });
         }
     }
 
