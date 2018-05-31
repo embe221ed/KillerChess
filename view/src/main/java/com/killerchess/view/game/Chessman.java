@@ -22,26 +22,32 @@ public class Chessman extends StackPane {
         switch(type) {
             case PAWN:
                 file = new File("view/images/red_pawn.png");
+                setImage(file);
                 break;
             case BISHOP:
                 file = new File("view/images/red_bishop.png");
+                setImage(file);
                 break;
             case HORSE:
                 file = new File("view/images/red_horse.png");
+                setImage(file);
                 break;
             case ROOK:
                 file = new File("view/images/red_rook.png");
+                setImage(file);
                 break;
             case QUEEN:
                 file = new File("view/images/red_queen.png");
+                setImage(file);
                 break;
             case KING:
                 file = new File("view/images/red_king.png");
+                setImage(file);
                 break;
-            default:
-                file = new File("view/images/empty_field.png");
         }
+    }
 
+    private void setImage(File file){
         Image image = new Image(file.toURI().toString());
         imageView = new ImageView();
         imageView.setImage(image);
