@@ -7,6 +7,7 @@ import com.killerchess.core.services.UserService;
 import com.killerchess.core.user.User;
 import com.killerchess.core.util.FieldNames;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,9 +82,11 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = LOGIN_PATH)
-    public void login(HttpServletRequest request) {
+    public ResponseEntity login(HttpServletRequest request) {
         //same as register GET method, but login
-        request.getSession();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("username", request.getSession().getAttribute("username").toString());
+        return new ResponseEntity(headers, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = LOGIN_PATH)
@@ -100,6 +103,7 @@ public class UserController {
                 user.setLogin(userDTO.getUsername());
                 user = userService.find(user);
                 if (user.getPassword().equals(userDTO.getPassword())) {
+                    request.getSession().setAttribute("username", user.getLogin());
                     return new ResponseEntity(HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

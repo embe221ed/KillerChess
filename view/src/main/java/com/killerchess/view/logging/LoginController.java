@@ -36,6 +36,12 @@ public class LoginController {
                 if (!localSessionSingleton.isSetCookie()) {
                     localSessionSingleton.setCookie(responseEntity);
                 }
+                // Getting information from REST server (in example the information is username)
+                requestEntity = localSessionSingleton.getHttpEntity(map);
+                responseEntity = restTemplate.exchange(LOGIN_URL, HttpMethod.GET, requestEntity, ResponseEntity.class);
+                localSessionSingleton.addParameter("username", responseEntity.getHeaders().getFirst("username"));
+                System.out.println(localSessionSingleton.getParameter("username"));
+
                 View.getInstance().changeScene("/main_screen.fxml");
             }
         } catch (HttpStatusCodeException e) {
