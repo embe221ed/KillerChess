@@ -1,8 +1,16 @@
 package com.killerchess.view.registration;
 
+import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestTemplate;
 
 public class RegistrationController {
     public Button registerButton;
@@ -11,14 +19,39 @@ public class RegistrationController {
     public TextField passwordField;
     public TextField repeatPasswordField;
 
+    private static final String REGISTER_URL = "http://localhost:8080/register";
+    private RestTemplate restTemplate;
+
     public void handleRegisterButtonClicked() {
         try {
-            System.out.println("Register button clicked");
-            System.out.println("Login: " + loginField.getText());
-            if (passwordField.getText().equals(repeatPasswordField.getText())) {
-                System.out.println("Passwords are the same");
+            String login = loginField.getText();
+            String password = passwordField.getText();
+            String repeatPassword = repeatPasswordField.getText();
+            if (password.equals(repeatPassword)) {
+                MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+                map.add("username", login);
+                map.add("password", password);
+                ResponseEntity responseEntity;
+                RestTemplate restTemplate = new RestTemplate();
+                LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+                var requestEntity = localSessionSingleton.getHttpEntity(map);
+                responseEntity = restTemplate.exchange(REGISTER_URL, HttpMethod.POST, requestEntity, ResponseEntity.class);
+                if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                    if (!localSessionSingleton.isSetCookie()) {
+                        localSessionSingleton.setCookie(responseEntity);
+                    }
+                    View.getInstance().changeScene("/logging.fxml");
+                }
             } else {
-                System.out.println("Passwords are not equal");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Passwords must be the same");
+                alert.showAndWait();
+            }
+        } catch (HttpStatusCodeException e) {
+            if (e.getStatusCode().is4xxClientError()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("You must fill correctly all fields");
+                alert.showAndWait();
             }
         } catch (Exception e) {
             e.printStackTrace();

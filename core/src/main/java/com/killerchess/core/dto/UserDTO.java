@@ -1,7 +1,7 @@
 package com.killerchess.core.dto;
 
 
-public class RegisterDTO {
+public class UserDTO {
 
     //TODO in this place we must add lombok. Sample DTO.
     private String username;

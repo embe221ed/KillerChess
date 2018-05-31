@@ -39,4 +39,15 @@ public class UserService implements IUserService {
         }
         return true;
     }
+
+    @Override
+    public User save(User entity) {
+        userRepository.save(entity);
+        return entity;
+    }
+
+    @Override
+    public User find(User entity) {
+        return userRepository.findByLogin(entity.getLogin());
+    }
 }
