@@ -1,11 +1,9 @@
 package com.killerchess.core.controllers.user;
 
 import com.killerchess.core.dto.UserDTO;
-import com.killerchess.core.exceptions.UndefinedException;
 import com.killerchess.core.services.RegisterService;
 import com.killerchess.core.services.UserService;
 import com.killerchess.core.user.User;
-import com.killerchess.core.util.FieldNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,25 +35,8 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH)
     public List<User> register() {
-        //here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne
+        // TODO here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne
         return userService.findAll();
-    }
-
-    //This method is example. We can use HttpServletResponse as a method parameter instead of ResponseEntity.
-    //It's depends of situation. If we want to have a file in response or sth like that, we will user HttpServletResponse.
-    @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH_SAMPLE)
-    public ResponseEntity register(HttpServletRequest request) {
-        try {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(request.getParameter(FieldNames.USERNAME.getName()));
-            userDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
-            registerService.validate(userDTO);
-        } catch (Throwable e) {
-            UndefinedException undefinedException = new UndefinedException(e);
-            System.out.println(undefinedException.getMessage());
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = REGISTER_PATH)

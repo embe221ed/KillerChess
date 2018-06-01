@@ -2,6 +2,7 @@ package com.killerchess.view.registration;
 
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
+import com.killerchess.view.logging.LoginController;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -19,8 +20,7 @@ public class RegistrationController {
     public TextField passwordField;
     public TextField repeatPasswordField;
 
-    private static final String REGISTER_URL = "http://localhost:8080/register";
-    private RestTemplate restTemplate;
+    private static final String REGISTER_PATH = "/register";
 
     public void handleRegisterButtonClicked() {
         try {
@@ -28,16 +28,15 @@ public class RegistrationController {
             String password = passwordField.getText();
             String repeatPassword = repeatPasswordField.getText();
             if (password.equals(repeatPassword)) {
-                MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-                map.add("username", login);
-                map.add("password", password);
-                ResponseEntity responseEntity;
+                MultiValueMap<String, String> registrationParametersMap = new LinkedMultiValueMap<>();
+                registrationParametersMap.add("username", login);
+                registrationParametersMap.add("password", password);
                 RestTemplate restTemplate = new RestTemplate();
                 LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-                var requestEntity = localSessionSingleton.getHttpEntity(map);
-                responseEntity = restTemplate.exchange(REGISTER_URL, HttpMethod.POST, requestEntity, ResponseEntity.class);
+                var requestEntity = localSessionSingleton.getHttpEntity(registrationParametersMap);
+                ResponseEntity responseEntity = restTemplate.exchange(LoginController.HOST + REGISTER_PATH, HttpMethod.POST, requestEntity, ResponseEntity.class);
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                    if (!localSessionSingleton.isSetCookie()) {
+                    if (!localSessionSingleton.isCookieSet()) {
                         localSessionSingleton.setCookie(responseEntity);
                     }
                     View.getInstance().changeScene("/logging.fxml");

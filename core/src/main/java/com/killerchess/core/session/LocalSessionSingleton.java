@@ -8,7 +8,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.net.HttpCookie;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class LocalSessionSingleton {
@@ -57,14 +57,14 @@ public class LocalSessionSingleton {
         this.cookie = null;
     }
 
-    public boolean isSetCookie() {
+    public boolean isCookieSet() {
         return this.cookie != null;
     }
 
-    public HttpHeaders getHeaders() {
-        if (isSetCookie()) {
+    private HttpHeaders getHeaders() {
+        if (isCookieSet()) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setAccept(Arrays.asList(MediaType.ALL));
+            headers.setAccept(Collections.singletonList(MediaType.ALL));
             headers.add("Cookie", cookie.toString());
             return headers;
         } else {

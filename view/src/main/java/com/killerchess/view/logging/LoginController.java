@@ -18,27 +18,31 @@ public class LoginController {
     public TextField loginField;
     public TextField passwordField;
 
-    private static final String LOGIN_URL = "http://localhost:8080/login";
+    public static final String HOST = "http://localhost:8080";
+    private static final String LOGIN_PATH = "/login";
 
     public void handleLoginButtonClicked() {
         try {
             String login = loginField.getText();
             String password = passwordField.getText();
-            ResponseEntity responseEntity;
-            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-            map.add("username", login);
-            map.add("password", password);
+            MultiValueMap<String, String> loginParametersMap = new LinkedMultiValueMap<>();
+            loginParametersMap.add("username", login);
+            loginParametersMap.add("password", password);
             RestTemplate restTemplate = new RestTemplate();
             LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-            var requestEntity = localSessionSingleton.getHttpEntity(map);
-            responseEntity = restTemplate.exchange(LOGIN_URL, HttpMethod.POST, requestEntity, ResponseEntity.class);
+            var requestEntity = localSessionSingleton.getHttpEntity(loginParametersMap);
+            ResponseEntity responseEntity = restTemplate.exchange(HOST + LOGIN_PATH, HttpMethod.POST, requestEntity, ResponseEntity.class);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                if (!localSessionSingleton.isSetCookie()) {
+                if (!localSessionSingleton.isCookieSet()) {
                     localSessionSingleton.setCookie(responseEntity);
                 }
+                // TODO delete
                 // Getting information from REST server (in example the information is username)
-                requestEntity = localSessionSingleton.getHttpEntity(map);
-                responseEntity = restTemplate.exchange(LOGIN_URL, HttpMethod.GET, requestEntity, ResponseEntity.class);
+                // Getting HttpEntity which is later send to server
+                requestEntity = localSessionSingleton.getHttpEntity(loginParametersMap);
+                // exchange data with server
+                responseEntity = restTemplate.exchange(HOST + LOGIN_PATH, HttpMethod.GET, requestEntity, ResponseEntity.class);
+                // add parameter to local session to have global access to data
                 localSessionSingleton.addParameter("username", responseEntity.getHeaders().getFirst("username"));
                 System.out.println(localSessionSingleton.getParameter("username"));
 
