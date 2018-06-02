@@ -1,8 +1,6 @@
 package com.killerchess.core.services;
 
 import com.killerchess.core.exceptions.AuthenticationFailedException;
-import com.killerchess.core.game.RankingRegistry;
-import com.killerchess.core.repositories.RankingRepository;
 import com.killerchess.core.repositories.UserRepository;
 import com.killerchess.core.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +12,14 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final RankingRepository rankingRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, RankingRepository rankingRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.rankingRepository = rankingRepository;
     }
 
     public List<User> findAll() {
         return userRepository.findAll();
-    }
-
-    public List<RankingRegistry> getRanking() {
-        return rankingRepository.findAll();
     }
 
     public Boolean isValidUser(String userLogin) throws AuthenticationFailedException{

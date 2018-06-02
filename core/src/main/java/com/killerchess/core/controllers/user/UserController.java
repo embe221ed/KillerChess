@@ -1,9 +1,9 @@
 package com.killerchess.core.controllers.user;
 
-import com.killerchess.core.dto.UserDTO;
 import com.killerchess.core.services.RegisterService;
 import com.killerchess.core.services.UserService;
 import com.killerchess.core.user.User;
+import com.killerchess.view.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,7 @@ public class UserController {
 
     private static final String REGISTER_PATH = "/register";
     private static final String LOGIN_PATH = "/login";
+    private static final String USERS_PATH = "/users";
 
 
     private final UserService userService;
@@ -32,10 +34,17 @@ public class UserController {
         this.registerService = registerService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH)
-    public List<User> register() {
+    @RequestMapping(method = RequestMethod.GET, value = USERS_PATH)
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         // TODO here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne
-        return userService.findAll();
+        List<User> usersList = userService.findAll();
+        List<UserDTO> usersDTOList = new ArrayList<>();
+        for (User user : usersList) {
+            UserDTO tempUserDTO = new UserDTO();
+            tempUserDTO.setUsername(user.getLogin());
+            usersDTOList.add(tempUserDTO);
+        }
+        return new ResponseEntity<>(usersDTOList, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = REGISTER_PATH)
