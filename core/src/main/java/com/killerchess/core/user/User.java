@@ -1,7 +1,5 @@
 package com.killerchess.core.user;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
@@ -16,17 +14,11 @@ import java.util.Objects;
 @Table(name = "game_user")
 public class User implements Serializable {
 
-    private final SessionFactory sessionFactory;
     @Id
     @Column(name = "login")
     private String login;
     @Column(name = "password")
     private String password;
-
-    @Autowired
-    public User(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     public String getLogin() {
         return this.login;
@@ -55,6 +47,6 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password, sessionFactory);
+        return Objects.hash(login, password);
     }
 }

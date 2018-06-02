@@ -1,7 +1,6 @@
 package com.killerchess.core.controllers.user;
 
-import com.killerchess.core.dto.RegisterDTO;
-import com.killerchess.core.exceptions.RestApiException;
+import com.killerchess.core.dto.UserDTO;
 import com.killerchess.core.exceptions.UndefinedException;
 import com.killerchess.core.services.RegisterService;
 import com.killerchess.core.services.UserService;
@@ -47,13 +46,10 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH_SAMPLE)
     public ResponseEntity register(HttpServletRequest request) {
         try {
-            RegisterDTO registerDTO = new RegisterDTO();
-            registerDTO.setUsername(request.getParameter(FieldNames.USERNAME.getName()));
-            registerDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
-            registerService.validate(registerDTO);
-        } catch (RestApiException e) {
-            e.printStackTrace();
-            return new ResponseEntity(e.getHttpStatusCode());
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUsername(request.getParameter(FieldNames.USERNAME.getName()));
+            userDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
+            registerService.isValidUser(userDTO);
         } catch (Throwable e) {
             UndefinedException undefinedException = new UndefinedException(e);
             System.out.println(undefinedException.getMessage());
