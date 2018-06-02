@@ -20,7 +20,6 @@ import java.util.List;
 public class UserController {
 
     private static final String REGISTER_PATH = "/register";
-    private static final String REGISTER_PATH_SAMPLE = "/registerSample";
     private static final String LOGIN_PATH = "/login";
 
 
