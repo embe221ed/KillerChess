@@ -27,17 +27,17 @@ public class UserControllerTests {
 
     @Test
     public void simpleSuccessTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/register")
-                .param("Username", "michal")
-                .param("Password", "matuszewski"))
+        mvc.perform(MockMvcRequestBuilders.post("/register")
+                .param("username", "jan")
+                .param("password", "Kowalsky9@"))
                 .andExpect(status().is(200));
     }
 
     @Test
     public void simpleFailedTest() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/reporting/details")
-                .param("Username", "michal")
-                .param("Password", "OKON"))
-                .andExpect(status().is(404));
+        mvc.perform(MockMvcRequestBuilders.post("/register")
+                .param("username", "jan")
+                .param("password", "wrongpassword"))
+                .andExpect(status().is(406));
     }
 }
