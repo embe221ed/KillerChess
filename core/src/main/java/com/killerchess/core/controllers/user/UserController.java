@@ -1,11 +1,12 @@
 package com.killerchess.core.controllers.user;
 
 import com.killerchess.core.dto.UserDTO;
+import com.killerchess.core.exceptions.UndefinedException;
 import com.killerchess.core.services.RegisterService;
 import com.killerchess.core.services.UserService;
 import com.killerchess.core.user.User;
+import com.killerchess.core.util.FieldNames;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,75 +25,76 @@ public class UserController {
     private static final String LOGIN_PATH = "/login";
 
 
-    private final UserService userService;
+    private final UserService service;
     private final RegisterService registerService;
 
     @Autowired
     public UserController(UserService userService, RegisterService registerService) {
-        this.userService = userService;
+        this.service = userService;
         this.registerService = registerService;
     }
 
+
     @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH)
     public List<User> register() {
-        // TODO here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne
-        return userService.findAll();
+        //here need to "return" or somehow "changeScene" in order to give User possibility to see the register screne
+        return service.findAll();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = REGISTER_PATH)
-    public ResponseEntity register(@RequestParam(value = "username") String name,
-                                   @RequestParam(value = "password") String password,
-                                   HttpServletRequest request) {
+    //This method is example. We can use HttpServletResponse as a method parameter instead of ResponseEntity.
+    //It's depends of situation. If we want to have a file in response or sth like that, we will user HttpServletResponse.
+    @RequestMapping(method = RequestMethod.GET, value = REGISTER_PATH_SAMPLE)
+    public ResponseEntity register(HttpServletRequest request) {
         try {
-            request.getSession();
             UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(name);
-            userDTO.setPassword(password);
-            if (registerService.validate(userDTO)) {
-                User user = new User();
-                user.setLogin(name);
-                user.setPassword(password);
-                userService.save(user);
-                return new ResponseEntity(HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            userDTO.setUsername(request.getParameter(FieldNames.USERNAME.getName()));
+            userDTO.setPassword(request.getParameter(FieldNames.PASSWORD.getName()));
+            registerService.isValidUser(userDTO);
+        } catch (Throwable e) {
+            UndefinedException undefinedException = new UndefinedException(e);
+            System.out.println(undefinedException.getMessage());
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    public void register(@RequestParam(value = "username") String name,
+                         @RequestParam(value = "encryptedPassword") String encryptedPassword) {
+        //here we need to "register" new user and maybe return info, that registration succeded or failed
+        /*
+        sample code:
+        try {
+            User newUser = new User();
+            newUser.username = username;
+            newUser.encryptedPassword = encryptedPassword;
+            userRepository.save(newUser);
+            }
+        catch(Exception  e){
+
+        }
+        */
     }
 
     @RequestMapping(method = RequestMethod.GET, value = LOGIN_PATH)
-    public ResponseEntity login(HttpServletRequest request) {
+    public void login() {
         //same as register GET method, but login
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("username", request.getSession().getAttribute("username").toString());
-        return new ResponseEntity(headers, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = LOGIN_PATH)
-    public ResponseEntity login(@RequestParam(value = "username") String name,
-                                @RequestParam(value = "password") String password,
-                                HttpServletRequest request) {
+    public void login(@RequestParam(value = "username") String name,
+                      @RequestParam(value = "encryptedPassword") String encryptedPassword) {
+        //here we need to "login" our User or not (if something will go wrong) and of course depending on result, redirectng to main menu or to loginView once again
+        /*
+        sample code:
         try {
-            request.getSession();
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(name);
-            userDTO.setPassword(password);
-            if (userService.isValidUser(userDTO.getUsername())) {
-                User user = new User();
-                user.setLogin(userDTO.getUsername());
-                user = userService.find(user);
-                if (user.getPassword().equals(userDTO.getPassword())) {
-                    request.getSession().setAttribute("username", user.getLogin());
-                    return new ResponseEntity(HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-                }
+            User loggingUser = new User();
+            newUser.username = username;
+            newUser.encryptedPassword = encryptedPassword;
+            Boolean giveCredentials = userRepository.exists(newUser);
             }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        catch(Exception  e){
+
         }
-        return new ResponseEntity(HttpStatus.OK);
+        */
     }
 }
