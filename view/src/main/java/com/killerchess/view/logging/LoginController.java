@@ -41,7 +41,7 @@ public class LoginController {
                 // Getting HttpEntity which is later send to server
                 requestEntity = localSessionSingleton.getHttpEntity(loginParametersMap);
                 // exchange data with server
-                responseEntity = restTemplate.exchange(HOST + LOGIN_PATH, HttpMethod.GET, requestEntity, ResponseEntity.class);
+                responseEntity = restTemplate.exchange(HOST + "/users", HttpMethod.GET, requestEntity, ResponseEntity.class);
                 // add parameter to local session to have global access to data
                 localSessionSingleton.addParameter("username", responseEntity.getHeaders().getFirst("username"));
                 System.out.println(localSessionSingleton.getParameter("username"));
