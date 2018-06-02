@@ -1,6 +1,6 @@
 package com.killerchess.core.services;
 
-import com.killerchess.core.dto.UserDTO;
+import com.killerchess.view.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
 @Service

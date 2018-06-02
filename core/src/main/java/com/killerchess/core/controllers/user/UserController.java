@@ -1,9 +1,9 @@
 package com.killerchess.core.controllers.user;
 
-import com.killerchess.core.dto.UserDTO;
 import com.killerchess.core.services.RegisterService;
 import com.killerchess.core.services.UserService;
 import com.killerchess.core.user.User;
+import com.killerchess.view.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.killerchess.core.controllers.app;
 
-import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.services.UserService;
+import com.killerchess.view.dto.RankingRegistryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

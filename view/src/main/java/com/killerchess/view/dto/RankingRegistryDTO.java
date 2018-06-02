@@ -1,4 +1,4 @@
-package com.killerchess.core.dto;
+package com.killerchess.view.dto;
 
 public class RankingRegistryDTO {
     private int points;
