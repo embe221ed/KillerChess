@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class RegisterService {
 
     //TODO Usually, we will contact via service with repository. It's example.
-    public Boolean validate(UserDTO userDTO) {
-        return userDTO.getPassword().length() > 8;
+    public Boolean isValidUser(UserDTO userDTO) {
+        return userDTO.getPassword().length() > 8 && !userDTO.getPassword().equals(userDTO.getUsername());
     }
 }

@@ -48,7 +48,7 @@ public class UserController {
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(name);
             userDTO.setPassword(password);
-            if (registerService.validate(userDTO)) {
+            if (registerService.isValidUser(userDTO)) {
                 User user = new User();
                 user.setLogin(name);
                 user.setPassword(password);

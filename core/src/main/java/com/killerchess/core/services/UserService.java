@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService implements IUserService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final RankingRepository rankingRepository;
@@ -22,7 +22,6 @@ public class UserService implements IUserService {
         this.rankingRepository = rankingRepository;
     }
 
-    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -31,7 +30,6 @@ public class UserService implements IUserService {
         return rankingRepository.findAll();
     }
 
-    @Override
     public Boolean isValidUser(String userLogin) throws AuthenticationFailedException{
 
         if(!userRepository.existsById(userLogin)){
@@ -40,13 +38,11 @@ public class UserService implements IUserService {
         return true;
     }
 
-    @Override
     public User save(User entity) {
         userRepository.save(entity);
         return entity;
     }
 
-    @Override
     public User find(User entity) {
         return userRepository.findByLogin(entity.getLogin());
     }
