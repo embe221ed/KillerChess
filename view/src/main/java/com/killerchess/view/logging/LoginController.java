@@ -1,7 +1,7 @@
 package com.killerchess.view.logging;
 
-import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
+import com.killerchess.view.session.LocalSessionSingleton;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -41,7 +41,7 @@ public class LoginController {
                 // Getting HttpEntity which is later send to server
                 requestEntity = localSessionSingleton.getHttpEntity(loginParametersMap);
                 // exchange data with server
-                responseEntity = restTemplate.exchange(HOST + "/users", HttpMethod.GET, requestEntity, ResponseEntity.class);
+                responseEntity = restTemplate.exchange(HOST + LOGIN_PATH, HttpMethod.GET, requestEntity, ResponseEntity.class);
                 // add parameter to local session to have global access to data
                 localSessionSingleton.addParameter("username", responseEntity.getHeaders().getFirst("username"));
                 System.out.println(localSessionSingleton.getParameter("username"));

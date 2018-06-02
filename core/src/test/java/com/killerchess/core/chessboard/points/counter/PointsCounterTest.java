@@ -14,11 +14,12 @@ class PointsCounterTest/* extends TestCase*/ {
     // White player lost chessmen of 15 pts value
     // Black player lost chessmen of 14 pts value
     private static final String OUTPUT_ARRANGEMENT_JSON = "{\"1\":[\"RW\",\"HW\",\"BW\",\"XX\",\"KW\",\"BW\",\"XX\",\"RW\"],\"2\":[\"PW\",\"XX\",\"PW\",\"PW\",\"XX\",\"PW\",\"PW\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"PB\",\"XX\",\"PB\",\"PB\",\"PB\",\"PB\",\"PB\",\"XX\"],\"8\":[\"XX\",\"HB\",\"BB\",\"QB\",\"XX\",\"BB\",\"HB\",\"RB\"]}";
-    private static PointsCounter pointsCounter;
+
+    private PointsCounter pointsCounter;
 
     @BeforeAll
     void setUp() {
-        pointsCounter = new PointsCounter(new StateInterpreter());
+        this.pointsCounter = new PointsCounter(new StateInterpreter());
     }
 
     @Test

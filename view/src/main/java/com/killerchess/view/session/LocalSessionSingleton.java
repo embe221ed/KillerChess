@@ -1,4 +1,4 @@
-package com.killerchess.core.session;
+package com.killerchess.view.session;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
