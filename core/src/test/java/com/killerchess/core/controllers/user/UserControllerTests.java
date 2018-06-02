@@ -38,6 +38,6 @@ public class UserControllerTests {
         mvc.perform(MockMvcRequestBuilders.get("/reporting/details")
                 .param("Username", "michal")
                 .param("Password", "OKON"))
-                .andExpect(status().is(403));
+                .andExpect(status().is(404));
     }
 }
