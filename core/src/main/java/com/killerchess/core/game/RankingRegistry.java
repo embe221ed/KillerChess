@@ -13,6 +13,7 @@ public class RankingRegistry {
     private String userLogin;
 
     @Id
+    @Column(name = "user_login")
     public String getUserLogin() {
         return userLogin;
     }
@@ -20,13 +21,14 @@ public class RankingRegistry {
         this.userLogin = userLogin;
     }
 
-    @OneToOne
     @MapsId
+    @OneToOne
     public User getUser() {
         return user;
     }
     public void setUser(User user) {
         this.user = user;
+        this.userLogin = user.getLogin();
     }
 
     @Column(name = "points")
