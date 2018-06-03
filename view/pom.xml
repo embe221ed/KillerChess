@@ -12,4 +12,11 @@
     <groupId>com.killerchess.view</groupId>
     <artifactId>view</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.killerchess.core</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
