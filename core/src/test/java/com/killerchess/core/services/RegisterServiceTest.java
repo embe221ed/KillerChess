@@ -1,7 +1,7 @@
 package com.killerchess.core.services;
 
-import com.killerchess.view.View;
-import com.killerchess.view.dto.UserDTO;
+import com.killerchess.core.Core;
+import com.killerchess.core.dto.UserDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = View.class)
+@SpringBootTest(classes = Core.class)
 @AutoConfigureMockMvc
 @WebAppConfiguration
 @ActiveProfiles("test")
