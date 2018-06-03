@@ -1,7 +1,7 @@
 package com.killerchess.view.logging;
 
-import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
+import com.killerchess.view.session.LocalSessionSingleton;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

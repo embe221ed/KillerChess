@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessmans.*;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Component
 public class StateInterpreter {
 
     public ChessBoard convertJsonBoardToChessBoard(String jsonBoard) {
@@ -22,7 +24,7 @@ public class StateInterpreter {
         return new ChessBoard(chessBoard);
     }
 
-    public ObjectNode convertChessBoardToJsonBoard(ChessBoard chessBoard) {
+    ObjectNode convertChessBoardToJsonBoard(ChessBoard chessBoard) {
         var colSize = chessBoard.getChessBoardColumnsSize();
         var rowSize = chessBoard.getChessBoardRowsSize();
 

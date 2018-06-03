@@ -1,6 +1,11 @@
 package com.killerchess.core.chessboard.points.counter;
 
+import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
+import static org.junit.Assert.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PointsCounterTest/* extends TestCase*/ {
@@ -9,11 +14,12 @@ class PointsCounterTest/* extends TestCase*/ {
     // White player lost chessmen of 15 pts value
     // Black player lost chessmen of 14 pts value
     private static final String OUTPUT_ARRANGEMENT_JSON = "{\"1\":[\"RW\",\"HW\",\"BW\",\"XX\",\"KW\",\"BW\",\"XX\",\"RW\"],\"2\":[\"PW\",\"XX\",\"PW\",\"PW\",\"XX\",\"PW\",\"PW\",\"XX\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"PB\",\"XX\",\"PB\",\"PB\",\"PB\",\"PB\",\"PB\",\"XX\"],\"8\":[\"XX\",\"HB\",\"BB\",\"QB\",\"XX\",\"BB\",\"HB\",\"RB\"]}";
-    private static PointsCounter pointsCounter;
-/*
+
+    private PointsCounter pointsCounter;
+
     @BeforeAll
-    public void setUp() {
-        pointsCounter = new PointsCounter();
+    void setUp() {
+        this.pointsCounter = new PointsCounter(new StateInterpreter());
     }
 
     @Test
@@ -37,5 +43,5 @@ class PointsCounterTest/* extends TestCase*/ {
         var blackPlayerPoints =
                 pointsCounter.countBlackPlayerPoints(DEFAULT_ARRANGEMENT_JSON, DEFAULT_ARRANGEMENT_JSON);
         assertEquals(Integer.valueOf(0), blackPlayerPoints);
-    }*/
+    }
 }
