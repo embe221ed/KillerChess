@@ -1,5 +1,8 @@
 package com.killerchess.core.chessboard.scenarios;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum GameScenariosEnum {
     CLASSICAL(0, "Classical arrangement", "{\"1\":[\"RW\",\"HW\",\"BW\",\"QW\",\"KW\",\"BW\",\"HW\",\"RW\"],\"2\":[\"PW\",\"PW\",\"PW\",\"PW\",\"PW\",\"PW\",\"PW\",\"PW\"],\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"5\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"6\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"7\":[\"PB\",\"PB\",\"PB\",\"PB\",\"PB\",\"PB\",\"PB\",\"PB\"],\"8\":[\"RB\",\"HB\",\"BB\",\"QB\",\"KB\",\"BB\",\"HB\",\"RB\"]}"
     ),
@@ -32,5 +35,9 @@ public enum GameScenariosEnum {
 
     public String getArrangement() {
         return arrangement;
+    }
+
+    public List<GameScenariosEnum> getAllEnumConstants() {
+        return Arrays.asList(GameScenariosEnum.class.getEnumConstants());
     }
 }
