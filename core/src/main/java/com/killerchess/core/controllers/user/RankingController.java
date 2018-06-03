@@ -1,8 +1,8 @@
 package com.killerchess.core.controllers.user;
 
+import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.game.RankingRegistry;
 import com.killerchess.core.services.RankingService;
-import com.killerchess.view.dto.RankingRegistryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
