@@ -14,7 +14,7 @@ public class Game {
     private User guest;
 
     @Id
-    @Column(name = "gameId")
+    @Column(name = "game_id")
     public String getGameId() {
         return gameId;
     }
@@ -23,7 +23,7 @@ public class Game {
         this.gameId = id;
     }
 
-    @Column(name = "gameName")
+    @Column(name = "game_name")
     public String getGameName() {
         return gameName;
     }
