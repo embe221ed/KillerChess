@@ -1,11 +1,9 @@
 package com.killerchess.core.session;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.HttpCookie;
 import java.util.Collections;
@@ -61,6 +59,20 @@ public class LocalSessionSingleton {
         return this.cookie != null;
     }
 
+    public <T> ResponseEntity<T> exchange(String url, HttpMethod httpMethod, MultiValueMap<String, String> parameters,
+                                          Class<T> responseEntity) {
+        var requestEntity = getHttpEntity(parameters);
+        var restTemplate = new RestTemplate();
+        return restTemplate.exchange(url, httpMethod, requestEntity, responseEntity);
+    }
+
+    //TODO AK przerobić wszystkie części kodu wykorzystujące tę metodę tak, by wykorzystywać exchange
+
+    // (przykład w RoomCreatorController) i tę zrobić prywatną
+    public HttpEntity<MultiValueMap<String, String>> getHttpEntity(MultiValueMap<String, String> map) {
+        return new HttpEntity<>(map, getHeaders());
+    }
+
     private HttpHeaders getHeaders() {
         if (isCookieSet()) {
             HttpHeaders headers = new HttpHeaders();
@@ -72,7 +84,4 @@ public class LocalSessionSingleton {
         }
     }
 
-    public HttpEntity<MultiValueMap<String, String>> getHttpEntity(MultiValueMap<String, String> map) {
-        return new HttpEntity<>(map, getHeaders());
-    }
 }

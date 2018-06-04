@@ -8,18 +8,28 @@ import javax.persistence.*;
 @Table(name = "game")
 public class Game {
 
-    private Integer gameId;
+    private String gameId;
+    private String gameName;
     private User host;
     private User guest;
 
     @Id
     @Column(name = "gameId")
-    public Integer getGameId() {
+    public String getGameId() {
         return gameId;
     }
 
-    public void setGameId(Integer id) {
+    public void setGameId(String id) {
         this.gameId = id;
+    }
+
+    @Column(name = "gameName")
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String name) {
+        this.gameName = name;
     }
 
     @ManyToOne

@@ -34,7 +34,8 @@ public class RegistrationController {
                 RestTemplate restTemplate = new RestTemplate();
                 LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
                 var requestEntity = localSessionSingleton.getHttpEntity(registrationParametersMap);
-                ResponseEntity responseEntity = restTemplate.exchange(LoginController.HOST + REGISTER_PATH, HttpMethod.POST, requestEntity, ResponseEntity.class);
+                ResponseEntity responseEntity = restTemplate.exchange(LoginController.HOST + REGISTER_PATH,
+                        HttpMethod.POST, requestEntity, ResponseEntity.class);
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
                     if (!localSessionSingleton.isCookieSet()) {
                         localSessionSingleton.setCookie(responseEntity);

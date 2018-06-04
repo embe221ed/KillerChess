@@ -15,14 +15,16 @@ public class GameService {
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
     private final GameStateRepository gameStateRepository;
+
     @Autowired
-    public GameService(UserRepository userRepository, GameRepository gameRepository, GameStateRepository gameStateRepository) {
+    public GameService(UserRepository userRepository, GameRepository gameRepository,
+                       GameStateRepository gameStateRepository) {
         this.userRepository = userRepository;
         this.gameRepository = gameRepository;
         this.gameStateRepository = gameStateRepository;
     }
 
-    public void initNewGame(String hostName, String guestName)throws Exception{
+    public void initNewGame(String hostName, String guestName) {
 
         Game newGame = new Game();
         newGame.setHost(userRepository.findByLogin(hostName));
@@ -30,32 +32,40 @@ public class GameService {
         gameRepository.save(newGame);
     }
 
-    public String getSpecificGameState(Integer gameId, Integer gameStateNumber)throws NullPointerException{
+    public void initNewGame(String gameId, String gameName, String host) {
+        var game = new Game();
+        game.setGameId(gameId);
+        game.setGameName(gameName);
+        game.setHost(userRepository.findByLogin(host));
+        gameRepository.save(game);
+    }
+
+    public String getSpecificGameState(Integer gameId, Integer gameStateNumber) throws NullPointerException {
 
         GameStateIdentity gameStateIdentity = new GameStateIdentity();
         Game game = gameRepository.findByGameId(gameId);
 
-        if(game == null)
+        if (game == null)
             throw new NullPointerException();
 
         gameStateIdentity.setGame(game);
         gameStateIdentity.setGameStateNumber(gameStateNumber);
 
         GameState gameState = gameStateRepository.findByGameStateIdentity(gameStateIdentity);
-        if(gameState == null)
+        if (gameState == null)
             throw new NullPointerException();
 
         return gameState.getState();
     }
 
-    public void saveSpecificGameState(Integer gameId, String gameStateStr)throws Exception {
+    public void saveSpecificGameState(Integer gameId, String gameStateStr) {
 
         GameState gameStateInstance = new GameState();
         gameStateInstance.setState(gameStateStr);
 
         Game game = gameRepository.findByGameId(gameId);
 
-        if(game == null)
+        if (game == null)
             throw new NullPointerException();
 
         GameStateIdentity gameStateIdentity = new GameStateIdentity();

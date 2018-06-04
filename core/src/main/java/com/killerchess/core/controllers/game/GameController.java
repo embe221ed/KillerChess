@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @RestController
 public class GameController {
 
-    private static final String NEW_GAME_PATH = "/newGame";
+    public static final String NEW_GAME_PATH = "/newGame";
+    public static final String NEW_GAME_WITH_NAME_PATH = "/newGameWithName";
 
     private final GameService gameService;
     private final UserService userService;
@@ -29,14 +32,13 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.POST, value = NEW_GAME_PATH)
     public ResponseEntity newGame(@RequestParam(value = "hostName") String hostName,
-                                               @RequestParam(value = "guestName") String guestName,
-                                               @RequestParam(value = "gameType") String gameType) {
+                                  @RequestParam(value = "guestName") String guestName,
+                                  @RequestParam(value = "gameType") String gameType) {
 
-        try{
+        try {
             userService.isValidUser(hostName);
             userService.isValidUser(guestName);
-        }
-        catch(AuthenticationFailedException e){
+        } catch (AuthenticationFailedException e) {
             return new ResponseEntity(e.getHttpStatusCode());
         }
 
@@ -44,13 +46,26 @@ public class GameController {
             if (gameType.equals(FieldNames.PVP.getName())) {
                 gameService.initNewGame(hostName, guestName);
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
-       return new ResponseEntity(HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.POST, value = NEW_GAME_WITH_NAME_PATH)
+    public ResponseEntity newGameWithName(@RequestParam(value = "gameId") String gameId,
+                                          @RequestParam(value = "gameName") String gameName,
+                                          HttpServletRequest request) {
+        var username = request.getSession().getAttribute("username").toString();
+        try {
+            userService.isValidUser(username);
+        } catch (AuthenticationFailedException e) {
+            return new ResponseEntity(e.getHttpStatusCode());
+        }
+        gameService.initNewGame(gameId, gameName, username);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/gameBoard")
@@ -58,8 +73,7 @@ public class GameController {
 
         try {
             return gameService.getSpecificGameState(gameId, gameStateNumber);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return "";
         }
     }
@@ -69,8 +83,7 @@ public class GameController {
 
         try {
             gameService.saveSpecificGameState(gameId, gameState);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
