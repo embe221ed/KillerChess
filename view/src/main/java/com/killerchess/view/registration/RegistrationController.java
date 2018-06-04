@@ -3,6 +3,7 @@ package com.killerchess.view.registration;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.logging.LoginController;
+import com.killerchess.view.utils.CustomAlert;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -43,15 +44,11 @@ public class RegistrationController {
                     View.getInstance().changeScene("/logging.fxml");
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Passwords must be the same");
-                alert.showAndWait();
+                CustomAlert.showAndWait("Hasła muszą być takie same", Alert.AlertType.INFORMATION);
             }
         } catch (HttpStatusCodeException e) {
             if (e.getStatusCode().is4xxClientError()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("You must fill correctly all fields");
-                alert.showAndWait();
+                CustomAlert.showAndWait("Musisz wypełnić wszystkie pola poprawnie", Alert.AlertType.INFORMATION);
             }
         } catch (Exception e) {
             e.printStackTrace();

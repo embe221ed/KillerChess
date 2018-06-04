@@ -28,9 +28,7 @@ public class GameStateController {
     @RequestMapping(method = RequestMethod.POST, value = NEW_STATE_PATH)
     public ResponseEntity newState(@RequestParam(value = STATE_PARAM) String state,
                                    @RequestParam(value = GAME_ID_PARAM) String gameId) {
-
         gameService.saveSpecificGameState(gameId, state);
-
         return new ResponseEntity(HttpStatus.OK);
     }
 }

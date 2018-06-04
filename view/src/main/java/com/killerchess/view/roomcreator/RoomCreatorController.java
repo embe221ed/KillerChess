@@ -2,14 +2,13 @@ package com.killerchess.view.roomcreator;
 
 import com.killerchess.core.chessboard.scenarios.GameScenariosEnum;
 import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.view.View;
 import com.killerchess.view.logging.LoginController;
+import com.killerchess.view.utils.CustomAlert;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +44,7 @@ public class RoomCreatorController {
         initializeVBoxWithGameScenarios();
     }
 
-    public void handleCreateRoomButtonClick() {
+    public void handleCreateRoomButtonClick() throws Exception {
         var roomName = roomNameTextField.getCharacters().toString();
         var roomDatabaseId = String.format("%s_%s", roomName, UUID.randomUUID());
         var selectedScenario = (RadioButton) toggleGroupForSchemasRadioButtons.getSelectedToggle();
@@ -54,25 +53,26 @@ public class RoomCreatorController {
         createNewGame(roomName, roomDatabaseId, scenarioId);
     }
 
-    private void createNewGame(String roomName, String roomDatabaseId, String scenarioId) {
+    private void createNewGame(String roomName, String roomDatabaseId, String scenarioId) throws Exception {
         MultiValueMap<String, String> roomCreationParametersMap = new LinkedMultiValueMap<>();
         roomCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
         roomCreationParametersMap.add(GAME_NAME_PARAM, roomName);
 
         var session = LocalSessionSingleton.getInstance();
         var responseEntity = session.exchange(
-                LoginController.HOST + NEW_GAME_WITH_NAME_PATH, HttpMethod.POST,
+                LoginController.HOST + NEW_GAME_PATH, HttpMethod.POST,
                 roomCreationParametersMap,
                 ResponseEntity.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             createInitialMoveInGame(roomDatabaseId, scenarioId, session);
         } else {
-            System.out.println("Błąd przy tworzeniu gry");
+            CustomAlert.showAndWait("Błąd przy tworzeniu gry", Alert.AlertType.ERROR);
         }
     }
 
-    private void createInitialMoveInGame(String roomDatabaseId, String scenarioId, LocalSessionSingleton session) {
+    private void createInitialMoveInGame(String roomDatabaseId, String scenarioId, LocalSessionSingleton session)
+            throws Exception {
         Optional<String> scenarioArrangement = GameScenariosEnum.getAllEnumConstants().stream()
                 .filter(gameScenariosEnum -> gameScenariosEnum.getId().toString().equals(scenarioId))
                 .findFirst()
@@ -83,16 +83,20 @@ public class RoomCreatorController {
             gameStateCreationParametersMap.add(STATE_PARAM, scenarioArrangement.get());
             gameStateCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
 
-            var responseEntity2 = session.exchange(LoginController.HOST + NEW_STATE_PATH, HttpMethod.POST,
+            var responseEntity = session.exchange(LoginController.HOST + NEW_STATE_PATH, HttpMethod.POST,
                     gameStateCreationParametersMap, ResponseEntity.class);
-            if (responseEntity2.getStatusCode().is2xxSuccessful()) {
-                System.out.println("Stworzono pierwszy ruch");
+            if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                changeSceneToChessBoard();
             } else {
-                System.out.println("Nie udało się stworzyć pierwszego ruchu");
+                CustomAlert.showAndWait("Nie udało się stworzyć pierwszego ruchu.", Alert.AlertType.ERROR);
             }
         } else {
-            System.out.println("Błąd przy wyborze scenariusza");
+            CustomAlert.showAndWait("Błąd przy wyborze scenariusza.", Alert.AlertType.ERROR);
         }
+    }
+
+    private void changeSceneToChessBoard() throws Exception {
+        View.getInstance().changeScene("/chessboard.fxml");
     }
 
     private void initializeVBoxWithGameScenarios() {

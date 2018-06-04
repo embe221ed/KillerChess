@@ -2,6 +2,7 @@ package com.killerchess.view.logging;
 
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
+import com.killerchess.view.utils.CustomAlert;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -46,13 +47,11 @@ public class LoginController {
                 localSessionSingleton.addParameter("username", responseEntity.getHeaders().getFirst("username"));
                 System.out.println(localSessionSingleton.getParameter("username"));
 
-                View.getInstance().changeScene("/room_creator.fxml");
+                View.getInstance().changeScene("/main_screen.fxml");
             }
         } catch (HttpStatusCodeException e) {
             if (e.getStatusCode().is4xxClientError()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Wrong username or password");
-                alert.showAndWait();
+                CustomAlert.showAndWait("Wrong username or password", Alert.AlertType.ERROR);
             }
         } catch (Exception e) {
             e.printStackTrace();

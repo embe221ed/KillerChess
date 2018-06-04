@@ -23,14 +23,6 @@ public class GameService {
         this.gameStateRepository = gameStateRepository;
     }
 
-    public void initNewGame(String hostName, String guestName) {
-
-        Game newGame = new Game();
-        newGame.setHost(userRepository.findByLogin(hostName));
-        newGame.setGuest(userRepository.findByLogin(guestName));
-        gameRepository.save(newGame);
-    }
-
     public void initNewGame(String gameId, String gameName, String host) {
         var game = new Game();
         game.setGameId(gameId);
