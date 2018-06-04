@@ -21,6 +21,9 @@ public class GameController {
     public static final String NEW_GAME_PATH = "/newGame";
     public static final String NEW_GAME_WITH_NAME_PATH = "/newGameWithName";
 
+    public static final String GAME_ID_PARAM = "gameId";
+    public static final String GAME_NAME_PARAM = "gameId";
+
     private final GameService gameService;
     private final UserService userService;
 
@@ -54,8 +57,8 @@ public class GameController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = NEW_GAME_WITH_NAME_PATH)
-    public ResponseEntity newGameWithName(@RequestParam(value = "gameId") String gameId,
-                                          @RequestParam(value = "gameName") String gameName,
+    public ResponseEntity newGameWithName(@RequestParam(value = GAME_ID_PARAM) String gameId,
+                                          @RequestParam(value = GAME_NAME_PARAM) String gameName,
                                           HttpServletRequest request) {
         var username = request.getSession().getAttribute("username").toString();
         try {

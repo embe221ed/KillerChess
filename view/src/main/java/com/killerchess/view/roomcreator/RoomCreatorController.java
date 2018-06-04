@@ -19,7 +19,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.killerchess.core.controllers.game.GameController.NEW_GAME_WITH_NAME_PATH;
+import static com.killerchess.core.controllers.game.GameController.*;
 
 public class RoomCreatorController {
 
@@ -54,8 +54,8 @@ public class RoomCreatorController {
 
     private void createNewGame(String roomName, String roomDatabaseId, String scenarioId) {
         MultiValueMap<String, String> roomCreationParametersMap = new LinkedMultiValueMap<>();
-        roomCreationParametersMap.add("game_id", roomDatabaseId);
-        roomCreationParametersMap.add("game_name", roomName);
+        roomCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
+        roomCreationParametersMap.add(GAME_NAME_PARAM, roomName);
 
         var responseEntity = LocalSessionSingleton.getInstance().exchange(
                 LoginController.HOST + NEW_GAME_WITH_NAME_PATH, HttpMethod.POST,
