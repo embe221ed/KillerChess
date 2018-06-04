@@ -2,7 +2,6 @@ package com.killerchess.core.services;
 
 import com.killerchess.core.game.Game;
 import com.killerchess.core.game.GameState;
-import com.killerchess.core.game.GameStateIdentity;
 import com.killerchess.core.repositories.GameRepository;
 import com.killerchess.core.repositories.GameStateRepository;
 import com.killerchess.core.repositories.UserRepository;
@@ -40,39 +39,18 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public String getSpecificGameState(Integer gameId, Integer gameStateNumber) throws NullPointerException {
-
-        GameStateIdentity gameStateIdentity = new GameStateIdentity();
+    public void saveSpecificGameState(String gameId, String gameStateStr) {
         Game game = gameRepository.findByGameId(gameId);
 
-        if (game == null)
+        if (game == null) {
             throw new NullPointerException();
+        }
 
-        gameStateIdentity.setGame(game);
-        gameStateIdentity.setGameStateNumber(gameStateNumber);
+        GameState gameState = new GameState();
+        gameState.setState(gameStateStr);
+        gameState.setGame(game);
 
-        GameState gameState = gameStateRepository.findByGameStateIdentity(gameStateIdentity);
-        if (gameState == null)
-            throw new NullPointerException();
-
-        return gameState.getState();
-    }
-
-    public void saveSpecificGameState(Integer gameId, String gameStateStr) {
-
-        GameState gameStateInstance = new GameState();
-        gameStateInstance.setState(gameStateStr);
-
-        Game game = gameRepository.findByGameId(gameId);
-
-        if (game == null)
-            throw new NullPointerException();
-
-        GameStateIdentity gameStateIdentity = new GameStateIdentity();
-        gameStateIdentity.setGame(game);
-        gameStateInstance.setGameStateIdentity(gameStateIdentity);
-
-        gameStateRepository.save(gameStateInstance);
+        gameStateRepository.save(gameState);
     }
 
 }

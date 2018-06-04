@@ -1,11 +1,10 @@
 package com.killerchess.core.repositories;
 
 import com.killerchess.core.game.GameState;
-import com.killerchess.core.game.GameStateIdentity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GameStateRepository extends JpaRepository<GameState, GameStateIdentity> {
-    GameState findByGameStateIdentity(GameStateIdentity gameStateIdentity);
+public interface GameStateRepository extends JpaRepository<GameState, Integer> {
+//    GameState findByGameId(Integer id);
 }

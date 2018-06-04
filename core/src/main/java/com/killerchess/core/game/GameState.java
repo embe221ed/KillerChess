@@ -1,18 +1,42 @@
 package com.killerchess.core.game;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
+import com.sun.istack.NotNull;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "game_state")
 public class GameState {
 
     private String state;
-    private GameStateIdentity gameStateIdentity;
 
-    @Column(name = "state")
+    private int gameStateNumber;
+    private Game game;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
+    @Column(name = "game_state_number")
+    public int getGameStateNumber() {
+        return gameStateNumber;
+    }
+
+    public void setGameStateNumber(int gameStateNumber) {
+        this.gameStateNumber = gameStateNumber;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "game_id")
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    @Column(name = "state", length = 1024)
     public String getState() {
         return state;
     }
@@ -21,11 +45,18 @@ public class GameState {
         this.state = state;
     }
 
-    @EmbeddedId
-    public GameStateIdentity getGameStateIdentity() {
-        return gameStateIdentity;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameState gameState = (GameState) o;
+        return Objects.equals(state, gameState.state) &&
+                Objects.equals(gameStateNumber, gameState.gameStateNumber) &&
+                Objects.equals(game, gameState.game);
     }
 
-    public void setGameStateIdentity(GameStateIdentity gameStateIdentity) { this.gameStateIdentity = gameStateIdentity; }
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(state, gameStateNumber, game);
+    }
 }

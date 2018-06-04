@@ -20,6 +20,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.killerchess.core.controllers.game.GameController.*;
+import static com.killerchess.core.controllers.state.GameStateController.NEW_STATE_PATH;
+import static com.killerchess.core.controllers.state.GameStateController.STATE_PARAM;
 
 public class RoomCreatorController {
 
@@ -57,25 +59,39 @@ public class RoomCreatorController {
         roomCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
         roomCreationParametersMap.add(GAME_NAME_PARAM, roomName);
 
-        var responseEntity = LocalSessionSingleton.getInstance().exchange(
+        var session = LocalSessionSingleton.getInstance();
+        var responseEntity = session.exchange(
                 LoginController.HOST + NEW_GAME_WITH_NAME_PATH, HttpMethod.POST,
                 roomCreationParametersMap,
                 ResponseEntity.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            //create first move in game
-            Optional<String> scenarioArrangement = GameScenariosEnum.getAllEnumConstants().stream()
-                    .filter(gameScenariosEnum -> gameScenariosEnum.getId().toString().equals(scenarioId))
-                    .findFirst()
-                    .map(GameScenariosEnum::getArrangement);
-
-            if (scenarioArrangement.isPresent()) {
-
-            } else {
-                System.out.println("Błąd przy wyborze scenariusza");
-            }
+            createInitialMoveInGame(roomDatabaseId, scenarioId, session);
         } else {
             System.out.println("Błąd przy tworzeniu gry");
+        }
+    }
+
+    private void createInitialMoveInGame(String roomDatabaseId, String scenarioId, LocalSessionSingleton session) {
+        Optional<String> scenarioArrangement = GameScenariosEnum.getAllEnumConstants().stream()
+                .filter(gameScenariosEnum -> gameScenariosEnum.getId().toString().equals(scenarioId))
+                .findFirst()
+                .map(GameScenariosEnum::getArrangement);
+
+        if (scenarioArrangement.isPresent()) {
+            MultiValueMap<String, String> gameStateCreationParametersMap = new LinkedMultiValueMap<>();
+            gameStateCreationParametersMap.add(STATE_PARAM, scenarioArrangement.get());
+            gameStateCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
+
+            var responseEntity2 = session.exchange(LoginController.HOST + NEW_STATE_PATH, HttpMethod.POST,
+                    gameStateCreationParametersMap, ResponseEntity.class);
+            if (responseEntity2.getStatusCode().is2xxSuccessful()) {
+                System.out.println("Stworzono pierwszy ruch");
+            } else {
+                System.out.println("Nie udało się stworzyć pierwszego ruchu");
+            }
+        } else {
+            System.out.println("Błąd przy wyborze scenariusza");
         }
     }
 

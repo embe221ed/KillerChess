@@ -22,7 +22,7 @@ public class GameController {
     public static final String NEW_GAME_WITH_NAME_PATH = "/newGameWithName";
 
     public static final String GAME_ID_PARAM = "gameId";
-    public static final String GAME_NAME_PARAM = "gameId";
+    public static final String GAME_NAME_PARAM = "gameName";
 
     private final GameService gameService;
     private final UserService userService;
@@ -71,7 +71,7 @@ public class GameController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/gameBoard")
+    /*@RequestMapping(method = RequestMethod.GET, value = "/gameBoard")
     public String gameBoard(Integer gameId, Integer gameStateNumber) {
 
         try {
@@ -79,9 +79,9 @@ public class GameController {
         } catch (Exception e) {
             return "";
         }
-    }
+    }*/
 
-    @RequestMapping(method = RequestMethod.POST, value = "/gameBoard")
+    /*@RequestMapping(method = RequestMethod.POST, value = "/gameBoard")
     public ResponseEntity gameBoard(Integer gameId, String gameState) {
 
         try {
@@ -92,5 +92,5 @@ public class GameController {
         }
 
         return new ResponseEntity(HttpStatus.OK);
-    }
+    }*/
 }

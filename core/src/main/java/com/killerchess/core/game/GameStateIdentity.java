@@ -1,24 +1,23 @@
+/*
 package com.killerchess.core.game;
 import com.sun.istack.NotNull;
+import org.springframework.format.annotation.NumberFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
 public class GameStateIdentity implements Serializable {
 
-
     private Integer gameStateNumber;
     private Game game;
 
-    @Column(name = "game_state_number")
     @NotNull
+    @Column(name = "game_state_number")
     public int getGameStateNumber() {
         return gameStateNumber;
     }
+
     public void setGameStateNumber(int gameStateNumber) {
         this.gameStateNumber = gameStateNumber;
     }
@@ -41,3 +40,4 @@ public class GameStateIdentity implements Serializable {
         return gameStateNumber.equals(that.gameStateNumber);
     }
 }
+*/
