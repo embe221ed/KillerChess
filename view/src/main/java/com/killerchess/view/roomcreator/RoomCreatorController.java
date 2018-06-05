@@ -3,7 +3,7 @@ package com.killerchess.view.roomcreator;
 import com.killerchess.core.chessboard.scenarios.GameScenariosEnum;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
-import com.killerchess.view.logging.LoginController;
+import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

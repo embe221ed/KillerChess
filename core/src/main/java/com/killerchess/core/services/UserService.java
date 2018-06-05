@@ -1,6 +1,5 @@
 package com.killerchess.core.services;
 
-import com.killerchess.core.exceptions.AuthenticationFailedException;
 import com.killerchess.core.repositories.UserRepository;
 import com.killerchess.core.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Boolean isValidUser(String userLogin) throws AuthenticationFailedException{
-
-        if(!userRepository.existsById(userLogin)){
-            throw new AuthenticationFailedException();
-        }
-        return true;
-    }
-
     public User save(User entity) {
         userRepository.save(entity);
         return entity;
@@ -37,5 +28,9 @@ public class UserService {
 
     public User find(User entity) {
         return userRepository.findByLogin(entity.getLogin());
+    }
+
+    public boolean existsUser(User entity) {
+        return userRepository.existsById(entity.getLogin());
     }
 }
