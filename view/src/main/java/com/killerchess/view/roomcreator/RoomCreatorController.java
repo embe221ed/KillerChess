@@ -65,13 +65,13 @@ public class RoomCreatorController {
                 ResponseEntity.class);
 
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            createInitialMoveInGame(roomDatabaseId, scenarioId, session);
+            createInitialMoveInGame(roomDatabaseId, scenarioId);
         } else {
             CustomAlert.showAndWait("Błąd przy tworzeniu gry", Alert.AlertType.ERROR);
         }
     }
 
-    private void createInitialMoveInGame(String roomDatabaseId, String scenarioId, LocalSessionSingleton session)
+    private void createInitialMoveInGame(String roomDatabaseId, String scenarioId)
             throws Exception {
         Optional<String> scenarioArrangement = GameScenariosEnum.getAllEnumConstants().stream()
                 .filter(gameScenariosEnum -> gameScenariosEnum.getId().toString().equals(scenarioId))
@@ -83,8 +83,8 @@ public class RoomCreatorController {
             gameStateCreationParametersMap.add(STATE_PARAM, scenarioArrangement.get());
             gameStateCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
 
-            var responseEntity = session.exchange(LoginController.HOST + NEW_STATE_PATH, HttpMethod.POST,
-                    gameStateCreationParametersMap, ResponseEntity.class);
+            var responseEntity = LocalSessionSingleton.getInstance().exchange(LoginController.HOST + NEW_STATE_PATH,
+                    HttpMethod.POST, gameStateCreationParametersMap, ResponseEntity.class);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 changeSceneToChessBoard();
             } else {

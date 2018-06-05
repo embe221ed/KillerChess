@@ -1,5 +1,6 @@
 package com.killerchess.core.controllers.state;
 
+import com.killerchess.core.exceptions.GameNotFoundException;
 import com.killerchess.core.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class GameStateController {
 
     @RequestMapping(method = RequestMethod.POST, value = NEW_STATE_PATH)
     public ResponseEntity newState(@RequestParam(value = STATE_PARAM) String state,
-                                   @RequestParam(value = GAME_ID_PARAM) String gameId) {
+                                   @RequestParam(value = GAME_ID_PARAM) String gameId) throws GameNotFoundException {
         gameService.saveSpecificGameState(gameId, state);
         return new ResponseEntity(HttpStatus.OK);
     }

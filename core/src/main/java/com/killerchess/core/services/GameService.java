@@ -1,5 +1,6 @@
 package com.killerchess.core.services;
 
+import com.killerchess.core.exceptions.GameNotFoundException;
 import com.killerchess.core.game.Game;
 import com.killerchess.core.game.GameState;
 import com.killerchess.core.repositories.GameRepository;
@@ -31,11 +32,11 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public void saveSpecificGameState(String gameId, String gameStateStr) {
+    public void saveSpecificGameState(String gameId, String gameStateStr) throws GameNotFoundException {
         Game game = gameRepository.findByGameId(gameId);
 
         if (game == null) {
-            throw new NullPointerException();
+            throw new GameNotFoundException("Game with ID: " + gameId + " not found in database.");
         }
 
         GameState gameState = new GameState();

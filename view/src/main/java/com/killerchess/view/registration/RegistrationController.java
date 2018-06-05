@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestTemplate;
 
 public class RegistrationController {
     public Button registerButton;
@@ -28,15 +27,16 @@ public class RegistrationController {
             String login = loginField.getText();
             String password = passwordField.getText();
             String repeatPassword = repeatPasswordField.getText();
+
             if (password.equals(repeatPassword)) {
                 MultiValueMap<String, String> registrationParametersMap = new LinkedMultiValueMap<>();
                 registrationParametersMap.add("username", login);
                 registrationParametersMap.add("password", password);
-                RestTemplate restTemplate = new RestTemplate();
+
                 LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-                var requestEntity = localSessionSingleton.getHttpEntity(registrationParametersMap);
-                ResponseEntity responseEntity = restTemplate.exchange(LoginController.HOST + REGISTER_PATH,
-                        HttpMethod.POST, requestEntity, ResponseEntity.class);
+                var responseEntity = localSessionSingleton.exchange(LoginController.HOST + REGISTER_PATH,
+                        HttpMethod.POST, registrationParametersMap, ResponseEntity.class);
+
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
                     if (!localSessionSingleton.isCookieSet()) {
                         localSessionSingleton.setCookie(responseEntity);

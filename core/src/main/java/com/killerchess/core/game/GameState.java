@@ -1,7 +1,5 @@
 package com.killerchess.core.game;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -16,7 +14,6 @@ public class GameState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "game_state_number")
     public int getGameStateNumber() {
         return gameStateNumber;
