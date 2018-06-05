@@ -1,4 +1,4 @@
-package com.killerchess.view.logging;
+package com.killerchess.view.loging;
 
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
@@ -51,7 +51,7 @@ public class LoginController {
             }
         } catch (HttpStatusCodeException e) {
             if (e.getStatusCode().is4xxClientError()) {
-                CustomAlert.showAndWait("Wrong username or password", Alert.AlertType.ERROR);
+                CustomAlert.showAndWait(e.getResponseBodyAsString(), Alert.AlertType.ERROR);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -53,17 +53,18 @@ public class UserController {
                                    HttpServletRequest request) {
         try {
             request.getSession();
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(name);
-            userDTO.setPassword(password);
-            if (registerService.isValidUser(userDTO)) {
-                User user = new User();
-                user.setLogin(name);
-                user.setPassword(password);
-                userService.save(user);
-                return new ResponseEntity(HttpStatus.OK);
+            User user = new User();
+            user.setLogin(name);
+            user.setPassword(password);
+            if (!userService.existsUser(user)) {
+                if (registerService.isValidUser(user)) {
+                    userService.save(user);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("Wrong password or login!", HttpStatus.NOT_ACCEPTABLE);
+                }
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                return new ResponseEntity<>("User with that login already exists", HttpStatus.NOT_ACCEPTABLE);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -84,23 +85,21 @@ public class UserController {
                                 HttpServletRequest request) {
         try {
             request.getSession();
-            UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(name);
-            userDTO.setPassword(password);
-            if (userService.isValidUser(userDTO.getUsername())) {
-                User user = new User();
-                user.setLogin(userDTO.getUsername());
-                user = userService.find(user);
-                if (user.getPassword().equals(userDTO.getPassword())) {
+            User user = new User();
+            user.setLogin(name);
+            user.setPassword(password);
+            if (userService.existsUser(user)) {
+                if (user.getPassword().equals(userService.find(user).getPassword())) {
                     request.getSession().setAttribute("username", user.getLogin());
                     return new ResponseEntity(HttpStatus.OK);
                 } else {
-                    return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                    return new ResponseEntity<>("Wrong password", HttpStatus.NOT_ACCEPTABLE);
                 }
+            } else {
+                return new ResponseEntity<>("User with that login doesn't exist", HttpStatus.NOT_ACCEPTABLE);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(HttpStatus.OK);
     }
 }

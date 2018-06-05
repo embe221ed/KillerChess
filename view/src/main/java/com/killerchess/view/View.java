@@ -27,7 +27,7 @@ public class View extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
-        this.changeScene("/logging.fxml");
+        this.changeScene("/loging.fxml");
     }
 
     public void changeScene(String fxml) throws Exception {

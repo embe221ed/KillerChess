@@ -1,7 +1,7 @@
 package com.killerchess.core.services;
 
 import com.killerchess.core.Core;
-import com.killerchess.core.dto.UserDTO;
+import com.killerchess.core.user.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,66 +26,66 @@ public class RegisterServiceTest {
 
     @Test
     public void whenPasswordIsCorrect() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("username");
-        userDTO.setPassword("Abcdef1!");
-        assertTrue(registerService.isValidUser(userDTO));
+        User user = new User();
+        user.setLogin("username");
+        user.setPassword("Abcdef1!");
+        assertTrue(registerService.isValidUser(user));
     }
 
     @Test
     public void whenPasswordIsTooShort() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("username");
-        userDTO.setPassword("Abcde1!");
-        assertFalse(registerService.isValidUser(userDTO));
+        User user = new User();
+        user.setLogin("username");
+        user.setPassword("Abcde1!");
+        assertFalse(registerService.isValidUser(user));
     }
 
     @Test
     public void whenPasswordIsTooLong() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("username");
-        userDTO.setPassword("Abcdefghijklmnopqrstuvwz1!");
-        assertFalse(registerService.isValidUser(userDTO));
+        User user = new User();
+        user.setLogin("username");
+        user.setPassword("Abcdefghijklmnopqrstuvwz1!");
+        assertFalse(registerService.isValidUser(user));
     }
 
     @Test
     public void whenPasswordHasNoNumbers() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("username");
-        userDTO.setPassword("Abcdef!!");
-        assertFalse(registerService.isValidUser(userDTO));
+        User user = new User();
+        user.setLogin("username");
+        user.setPassword("Abcdef!!");
+        assertFalse(registerService.isValidUser(user));
     }
 
     @Test
     public void whenPasswordHasNoSpecialSigns() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("username");
-        userDTO.setPassword("Abcdef11");
-        assertFalse(registerService.isValidUser(userDTO));
+        User user = new User();
+        user.setLogin("username");
+        user.setPassword("Abcdef11");
+        assertFalse(registerService.isValidUser(user));
     }
 
     @Test
     public void whenPasswordHasNoSmallLetters() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("username");
-        userDTO.setPassword("ABCDEF1!");
-        assertFalse(registerService.isValidUser(userDTO));
+        User user = new User();
+        user.setLogin("username");
+        user.setPassword("ABCDEF1!");
+        assertFalse(registerService.isValidUser(user));
     }
 
     @Test
     public void whenPasswordHasNoCapilats() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("username");
-        userDTO.setPassword("abcdef1!");
-        assertFalse(registerService.isValidUser(userDTO));
+        User user = new User();
+        user.setLogin("username");
+        user.setPassword("abcdef1!");
+        assertFalse(registerService.isValidUser(user));
     }
 
     @Test
     public void whenPasswordHasSpace() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("username");
-        userDTO.setPassword("Abcde 1!");
-        assertFalse(registerService.isValidUser(userDTO));
+        User user = new User();
+        user.setLogin("username");
+        user.setPassword("Abcde 1!");
+        assertFalse(registerService.isValidUser(user));
     }
 
 }

@@ -2,7 +2,7 @@ package com.killerchess.view.registration;
 
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
-import com.killerchess.view.logging.LoginController;
+import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -41,14 +41,14 @@ public class RegistrationController {
                     if (!localSessionSingleton.isCookieSet()) {
                         localSessionSingleton.setCookie(responseEntity);
                     }
-                    View.getInstance().changeScene("/logging.fxml");
+                    View.getInstance().changeScene("/loging.fxml");
                 }
             } else {
-                CustomAlert.showAndWait("Hasła muszą być takie same", Alert.AlertType.INFORMATION);
+                CustomAlert.showAndWait("Passwords must be the same", Alert.AlertType.INFORMATION);
             }
         } catch (HttpStatusCodeException e) {
             if (e.getStatusCode().is4xxClientError()) {
-                CustomAlert.showAndWait("Musisz wypełnić wszystkie pola poprawnie", Alert.AlertType.INFORMATION);
+                CustomAlert.showAndWait(e.getResponseBodyAsString(), Alert.AlertType.INFORMATION);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +57,7 @@ public class RegistrationController {
 
     public void handleCancelButtonClicked() {
         try {
-            View.getInstance().changeScene("/logging.fxml");
+            View.getInstance().changeScene("/loging.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }
