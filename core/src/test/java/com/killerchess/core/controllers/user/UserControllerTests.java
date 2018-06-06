@@ -57,4 +57,25 @@ public class UserControllerTests {
                 .param("password", "Kowalsky9@"))
                 .andExpect(status().is(406));
     }
+
+    @Test
+    public void whenLoggingSuccess() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post("/register")
+                .param("username", "olaf")
+                .param("password", "Kowalsky9@"))
+                .andExpect(status().is(200));
+
+        mvc.perform(MockMvcRequestBuilders.post("/login")
+                .param("username", "olaf")
+                .param("password", "Kowalsky9@"))
+                .andExpect(status().is(200));
+    }
+
+    @Test
+    public void whenLoggingFailBecauseUserDoesNotExist() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.post("/login")
+                .param("username", "pawel")
+                .param("password", "Kowalsky9@"))
+                .andExpect(status().is(406));
+    }
 }
