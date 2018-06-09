@@ -16,7 +16,7 @@ public class RankingService {
         this.rankingRepository = rankingRepository;
     }
 
-    public List<RankingRegistry> findByUsername(String username) {
+    public RankingRegistry findByUsername(String username) {
         return rankingRepository.findByUserLogin(username);
     }
 
@@ -25,6 +25,6 @@ public class RankingService {
     }
 
     public List<RankingRegistry> findAllSorted(int points) {
-        return rankingRepository.findAllByPointsGreaterThanOrderByPoints(points);
+        return rankingRepository.findAllByPointsGreaterThanOrderByPointsDesc(points);
     }
 }

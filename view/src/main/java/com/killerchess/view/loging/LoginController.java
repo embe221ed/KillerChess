@@ -21,6 +21,7 @@ public class LoginController {
 
     public static final String HOST = "http://localhost:8080";
     private static final String LOGIN_PATH = "/login";
+    private static final String GET_LOGIN_PATH = "/getLogin";
 
     public void handleLoginButtonClicked() {
         try {
@@ -42,7 +43,7 @@ public class LoginController {
                 // Getting HttpEntity which is later send to server
                 requestEntity = localSessionSingleton.getHttpEntity(loginParametersMap);
                 // exchange data with server
-                responseEntity = restTemplate.exchange(HOST + LOGIN_PATH, HttpMethod.GET, requestEntity, ResponseEntity.class);
+                responseEntity = restTemplate.exchange(HOST + GET_LOGIN_PATH, HttpMethod.GET, requestEntity, ResponseEntity.class);
                 // add parameter to local session to have global access to data
                 localSessionSingleton.addParameter("username", responseEntity.getHeaders().getFirst("username"));
                 System.out.println(localSessionSingleton.getParameter("username"));

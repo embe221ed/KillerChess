@@ -1,5 +1,7 @@
 package com.killerchess.core.controllers.game;
 
+import com.killerchess.core.dto.GameDTO;
+import com.killerchess.core.game.Game;
 import com.killerchess.core.services.GameService;
 import com.killerchess.core.services.UserService;
 import com.killerchess.core.user.User;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -19,6 +23,7 @@ public class GameController {
 
     public static final String NEW_GAME_PATH = "/newGame";
     public static final String GAME_BOARD_PATH = "/gameBoard";
+    public static final String AVAILABLE_GAMES = "/availableGames";
     public static final String GAME_ID_PARAM = "gameId";
     public static final String GAME_NAME_PARAM = "gameName";
     public static final String GAME_STATE_PARAM = "gameState";
@@ -65,5 +70,23 @@ public class GameController {
         }
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = AVAILABLE_GAMES)
+    public ResponseEntity<List> getAvailableGames() {
+        try {
+            List<Game> availableGamesList = gameService.findAvailableGames();
+            List<GameDTO> availableGamesDTOS = new ArrayList<>();
+            for (var availableGame : availableGamesList) {
+                GameDTO availableGameDTO = new GameDTO();
+                availableGameDTO.setGameId(availableGame.getGameId());
+                availableGameDTO.setGameName(availableGame.getGameName());
+                availableGameDTO.setHost(availableGame.getHost().getLogin());
+                availableGamesDTOS.add(availableGameDTO);
+            }
+            return new ResponseEntity<>(availableGamesDTOS, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
