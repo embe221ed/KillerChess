@@ -23,6 +23,7 @@ public class GameController {
 
     public static final String NEW_GAME_PATH = "/newGame";
     public static final String GAME_BOARD_PATH = "/gameBoard";
+    public static final String GAME_BOARD_LIST_PATH = "/listOfGameStates";
     public static final String AVAILABLE_GAMES = "/availableGames";
     public static final String GAME_ID_PARAM = "gameId";
     public static final String GAME_NAME_PARAM = "gameName";
@@ -52,14 +53,17 @@ public class GameController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = GAME_BOARD_PATH)
-    public String gameBoard(@RequestParam(value = GAME_ID_PARAM) String gameId,
-                            @RequestParam(value = GAME_STATE_NUMBER_PARAM) Integer gameStateNumber) {
-        //TODO trzeba zaimplementować.
-        return null;
+    @RequestMapping(method = RequestMethod.GET, value = GAME_BOARD_LIST_PATH)
+    public ResponseEntity<List<String>> listOfGameStatesForGame(@RequestParam(value = GAME_ID_PARAM) String gameId) {
+        try {
+            List<String> availableGamesList = gameService.getListOfGameStatesForGame(gameId);
+            return new ResponseEntity<>(availableGamesList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "GAME_BOARD_PATH")
+    @RequestMapping(method = RequestMethod.POST, value = GAME_BOARD_PATH)
     public ResponseEntity gameBoard(@RequestParam(value = GAME_ID_PARAM) String gameId,
                                     @RequestParam(value = GAME_STATE_PARAM) String gameState) {
         try {
