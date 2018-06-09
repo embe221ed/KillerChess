@@ -34,9 +34,11 @@ public class ChessmanImage extends StackPane {
         return prevMouseY;
     }
 
-    public ChessmanImage(Chessman chessman, ChessmanType type, ChessmanColourEnum colour, int chessmanStyleNumber, int x, int y){
-        this.type = type;
+    public ChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
+        ChessmanType chessmanType = ChessmanType.getTypeFromSymbol(chessman.getSymbol());
+        ChessmanColourEnum colour = chessman.getColour();
         this.chessman = chessman;
+        this.type = chessmanType;
         relocate(x * GameBoard.TILE_SIZE + 7, y * GameBoard.TILE_SIZE + 7);
         File file;
         if(type != ChessmanType.EMPTY) {

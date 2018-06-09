@@ -51,9 +51,8 @@ public class GameBoard extends Application {
     }
 
     private ChessmanImage createChesmanImageFromChesman(Chessman chessman, int x, int y) {
-        ChessmanType chessmanType = ChessmanType.getTypeFromSymbol(chessman.getSymbol());
-        ChessmanColourEnum chessmanColour = chessman.getColour();
-        ChessmanImage chessmanImage = createChessmanImage(chessman, chessmanType, chessmanColour, 1, x, y);
+
+        ChessmanImage chessmanImage = createChessmanImage(chessman,1, x, y);
 
         chessmanImage.setOnMouseReleased(e -> {
             int newX = toBoard(chessmanImage.getLayoutX());
@@ -78,8 +77,8 @@ public class GameBoard extends Application {
         return chessmanImage;
     }
 
-    private ChessmanImage createChessmanImage(Chessman chessman, ChessmanType type, ChessmanColourEnum colour, int chessmanStyleNumber, int x, int y){
-        return new ChessmanImage(chessman, type, colour, chessmanStyleNumber, x, y);
+    private ChessmanImage createChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
+        return new ChessmanImage(chessman, chessmanStyleNumber, x, y);
         }
 
 
