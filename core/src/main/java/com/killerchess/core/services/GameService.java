@@ -9,6 +9,8 @@ import com.killerchess.core.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class GameService {
@@ -44,6 +46,10 @@ public class GameService {
         gameState.setGame(game);
 
         gameStateRepository.save(gameState);
+    }
+
+    public List<Game> findAvailableGames() {
+        return gameRepository.findAllByGuestIsNull();
     }
 
 }
