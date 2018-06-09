@@ -58,9 +58,9 @@ public class GameController {
         return null;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "GAME_BOARD_PATH")
+    @RequestMapping(method = RequestMethod.POST, value = NEW_STATE_PATH)
     public ResponseEntity gameBoard(@RequestParam(value = GAME_ID_PARAM) String gameId,
-                                    @RequestParam(value = GAME_STATE_PARAM) String gameState) {
+                                    @RequestParam(value = STATE_PARAM) String gameState) {
         try {
             gameService.saveSpecificGameState(gameId, gameState);
         } catch (Exception e) {

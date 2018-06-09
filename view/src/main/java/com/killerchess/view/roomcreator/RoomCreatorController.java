@@ -94,7 +94,7 @@ public class RoomCreatorController {
     }
 
     private void changeSceneToChessBoard() throws Exception {
-        View.getInstance().changeScene("/chessboard.fxml");
+        View.getInstance().changeScene("/main_screen.fxml");
     }
 
     private void initializeVBoxWithGameScenarios() {
