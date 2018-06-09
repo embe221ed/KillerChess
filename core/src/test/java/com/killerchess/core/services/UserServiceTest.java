@@ -53,17 +53,14 @@ public class UserServiceTest {
 
     @Test
     public void whenUserRepositoryIsNotEmpty() {
-        User user1 = new User();
-        user1.setLogin(usernames.get(0));
-        user1.setPassword("Abcdef1!");
+        User user1 = new User(usernames.get(0));
+        user1.setHashedPassword("Abcdef1!");
 
-        User user2 = new User();
-        user2.setLogin(usernames.get(1));
-        user2.setPassword("Abcdef1!");
+        User user2 = new User(usernames.get(1));
+        user2.setHashedPassword("Abcdef1!");
 
-        User user3 = new User();
-        user3.setLogin(usernames.get(2));
-        user3.setPassword("Abcdef1!");
+        User user3 = new User(usernames.get(2));
+        user3.setHashedPassword("Abcdef1!");
 
         userService.save(user1);
         userService.save(user2);
@@ -74,24 +71,22 @@ public class UserServiceTest {
 
     @Test
     public void whenUserIsSaved() {
-        User user1 = new User();
-        user1.setLogin(usernames.get(0));
-        user1.setPassword("Abcdef1!");
+        User user1 = new User(usernames.get(0));
+        user1.setHashedPassword("Abcdef1!");
 
         userService.save(user1);
 
         assertEquals(userService.find(user1), user1);
-        assertTrue(userService.existsUser(user1));
+        assertTrue(userService.existsLogin(usernames.get(0)));
     }
 
     @Test
     public void whenUserIsNotSaved() {
-        User user1 = new User();
-        user1.setLogin(usernames.get(0));
-        user1.setPassword("Abcdef1!");
+        User user1 = new User(usernames.get(0));
+        user1.setHashedPassword("Abcdef1!");
 
         assertNull(userService.find(user1));
-        assertFalse(userService.existsUser(user1));
+        assertFalse(userService.existsLogin(usernames.get(0)));
     }
 
 }
