@@ -39,7 +39,7 @@ public class UserService {
         return userRepository.findByLogin(entity.getLogin());
     }
 
-    public boolean existsUser(User entity) {
-        return userRepository.existsById(entity.getLogin());
+    public boolean existsLogin(String login) {
+        return userRepository.existsById(login);
     }
 }

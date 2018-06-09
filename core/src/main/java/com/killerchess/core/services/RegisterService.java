@@ -1,16 +1,19 @@
 package com.killerchess.core.services;
 
-import com.killerchess.core.user.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RegisterService {
 
-    //TODO Usually, we will contact via service with repository. It's example.
-    public Boolean isValidUser(User user) {
-        String password = user.getPassword();
-        return !password.toLowerCase().equals(user.getLogin().toLowerCase())
-                && password.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\_\\+\\-\\=])" +
-                "(?=.*[A-Z])(?!.*\\s).{8,}$") && password.length() <= 25;
+    private static final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\_\\+\\-\\=])(?=.*[A-Z])(?!.*\\s).{8,}$";
+    private static final int PASSWORD_MAX_LENGTH = 25;
+
+    public Boolean isPasswordValid(String password) {
+        return password.matches(PASSWORD_REGEX)
+                && password.length() <= PASSWORD_MAX_LENGTH;
+    }
+
+    public Boolean isValidUser(String login, String password) {
+        return !password.toLowerCase().equals(login.toLowerCase());
     }
 }
