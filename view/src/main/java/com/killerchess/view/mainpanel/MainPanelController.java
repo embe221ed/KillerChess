@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
@@ -32,16 +33,25 @@ public class MainPanelController {
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
+    public ImageView accountImage;
     public TextArea rankingText;
     public ImageView rankingImage;
     public TextArea helpText;
     public ImageView helpImage;
+    public ImageView firstPawnChoice;
+    public ImageView secondPawnChoice;
+    public ImageView thirdPawnChoice;
+    public ImageView actualPawnChoice;
+    public Button logoutButton;
+    public Text actualPawnChoiceText;
+    public Text choosePawnText;
 
 
     private String nick;
     private String userPoints;
     private int panelWidth;
     private int panelHeight;
+    private boolean selectedAccountTab = true;
 
     @FXML
     public void initialize() {
@@ -49,12 +59,46 @@ public class MainPanelController {
         setUserParameters();
         setRanking();
         initializeComponents();
+        accountImageListener();
         rankingImageListener();
         hideHelpInfo();
         helpImageListener();
+        if (selectedAccountTab) {
+            accountListeners();
+        }
 
 
     }
+
+    private void accountImageListener() {
+        accountImage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            rankingText.setVisible(false);
+            helpText.setVisible(false);
+            enableAccountFunctions(true);
+            event.consume();
+        });
+    }
+
+    private void accountListeners() {
+        firstPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            //TODO
+            System.out.println("First Pawn Chosen");
+            event.consume();
+        });
+
+        secondPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            //TODO
+            System.out.println("Second Pawn Chosen");
+            event.consume();
+        });
+
+        thirdPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            //TODO
+            System.out.println("Third Pawn Chosen");
+            event.consume();
+        });
+    }
+
 
     private void hideHelpInfo() {
         helpText.setEditable(false);
@@ -65,14 +109,28 @@ public class MainPanelController {
         helpImage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             rankingText.setVisible(false);
             helpText.setVisible(true);
+            enableAccountFunctions(false);
             event.consume();
         });
+    }
+
+    private void enableAccountFunctions(boolean bool) {
+        selectedAccountTab = bool;
+        logoutButton.setVisible(bool);
+        logoutButton.setDisable(!bool);
+        firstPawnChoice.setVisible(bool);
+        secondPawnChoice.setVisible(bool);
+        thirdPawnChoice.setVisible(bool);
+        actualPawnChoice.setVisible(bool);
+        choosePawnText.setVisible(bool);
+        actualPawnChoiceText.setVisible(bool);
     }
 
     private void rankingImageListener() {
         rankingImage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             rankingText.setVisible(true);
             helpText.setVisible(false);
+            enableAccountFunctions(false);
             event.consume();
         });
     }
@@ -114,8 +172,12 @@ public class MainPanelController {
     private void initializeComponents() {
         nickName.setText(nickName.getText() + " " + nick);
         rankingPointsForActualUser.setText(rankingPointsForActualUser.getText() + " " + userPoints);
-        Image image = new Image("images/avatar_" + nick + ".jpg", panelWidth / 3, panelHeight / 2, false, false);
-        userAvatar.setImage(image);
+        File f = new File("images/avatar_");
+        if (f.exists() && !f.isDirectory()) {
+            Image image = new Image("images/avatar_" + nick + ".jpg", panelWidth / 3, panelHeight / 2, false, false);
+            userAvatar.setImage(image);
+        }
+
     }
 
     public void handleNewRoomButtonClicked() {
@@ -131,4 +193,8 @@ public class MainPanelController {
     }
 
 
+    public void handleLogoutButton() {
+        //TODO
+        System.out.println("Logout button clicked!");
+    }
 }
