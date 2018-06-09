@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,20 +53,23 @@ public class UserController {
                                    @RequestParam(value = "password") String password,
                                    HttpServletRequest request) {
         try {
-            request.getSession();
-            User user = new User();
-            user.setLogin(name);
-            user.setPassword(password);
-            if (!userService.existsUser(user)) {
-                if (registerService.isValidUser(user)) {
-                    userService.save(user);
-                    return new ResponseEntity<>(HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>("Wrong password or login!", HttpStatus.NOT_ACCEPTABLE);
-                }
-            } else {
-                return new ResponseEntity<>("User with that login already exists", HttpStatus.NOT_ACCEPTABLE);
+            if (!registerService.isPasswordValid(password)) {
+                return new ResponseEntity<>("Wrong password. Password requirements: one big and small character, " +
+                        "one digit, one special sign, 8 up to 25 characters.",
+                        HttpStatus.NOT_ACCEPTABLE);
             }
+            if (!registerService.isValidUser(name, password)) {
+                return new ResponseEntity<>("Wrong user or password. Please provide password different from your login",
+                        HttpStatus.NOT_ACCEPTABLE);
+            }
+            if (userService.existsLogin(name)) {
+                return new ResponseEntity<>("User with that login already exists.", HttpStatus.NOT_ACCEPTABLE);
+            }
+            request.getSession();
+            User user = new User(name);
+            user.setHashedPassword(password);
+            userService.save(user);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -73,7 +77,6 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, value = LOGIN_PATH)
     public ResponseEntity login(HttpServletRequest request) {
-        //same as register GET method, but login
         HttpHeaders headers = new HttpHeaders();
         headers.set("username", request.getSession().getAttribute("username").toString());
         return new ResponseEntity(headers, HttpStatus.OK);
@@ -84,20 +87,20 @@ public class UserController {
                                 @RequestParam(value = "password") String password,
                                 HttpServletRequest request) {
         try {
-            request.getSession();
-            User user = new User();
-            user.setLogin(name);
-            user.setPassword(password);
-            if (userService.existsUser(user)) {
-                if (user.getPassword().equals(userService.find(user).getPassword())) {
-                    request.getSession().setAttribute("username", user.getLogin());
-                    return new ResponseEntity(HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>("Wrong password", HttpStatus.NOT_ACCEPTABLE);
-                }
-            } else {
-                return new ResponseEntity<>("User with that login doesn't exist", HttpStatus.NOT_ACCEPTABLE);
+            if (!userService.existsLogin(name)) {
+                return new ResponseEntity<>("User with that login doesn't exist.", HttpStatus.NOT_ACCEPTABLE);
             }
+            HttpSession session = request.getSession();
+            User user = new User(name);
+            User existingUser = userService.find(user);
+            user.setHashedPassword(password, existingUser.getSalt());
+            if (user.getPassword().equals(existingUser.getPassword())) {
+                session.setAttribute("username", user.getLogin());
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Wrong password.", HttpStatus.NOT_ACCEPTABLE);
+
+
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

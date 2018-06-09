@@ -2,7 +2,6 @@ package com.killerchess.core.controllers.game;
 
 import com.killerchess.core.services.GameService;
 import com.killerchess.core.services.UserService;
-import com.killerchess.core.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,13 +37,11 @@ public class GameController {
                                           @RequestParam(value = GAME_NAME_PARAM) String gameName,
                                           HttpServletRequest request) {
         var username = request.getSession().getAttribute("username").toString();
-        User user = new User(username);
-        if (userService.existsUser(user)) {
+        if (userService.existsLogin(username)) {
             gameService.initNewGame(gameId, gameName, username);
             return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = GAME_BOARD_PATH)
