@@ -22,7 +22,7 @@ public class UserController {
 
     private static final String REGISTER_PATH = "/register";
     private static final String LOGIN_PATH = "/login";
-    private static final String GET_LOGIN_PATH = "/getLogin";
+    public static final String GET_LOGIN_PATH = "/getLogin";
     private static final String USERS_PATH = "/users";
 
 

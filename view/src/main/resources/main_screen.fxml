@@ -1,84 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.1"
-            fx:controller="com.killerchess.view.mainpanel.MainPanelController">
+
+<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.killerchess.view.mainpanel.MainPanelController">
     <bottom>
-        <AnchorPane prefHeight="31.0" prefWidth="600.0" style="-fx-background-color: #BC6D63;"
-                    BorderPane.alignment="CENTER"/>
+        <AnchorPane prefHeight="31.0" prefWidth="600.0" style="-fx-background-color: #BC6D63;" BorderPane.alignment="CENTER" />
     </bottom>
     <left>
-        <AnchorPane prefHeight="518.0" prefWidth="219.0" style="-fx-background-color: #50a682;"
-                    BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="518.0" prefWidth="219.0" style="-fx-background-color: #50a682;" BorderPane.alignment="CENTER">
             <children>
-                <Button layoutX="40.0" layoutY="437.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="136.0"
-                        style="-fx-background-color: #0099ff;" text="Stwórz pokój" textFill="WHITE"/>
-                <ScrollBar layoutX="200.0" layoutY="13.0" orientation="VERTICAL" prefHeight="397.0" prefWidth="0.0"/>
+                <Button fx:id="createRoom" layoutX="40.0" layoutY="437.0" mnemonicParsing="false" onAction="#handleNewRoomButtonClicked" prefHeight="58.0" prefWidth="136.0" style="-fx-background-color: #0099ff;" text="Stwórz pokój" textFill="WHITE" />
+                <ScrollBar layoutX="200.0" layoutY="13.0" orientation="VERTICAL" prefHeight="397.0" prefWidth="0.0" />
                 <VBox layoutX="14.0" layoutY="13.0" prefHeight="398.0" prefWidth="177.0">
                     <children>
-                        <TextField prefHeight="63.0" prefWidth="178.0" style="-fx-background-color: #d5d5ce;"
-                                   text="Pierwszy pokój"/>
-                        <TextField prefHeight="66.0" prefWidth="178.0" style="-fx-background-color: #E0E0C8;"
-                                   text="Drugi pokój"/>
-                        <TextField prefHeight="63.0" prefWidth="178.0" style="-fx-background-color: #d5d5ce;"
-                                   text="Trzeci"/>
-                        <TextField prefHeight="66.0" prefWidth="178.0" style="-fx-background-color: #E0E0C8;"
-                                   text="Czwarty"/>
+                        <TextField prefHeight="63.0" prefWidth="178.0" style="-fx-background-color: #d5d5ce;" text="Pierwszy pokój" />
+                        <TextField prefHeight="66.0" prefWidth="178.0" style="-fx-background-color: #E0E0C8;" text="Drugi pokój" />
+                        <TextField prefHeight="63.0" prefWidth="178.0" style="-fx-background-color: #d5d5ce;" text="Trzeci" />
+                        <TextField prefHeight="66.0" prefWidth="178.0" style="-fx-background-color: #E0E0C8;" text="Czwarty" />
                     </children>
                 </VBox>
             </children>
         </AnchorPane>
     </left>
     <center>
-        <AnchorPane prefHeight="446.0" prefWidth="438.0" style="-fx-background-color: #E0E0C8;"
-                    BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="446.0" prefWidth="438.0" style="-fx-background-color: #E0E0C8;" BorderPane.alignment="CENTER">
             <children>
-                <TextArea layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0"
-                          style="-fx-background-color: #FBF9E7;"
-                          text="Tu będzie info o pokoju w który kliknęliśmy tylko raz. Dwa&#10;razy przenoszą nas do bezpośrednio do pokoju.&#10;&#10;&#10;Czcionki to jest minuta pracy. Narazie są defaultowe. &#10;Tak samo wyrównanie wszystkiego. Jak będę dopinał &#10;kontroller do tego fxmla to wtedy przy okazji to zrobię.&#10;Gdy klikniemy w pytajnik to wyjdzie okno z pomocą. &#10;Nie uzupelniałem pola dla profilu, bo nie wiem jakie tam&#10;ustawienia będą. &#10;&#10;"/>
-                <Text fx:id="nickName" layoutX="29.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Nick:" wrappingWidth="368.9921875"/>
-                <ImageView fx:id="userAvatar" fitHeight="150.0" fitWidth="200.0" layoutX="140.0" layoutY="22.0"
-                           pickOnBounds="true" preserveRatio="true">
+                <TextArea layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0" style="-fx-background-color: #FBF9E7;" text="Tu będzie info o pokoju w który kliknęliśmy tylko raz. Dwa&#10;razy przenoszą nas do bezpośrednio do pokoju.&#10;&#10;" />
+                <Text fx:id="nickName" layoutX="29.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nick:" wrappingWidth="368.9921875" />
+                <ImageView fx:id="userAvatar" fitHeight="150.0" fitWidth="200.0" layoutX="140.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@images/no_avatar.jpg"/>
+                        <Image url="@images/no_avatar.jpg" />
                     </image>
                 </ImageView>
-                <Text fx:id="rankingPointsForActualUser" layoutX="29.0" layoutY="237.0" strokeType="OUTSIDE"
-                      strokeWidth="0.0" text="Punkty rankingowe: " wrappingWidth="138.29180908203125"/>
+                <Text fx:id="rankingPointsForActualUser" layoutX="29.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Punkty rankingowe: " wrappingWidth="138.29180908203125" />
             </children>
         </AnchorPane>
     </center>
     <right>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #50a682;"
-                    BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #50a682;" BorderPane.alignment="CENTER">
             <children>
                 <AnchorPane layoutY="-2.0" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #213432;">
                     <children>
-                        <ImageView fitHeight="36.0" fitWidth="33.0" layoutX="127.0" layoutY="7.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fx:id="helpImage" fitHeight="36.0" fitWidth="33.0" layoutX="127.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@images/baseline_help_white_18dp.png"/>
+                                <Image url="@images/baseline_help_white_18dp.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="36.0" fitWidth="33.0" layoutX="39.0" layoutY="7.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fitHeight="36.0" fitWidth="33.0" layoutX="39.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@images/baseline_face_white_18dp.png"/>
+                                <Image url="@images/baseline_face_white_18dp.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="36.0" fitWidth="33.0" layoutX="84.0" layoutY="7.0" pickOnBounds="true"
-                                   preserveRatio="true">
+                        <ImageView fx:id="rankingImage" fitHeight="36.0" fitWidth="33.0" layoutX="84.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@images/baseline_people_white_18dp.png"/>
+                                <Image url="@images/baseline_people_white_18dp.png" />
                             </image>
                         </ImageView>
                     </children>
                 </AnchorPane>
-                <ListView layoutX="9.0" layoutY="56.0" prefHeight="410.0" prefWidth="182.0" visible="false"/>
+                <ListView layoutX="9.0" layoutY="56.0" prefHeight="410.0" prefWidth="182.0" visible="false" />
+            <TextArea fx:id="rankingText" editable="false" layoutX="9.0" layoutY="56.0" opacity="0.0" prefHeight="443.0" prefWidth="182.0" text="Ranking graczy:" />
+            <TextArea fx:id="helpText" editable="false" layoutX="6.0" layoutY="56.0" opacity="0.0" prefHeight="439.0" prefWidth="175.0" text="Tu będą jakieś info &#10;odnośnie tego widoku. &#10;Jak się gra itd." />
+            <Button fx:id="createRoom1" layoutX="32.0" layoutY="437.0" mnemonicParsing="false" onAction="#handleNewRoomButtonClicked" prefHeight="58.0" prefWidth="136.0" style="-fx-background-color: #0099ff;" text="Wyloguj" textFill="WHITE" />
+            <Text layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wybierz wygląd pionków:" wrappingWidth="181.9830722808838" />
             </children>
         </AnchorPane>
     </right>

@@ -1,5 +1,6 @@
 package com.killerchess.core.session;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -42,13 +43,13 @@ public class LocalSessionSingleton {
         return cookie;
     }
 
-    public void setCookie(HttpCookie cookie) {
-        this.cookie = cookie;
-    }
-
     public void setCookie(ResponseEntity responseEntity) {
         List<HttpCookie> cookies = HttpCookie.parse(responseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE));
         this.cookie = cookies.get(0);
+    }
+
+    public void setCookie(HttpCookie cookie) {
+        this.cookie = cookie;
     }
 
     public void clearCookie() {
@@ -66,6 +67,14 @@ public class LocalSessionSingleton {
         return restTemplate.exchange(url, httpMethod, requestEntity, responseEntity);
     }
 
+    public <T> ResponseEntity<List<T>> exchange(String url, HttpMethod httpMethod, MultiValueMap<String, String>
+            parameters,
+                                                ParameterizedTypeReference<List<T>>
+                                                        parameterizedTypeReference) {
+        var requestEntity = getHttpEntity(parameters);
+        var restTemplate = new RestTemplate();
+        return restTemplate.exchange(url, httpMethod, requestEntity, parameterizedTypeReference);
+    }
     //TODO AK przerobić wszystkie części kodu wykorzystujące tę metodę tak, by wykorzystywać exchange
 
     // (przykład w RoomCreatorController) i tę zrobić prywatną
@@ -83,5 +92,6 @@ public class LocalSessionSingleton {
             return null;
         }
     }
+
 
 }
