@@ -1,4 +1,4 @@
-package com.killerchess.core.controllers.user;
+package com.killerchess.core.controllers.app;
 
 import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.game.RankingRegistry;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class RankingController {
 
     private static final String RANKING_PATH = "/ranking";
+    private static final String GET_USER_RANKING_PATH = "/getUserRanking";
 
     private final RankingService rankingService;
 
@@ -36,5 +38,19 @@ public class RankingController {
             rankingRegistryDTOS.add(tempRankingRegistryDTO);
         }
         return new ResponseEntity<>(rankingRegistryDTOS, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = GET_USER_RANKING_PATH)
+    public ResponseEntity<RankingRegistryDTO> getUserRanking(HttpServletRequest request) {
+        try {
+            String username = request.getSession().getAttribute("username").toString();
+            RankingRegistry rankingRegistry = rankingService.findByUsername(username);
+            RankingRegistryDTO rankingRegistryDTO = new RankingRegistryDTO();
+            rankingRegistryDTO.setUsername(rankingRegistry.getUserLogin());
+            rankingRegistryDTO.setPoints(rankingRegistry.getPoints());
+            return new ResponseEntity<>(rankingRegistryDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
