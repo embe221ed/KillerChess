@@ -12,7 +12,7 @@ import java.util.List;
 public interface GameRepository extends JpaRepository<Game, String> {
     Game findByGameId(String id);
 
-    @Query("select state from GameState where gameId = :gameId")
+    @Query("select state from GameState where game_id = :gameId")
     List<String> getListOfStatesForGame(@Param("gameId") String gameId);
 
     List<Game> findAllByGuestIsNull();
