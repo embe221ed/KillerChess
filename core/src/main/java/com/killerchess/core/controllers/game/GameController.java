@@ -24,6 +24,8 @@ public class GameController {
     public static final String NEW_GAME_PATH = "/newGame";
     public static final String GAME_BOARD_PATH = "/gameBoard";
     public static final String AVAILABLE_GAMES = "/availableGames";
+    public static final String NEW_STATE_PATH = "/newState";
+    public static final String STATE_PARAM = "state";
     public static final String GAME_ID_PARAM = "gameId";
     public static final String GAME_NAME_PARAM = "gameName";
     public static final String GAME_STATE_PARAM = "gameState";
