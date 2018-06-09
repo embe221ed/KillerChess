@@ -22,6 +22,7 @@ public class UserController {
 
     private static final String REGISTER_PATH = "/register";
     private static final String LOGIN_PATH = "/login";
+    private static final String GET_LOGIN_PATH = "/getLogin";
     private static final String USERS_PATH = "/users";
 
 
@@ -71,9 +72,8 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = LOGIN_PATH)
+    @RequestMapping(method = RequestMethod.GET, value = GET_LOGIN_PATH)
     public ResponseEntity login(HttpServletRequest request) {
-        //same as register GET method, but login
         HttpHeaders headers = new HttpHeaders();
         headers.set("username", request.getSession().getAttribute("username").toString());
         return new ResponseEntity(headers, HttpStatus.OK);
