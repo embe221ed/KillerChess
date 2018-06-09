@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.UUID;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 
@@ -37,14 +39,9 @@ public class UserServiceTest {
 
             initialNumberOfUsers = userService.findAll().size();
 
-            int id = 1;
-            String usernameToCheck;
-            while (usernames.size() < 3) {
-                usernameToCheck = "username" + id++;
-                if (!userService.existsUser(new User(usernameToCheck))) {
-                    usernames.add(usernameToCheck);
-                }
-            }
+            String usernamePrefix = "username";
+            int numberOfUsersToAdd = 3;
+            IntStream.range(0, numberOfUsersToAdd).forEach((val) -> usernames.add(usernamePrefix + UUID.randomUUID()));
         }
 
     }
