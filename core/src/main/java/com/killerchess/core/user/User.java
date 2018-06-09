@@ -1,5 +1,6 @@
 package com.killerchess.core.user;
 
+import com.killerchess.core.user.crypter.Crypter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
@@ -17,8 +18,12 @@ public class User implements Serializable {
     @Id
     @Column(name = "login")
     private String login;
+
     @Column(name = "password")
     private String password;
+
+    @Column(name = "salt")
+    private String salt;
 
     public User() {
     }
@@ -31,29 +36,46 @@ public class User implements Serializable {
         return this.login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setHashedPassword(String password) {
+        String salt = Crypter.getSalt();
+        setHashedPassword(password, salt);
+    }
+
+    public void setHashedPassword(String password, String salt) {
+        String hashedPassword = Crypter.getHashedPassword(password, salt);
+        setPassword(hashedPassword);
+        setSalt(salt);
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
-    public void setPassword(String password) {
+    private void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSalt() {
+        return this.salt;
+    }
+
+    private void setSalt(String salt) {
+        this.salt = salt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User that = (User) o;
-        if (!login.equals(that.login)) return false;
-        return login.equals(that.login);
+        User user = (User) o;
+        return Objects.equals(login, user.login) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(salt, user.salt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password);
+
+        return Objects.hash(login, password, salt);
     }
 }
