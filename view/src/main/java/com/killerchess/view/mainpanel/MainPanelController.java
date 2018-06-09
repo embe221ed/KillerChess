@@ -1,17 +1,22 @@
 package com.killerchess.view.mainpanel;
 
+import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -20,10 +25,12 @@ import org.springframework.web.client.HttpStatusCodeException;
 
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
+import static com.killerchess.core.controllers.game.GameController.AVAILABLE_GAMES;
 import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PATH;
 
 
@@ -45,6 +52,7 @@ public class MainPanelController {
     public Button logoutButton;
     public Text actualPawnChoiceText;
     public Text choosePawnText;
+    public VBox roomsVBox;
 
 
     private String nick;
@@ -66,8 +74,33 @@ public class MainPanelController {
         if (selectedAccountTab) {
             accountListeners();
         }
+        initializeRoomsVBox();
+    }
 
+    private void initializeRoomsVBox() {
+        Text title = new Text(" Pokoje:");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        roomsVBox.getChildren().add(title);
 
+        ResponseEntity<List<GameDTO>> roomsResponse = LocalSessionSingleton.getInstance().exchange
+                (LoginController.HOST + AVAILABLE_GAMES,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<GameDTO>>() {
+                        });
+        List<GameDTO> gamesList = roomsResponse.getBody();
+        List<TextArea> gamesOptions = new ArrayList<>();
+
+        for (GameDTO gameDTO : gamesList) {
+            TextArea gameOption = new TextArea();
+            gameOption.setEditable(false);
+            gameOption.setText("Pokój: " + gameDTO.getGameName() + "\n"
+                    + "host: " + gameDTO.getHost() + "\n");
+            gamesOptions.add(gameOption);
+        }
+
+        for (TextArea gameOption : gamesOptions) {
+            VBox.setMargin(gameOption, new Insets(0, 0, 0, 8));
+            roomsVBox.getChildren().add(gameOption);
+        }
     }
 
     private void accountImageListener() {

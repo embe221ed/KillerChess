@@ -12,22 +12,21 @@
         <AnchorPane prefHeight="518.0" prefWidth="219.0" style="-fx-background-color: #50a682;" BorderPane.alignment="CENTER">
             <children>
                 <Button fx:id="createRoom" layoutX="40.0" layoutY="437.0" mnemonicParsing="false" onAction="#handleNewRoomButtonClicked" prefHeight="58.0" prefWidth="136.0" style="-fx-background-color: #0099ff;" text="Stwórz pokój" textFill="WHITE" />
-                <ScrollBar layoutX="200.0" layoutY="13.0" orientation="VERTICAL" prefHeight="397.0" prefWidth="0.0" />
-                <VBox layoutX="14.0" layoutY="13.0" prefHeight="398.0" prefWidth="177.0">
-                    <children>
-                        <TextField prefHeight="63.0" prefWidth="178.0" style="-fx-background-color: #d5d5ce;" text="Pierwszy pokój" />
-                        <TextField prefHeight="66.0" prefWidth="178.0" style="-fx-background-color: #E0E0C8;" text="Drugi pokój" />
-                        <TextField prefHeight="63.0" prefWidth="178.0" style="-fx-background-color: #d5d5ce;" text="Trzeci" />
-                        <TextField prefHeight="66.0" prefWidth="178.0" style="-fx-background-color: #E0E0C8;" text="Czwarty" />
-                    </children>
-                </VBox>
+                <ScrollPane layoutX="10.0" layoutY="14.0" prefHeight="414.0" prefWidth="180.0">
+                    <content>
+                        <VBox fx:id="roomsVBox" prefHeight="414.0" prefWidth="177.0"
+                              style="-fx-background-color: #E0E0C8;"/>
+                    </content>
+                </ScrollPane>
             </children>
         </AnchorPane>
     </left>
     <center>
         <AnchorPane prefHeight="446.0" prefWidth="438.0" style="-fx-background-color: #E0E0C8;" BorderPane.alignment="CENTER">
             <children>
-                <TextArea layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0" style="-fx-background-color: #FBF9E7;" text="Tu będzie info o pokoju w który kliknęliśmy tylko raz. Dwa&#10;razy przenoszą nas do bezpośrednio do pokoju.&#10;&#10;" />
+                <TextArea layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0"
+                          style="-fx-background-color: #FBF9E7;"
+                          text="Wybierz pokój. &#10;Kliknij raz aby zobaczyć więcej informacjio pokoju. &#10;Kliknij dwa razy żeby rozpocząć grę.&#10;&#10;"/>
                 <Text fx:id="nickName" layoutX="29.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nick:" wrappingWidth="368.9921875" />
                 <ImageView fx:id="userAvatar" fitHeight="150.0" fitWidth="200.0" layoutX="140.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                     <image>
