@@ -13,6 +13,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RankingService rankingService;
+    private final int DEFAULT_POINTS_VALUE = 0;
 
     @Autowired
     public UserService(UserRepository userRepository, RankingService rankingService) {
@@ -29,7 +30,7 @@ public class UserService {
         RankingRegistry rankingRegistry = new RankingRegistry();
         rankingRegistry.setUserLogin(entity.getLogin());
         rankingRegistry.setUser(entity);
-        rankingRegistry.setPoints(0);
+        rankingRegistry.setPoints(DEFAULT_POINTS_VALUE);
         rankingService.save(rankingRegistry);
         return entity;
     }

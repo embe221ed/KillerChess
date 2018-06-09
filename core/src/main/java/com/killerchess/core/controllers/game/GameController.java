@@ -77,9 +77,8 @@ public class GameController {
         try {
             List<Game> availableGamesList = gameService.findAvailableGames();
             List<GameDTO> availableGamesDTOS = new ArrayList<>();
-            GameDTO availableGameDTO;
             for (var availableGame : availableGamesList) {
-                availableGameDTO = new GameDTO();
+                GameDTO availableGameDTO = new GameDTO();
                 availableGameDTO.setGameId(availableGame.getGameId());
                 availableGameDTO.setGameName(availableGame.getGameName());
                 availableGameDTO.setHost(availableGame.getHost().getLogin());
