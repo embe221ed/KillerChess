@@ -4,8 +4,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="575.0" prefWidth="853.0" xmlns="http://javafx.com/javafx/9.0.1">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.1"
+            fx:controller="com.killerchess.view.mainpanel.MainPanelController">
     <bottom>
         <AnchorPane prefHeight="31.0" prefWidth="600.0" style="-fx-background-color: #BC6D63;"
                     BorderPane.alignment="CENTER"/>
@@ -39,16 +39,16 @@
                 <TextArea layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0"
                           style="-fx-background-color: #FBF9E7;"
                           text="Tu będzie info o pokoju w który kliknęliśmy tylko raz. Dwa&#10;razy przenoszą nas do bezpośrednio do pokoju.&#10;&#10;&#10;Czcionki to jest minuta pracy. Narazie są defaultowe. &#10;Tak samo wyrównanie wszystkiego. Jak będę dopinał &#10;kontroller do tego fxmla to wtedy przy okazji to zrobię.&#10;Gdy klikniemy w pytajnik to wyjdzie okno z pomocą. &#10;Nie uzupelniałem pola dla profilu, bo nie wiem jakie tam&#10;ustawienia będą. &#10;&#10;"/>
-                <Text layoutX="29.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nick:"
-                      wrappingWidth="57.9921875"/>
-                <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="140.0" layoutY="22.0" pickOnBounds="true"
-                           preserveRatio="true">
+                <Text fx:id="nickName" layoutX="29.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Nick:" wrappingWidth="368.9921875"/>
+                <ImageView fx:id="userAvatar" fitHeight="150.0" fitWidth="200.0" layoutX="140.0" layoutY="22.0"
+                           pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../../../../../Desktop/ae227e026f9f83e0342b0813626dd8a01bbb5cad_full.jpg"/>
+                        <Image url="@images/no_avatar.jpg"/>
                     </image>
                 </ImageView>
-                <Text layoutX="29.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Punkty rankingowe: "
-                      wrappingWidth="138.29180908203125"/>
+                <Text fx:id="rankingPointsForActualUser" layoutX="29.0" layoutY="237.0" strokeType="OUTSIDE"
+                      strokeWidth="0.0" text="Punkty rankingowe: " wrappingWidth="138.29180908203125"/>
             </children>
         </AnchorPane>
     </center>
@@ -61,19 +61,19 @@
                         <ImageView fitHeight="36.0" fitWidth="33.0" layoutX="127.0" layoutY="7.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
-                                <Image url="@../../../images/baseline-help-white-18/2x/baseline_help_white_18dp.png"/>
+                                <Image url="@images/baseline_help_white_18dp.png"/>
                             </image>
                         </ImageView>
                         <ImageView fitHeight="36.0" fitWidth="33.0" layoutX="39.0" layoutY="7.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
-                                <Image url="@../../../images/baseline-face-white-18/2x/baseline_face_white_18dp.png"/>
+                                <Image url="@images/baseline_face_white_18dp.png"/>
                             </image>
                         </ImageView>
                         <ImageView fitHeight="36.0" fitWidth="33.0" layoutX="84.0" layoutY="7.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
-                                <Image url="@../../../images/baseline-people-white-18/2x/baseline_people_white_18dp.png"/>
+                                <Image url="@images/baseline_people_white_18dp.png"/>
                             </image>
                         </ImageView>
                     </children>
@@ -82,20 +82,4 @@
             </children>
         </AnchorPane>
     </right>
-    <top>
-        <MenuBar BorderPane.alignment="CENTER">
-            <menus>
-                <Menu mnemonicParsing="false" text="Coś tu będzie może">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Close"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Zobaczymy">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-    </top>
 </BorderPane>

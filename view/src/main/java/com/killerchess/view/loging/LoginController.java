@@ -47,7 +47,7 @@ public class LoginController {
                 localSessionSingleton.addParameter("username", responseEntity.getHeaders().getFirst("username"));
                 System.out.println(localSessionSingleton.getParameter("username"));
 
-                View.getInstance().changeScene("/room_creator.fxml");
+                View.getInstance().changeScene("/main_screen.fxml");
             }
         } catch (HttpStatusCodeException e) {
             if (e.getStatusCode().is4xxClientError()) {
