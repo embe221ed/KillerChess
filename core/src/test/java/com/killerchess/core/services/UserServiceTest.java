@@ -40,8 +40,8 @@ public class UserServiceTest {
             initialNumberOfUsers = userService.findAll().size();
 
             String usernamePrefix = "username";
-            int numberOfUsersToAdd = 3;
-            IntStream.range(0, numberOfUsersToAdd).forEach((val) -> usernames.add(usernamePrefix + UUID.randomUUID()));
+            int usersToBeTestedCount = 3;
+            IntStream.range(0, usersToBeTestedCount).forEach((val) -> usernames.add(usernamePrefix + UUID.randomUUID()));
         }
 
     }
