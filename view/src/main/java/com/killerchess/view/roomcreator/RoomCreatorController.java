@@ -19,8 +19,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.killerchess.core.controllers.game.GameController.*;
-import static com.killerchess.core.controllers.state.GameStateController.NEW_STATE_PATH;
-import static com.killerchess.core.controllers.state.GameStateController.STATE_PARAM;
 
 public class RoomCreatorController {
 
