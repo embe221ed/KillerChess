@@ -10,5 +10,6 @@ import java.util.List;
 public interface RankingRepository extends JpaRepository<RankingRegistry, String> {
     RankingRegistry findByUserLogin(String username);
 
-    List<RankingRegistry> findAllByPointsGreaterThanOrderByPointsDesc(int points);
+    List<RankingRegistry> findAllByPointsGreaterThanEqualOrderByPointsDesc(int points);
+
 }
