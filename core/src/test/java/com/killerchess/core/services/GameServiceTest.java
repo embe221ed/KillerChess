@@ -56,11 +56,9 @@ public class GameServiceTest {
     @Test
     public void whenGameRepositoryIsNotEmpty() {
 
-        for (String gameId : gameIds) {
-            gameService.initNewGame(gamePrefix + gameId,
-                    gameNamePrefix + gameId,
-                    userPrefix + gameId);
-        }
+        gameIds.forEach(gameId -> gameService.initNewGame(gamePrefix + gameId,
+                gameNamePrefix + gameId,
+                userPrefix + gameId));
 
         assertEquals(gameService.findAvailableGames().size(), initialNumberOfGames + gamesToBeTestedCount);
     }
