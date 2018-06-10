@@ -26,8 +26,25 @@ public class Tile extends Rectangle {
         relocate(x * GameBoard.TILE_SIZE, y * GameBoard.TILE_SIZE);
 
         setFill(light ? Color.valueOf("#f0f2a2"): Color.valueOf("#775713"));
+    }
+
+    public void highlightGreen(){
+        setStrokeType(StrokeType.INSIDE);
+        setStroke(Color.GREEN);
+        setStrokeWidth(5.0);
+    }
+    public void highlightBlue(){
+        setStrokeType(StrokeType.INSIDE);
+        setStroke(Color.BLUE);
+        setStrokeWidth(5.0);
+    }
+    public void highlightRed(){
         setStrokeType(StrokeType.INSIDE);
         setStroke(Color.RED);
-        setStrokeWidth(2.0);
+        setStrokeWidth(5.0);
     }
+    public void removeHighlight(){
+        setStrokeWidth(0.0);
+    }
+
 }
