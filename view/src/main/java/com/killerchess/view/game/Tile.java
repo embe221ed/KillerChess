@@ -2,6 +2,7 @@ package com.killerchess.view.game;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 
 public class Tile extends Rectangle {
 
@@ -25,5 +26,8 @@ public class Tile extends Rectangle {
         relocate(x * GameBoard.TILE_SIZE, y * GameBoard.TILE_SIZE);
 
         setFill(light ? Color.valueOf("#f0f2a2"): Color.valueOf("#775713"));
+        setStrokeType(StrokeType.INSIDE);
+        setStroke(Color.RED);
+        setStrokeWidth(2.0);
     }
 }

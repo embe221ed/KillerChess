@@ -4,6 +4,9 @@ import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
+import com.killerchess.core.game.Game;
+import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.core.user.User;
 import javafx.util.Pair;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -26,10 +29,23 @@ public class GameBoard extends Application {
     private ChessBoard chessBoard;
 
     private StateInterpreter stateInterpreter;
+    private Game game;
+    LocalSessionSingleton localSessionSingleton;
 
     private Parent createContent(String gameBoardStateString){
         this.stateInterpreter = new StateInterpreter();
         this.chessBoard = stateInterpreter.convertJsonBoardToChessBoard(gameBoardStateString);
+        this.localSessionSingleton = LocalSessionSingleton.getInstance();
+        this.game = new Game();
+
+        User host = new User();
+        host.setLogin("host");
+
+        User guest = new User();
+        guest.setLogin("guest");
+
+        game.setHost(host);
+        game.setGuest(guest);
 
         Pane root = new Pane();
         root.setPrefSize(WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
@@ -51,36 +67,15 @@ public class GameBoard extends Application {
     }
 
     private ChessmanImage createChesmanImageFromChesman(Chessman chessman, int x, int y) {
-
         ChessmanImage chessmanImage = createChessmanImage(chessman,1, x, y);
 
-        chessmanImage.setOnMouseReleased(e -> {
-            int newX = toBoard(chessmanImage.getLayoutX());
-            int newY = toBoard(chessmanImage.getLayoutY());
-
-            MoveResult result = tryMove(chessmanImage, newX, newY);
-
-            switch(result.getMoveType()){
-                case NONE:
-                    chessmanImage.abortMove();
-                    break;
-                case NORMAL:
-                    chessmanImage.move(newX, newY);
-                    System.out.println(newX);
-                    System.out.println(newY);
-                    break;
-                case KILL:
-
-            }
-        });
-
+        setChessmanImageMouseFunctions(chessmanImage);
         return chessmanImage;
     }
 
     private ChessmanImage createChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
         return new ChessmanImage(chessman, chessmanStyleNumber, x, y);
         }
-
 
     private int toBoard(double pixel){
         return (int)(pixel + TILE_SIZE / 2) / TILE_SIZE;
@@ -95,6 +90,57 @@ public class GameBoard extends Application {
         else{
             return new MoveResult(MoveType.NONE);
         }
+    }
+
+    private void setChessmanImageMouseFunctions(ChessmanImage chessmanImage){
+        chessmanImage.setOnMousePressed(e ->{
+            if(canPlayerMoveChessman(chessmanImage)) {
+                chessmanImage.setMouseX(e.getSceneX());
+                chessmanImage.setMouseY(e.getSceneY());
+                chessmanImage.setPrevMouseX((int) (e.getSceneX() / 100) * 100 + 7);
+                chessmanImage.setPrevMouseY((int) (e.getSceneY() / 100) * 100 + 7);
+            }
+        });
+        chessmanImage.setOnMouseDragged(e ->{
+            if(canPlayerMoveChessman(chessmanImage)) {
+                chessmanImage.relocate(e.getSceneX(), e.getScreenY());
+            }
+        });
+
+        chessmanImage.setOnMouseReleased(e -> {
+            if(canPlayerMoveChessman(chessmanImage)) {
+                int newX = toBoard(chessmanImage.getLayoutX());
+                int newY = toBoard(chessmanImage.getLayoutY());
+
+                MoveResult result = tryMove(chessmanImage, newX, newY);
+
+                switch (result.getMoveType()) {
+                    case NONE:
+                        chessmanImage.abortMove();
+                        break;
+                    case NORMAL:
+                        chessmanImage.move(newX, newY);
+                        System.out.println(newX);
+                        System.out.println(newY);
+                        break;
+                    case KILL:
+
+                }
+            }
+        });
+    }
+
+    private Boolean canPlayerMoveChessman(ChessmanImage chessmanImage){
+       // String userLogin = localSessionSingleton.getParameter("username");
+       String userLogin = "guest";
+        //guest always plays with black
+        if(chessmanImage.getColour().getSymbol() == 'B' && game.getGuest().getLogin() == userLogin)
+            return true;
+
+        //host always plays with white
+        else if(chessmanImage.getColour().getSymbol() == 'W' && game.getHost().getLogin() == userLogin)
+            return true;
+        return false;
     }
 
     @Override
