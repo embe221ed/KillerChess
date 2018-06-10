@@ -38,6 +38,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
@@ -48,6 +50,8 @@ import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PAT
 
 public class MainPanelController {
 
+
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
@@ -109,8 +113,8 @@ public class MainPanelController {
         //TODO MM
         System.out.println("Logout button clicked!");
         // TODO MB delete these lines
-        Thread thread = new Thread(new Listener(), "listener_thread");
-        thread.start();
+        Listener listener = new Listener();
+        executorService.submit(listener);
     }
 
     public void handleAccountAvatarChange() {
