@@ -2,28 +2,27 @@ package com.killerchess.core.session;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.*;
 import java.net.HttpCookie;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class LocalSessionSingleton {
 
     private volatile static LocalSessionSingleton instance;
-    private MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    private Map<String, String> parameters = new LinkedHashMap<>();
     private HttpCookie cookie;
+    private Properties properties = new Properties();
 
-    private LocalSessionSingleton() {
-    }
 
     public static LocalSessionSingleton getInstance() {
         if (instance == null) {
             synchronized (LocalSessionSingleton.class) {
                 if (instance == null) {
                     instance = new LocalSessionSingleton();
+                    instance.readConfigFile();
                 }
             }
         }
@@ -32,11 +31,11 @@ public class LocalSessionSingleton {
     }
 
     public void addParameter(String key, String value) {
-        parameters.add(key, value);
+        parameters.put(key, value);
     }
 
     public String getParameter(String key) {
-        return parameters.getFirst(key);
+        return parameters.get(key);
     }
 
     public HttpCookie getCookie() {
@@ -50,6 +49,38 @@ public class LocalSessionSingleton {
     public void setCookie(ResponseEntity responseEntity) {
         List<HttpCookie> cookies = HttpCookie.parse(responseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE));
         this.cookie = cookies.get(0);
+    }
+
+    public void saveToConfigFile() {
+        OutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream("config.properties");
+            parameters.forEach((key, value) -> properties.setProperty(key, value));
+            properties.store(outputStream, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void readConfigFile() {
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream("config.properties");
+
+            properties.load(inputStream);
+            properties.keys().asIterator().forEachRemaining(property ->
+                    parameters.put(property.toString(), properties.getProperty(property.toString())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void clearCookie() {
@@ -74,10 +105,8 @@ public class LocalSessionSingleton {
         var restTemplate = new RestTemplate();
         return restTemplate.exchange(url, httpMethod, requestEntity, parameterizedTypeReference);
     }
-    //TODO AK przerobić wszystkie części kodu wykorzystujące tę metodę tak, by wykorzystywać exchange
 
-    // (przykład w RoomCreatorController) i tę zrobić prywatną
-    public HttpEntity<MultiValueMap<String, String>> getHttpEntity(MultiValueMap<String, String> map) {
+    private HttpEntity<MultiValueMap<String, String>> getHttpEntity(MultiValueMap<String, String> map) {
         return new HttpEntity<>(map, getHeaders());
     }
 
