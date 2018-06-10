@@ -164,7 +164,7 @@ public class MainPanelController {
     }
 
     private String getRankingText(int i, RankingRegistryDTO rankingRegistryDTO) {
-        return rankingText.getText() + "\n" + i + ") " + rankingRegistryDTO.getUsername()
+        return rankingText.getText() + "\n" + (i + 1) + ") " + rankingRegistryDTO.getUsername()
                 + " [" + rankingRegistryDTO.getPoints() + "]";
     }
 
