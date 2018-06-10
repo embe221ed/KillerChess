@@ -39,7 +39,7 @@ import java.util.stream.IntStream;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
-import static com.killerchess.core.controllers.game.GameController.AVAILABLE_GAMES;
+import static com.killerchess.core.controllers.game.GameController.AVAILABLE_GAMES_PATH;
 import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PATH;
 
 
@@ -248,7 +248,7 @@ public class MainPanelController {
         getRoomsVBoxChildren().add(title);
 
         ResponseEntity<List<GameDTO>> roomsResponse = localSessionSingleton.exchange(
-                LoginController.HOST + AVAILABLE_GAMES, HttpMethod.GET, null,
+                LoginController.HOST + AVAILABLE_GAMES_PATH, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<GameDTO>>() {
                 });
 

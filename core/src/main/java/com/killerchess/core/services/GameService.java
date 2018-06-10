@@ -9,6 +9,7 @@ import com.killerchess.core.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,7 +35,7 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public void saveSpecificGameState(String gameId, String gameStateStr) throws GameNotFoundException {
+    public GameState saveSpecificGameState(String gameId, String gameStateStr) throws GameNotFoundException {
         Game game = gameRepository.findByGameId(gameId);
 
         if (game == null) {
@@ -45,7 +46,7 @@ public class GameService {
         gameState.setState(gameStateStr);
         gameState.setGame(game);
 
-        gameStateRepository.save(gameState);
+        return gameStateRepository.save(gameState);
     }
 
     public List<Game> findAvailableGames() {
@@ -53,6 +54,16 @@ public class GameService {
     }
 
     public List<String> getListOfGameStatesForGame(String gameId) {
-        return gameRepository.getListOfStatesForGame(gameId);
+        Game game = gameRepository.findByGameId(gameId);
+        List<GameState> gameStates = gameStateRepository.getGameStatesByGameOrderByGameStateNumberDesc(game);
+        List<String> states = new ArrayList<>();
+        gameStates.forEach(gameState -> states.add(gameState.getState()));
+        return states;
+    }
+
+    public GameState getLastGameStateForGame(String gameId) {
+        Game game = gameRepository.findByGameId(gameId);
+        List<GameState> gameStates = gameStateRepository.getGameStatesByGameOrderByGameStateNumberDesc(game);
+        return gameStates.get(0);
     }
 }

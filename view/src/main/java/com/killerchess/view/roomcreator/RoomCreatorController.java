@@ -81,9 +81,12 @@ public class RoomCreatorController {
             gameStateCreationParametersMap.add(STATE_PARAM, scenarioArrangement.get());
             gameStateCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
 
-            var responseEntity = LocalSessionSingleton.getInstance().exchange(LoginController.HOST + NEW_STATE_PATH,
-                    HttpMethod.POST, gameStateCreationParametersMap, ResponseEntity.class);
+            var session = LocalSessionSingleton.getInstance();
+            var responseEntity = session.exchange(LoginController.HOST + NEW_STATE_PATH,
+                    HttpMethod.POST, gameStateCreationParametersMap, Integer.class);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                session.setParameter(GAME_STATE_NUMBER_PARAM, responseEntity.getBody().toString());
+                System.out.println(session.getParameter(GAME_STATE_NUMBER_PARAM));
                 changeSceneToChessBoard();
             } else {
                 CustomAlert.showAndWait("Nie udało się stworzyć pierwszego ruchu.", Alert.AlertType.ERROR);
