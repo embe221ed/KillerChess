@@ -24,7 +24,7 @@
     <center>
         <AnchorPane prefHeight="446.0" prefWidth="438.0" style="-fx-background-color: #E0E0C8;" BorderPane.alignment="CENTER">
             <children>
-                <TextArea layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0"
+                <TextArea editable="false" layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0"
                           style="-fx-background-color: #FBF9E7;"
                           text="Wybierz pokój. &#10;Kliknij raz aby zobaczyć więcej informacjio pokoju. &#10;Kliknij dwa razy żeby rozpocząć grę.&#10;&#10;"/>
                 <Text fx:id="nickName" layoutX="29.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nick:" wrappingWidth="368.9921875" />
@@ -97,6 +97,9 @@
             </ImageView>
             <Text fx:id="actualPawnChoiceText" layoutX="14.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0"
                   text="Aktualny:" wrappingWidth="80.98307228088379"/>
+            <Button fx:id="changeAvatarButton" layoutX="32.0" layoutY="259.0" mnemonicParsing="false"
+                    onAction="#handleAccountAvatarChange" prefHeight="58.0" prefWidth="136.0"
+                    style="-fx-background-color: #0099ff;" text="Zmień zdjęcie " textFill="WHITE"/>
         </AnchorPane>
     </right>
 </BorderPane>
