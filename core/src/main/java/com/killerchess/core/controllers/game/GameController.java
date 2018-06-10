@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +89,18 @@ public class GameController {
                 availableGamesDTOS.add(availableGameDTO);
             }
             return new ResponseEntity<>(availableGamesDTOS, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // TODO MB delete after testing of Listener
+    @RequestMapping(method = RequestMethod.GET, value = "/gameStateChanged")
+    public ResponseEntity<Boolean> isGameStateChanged(HttpServletRequest request) {
+        try {
+            // TODO implement method which returns true if game have changed state
+            HttpSession session = request.getSession();
+            return new ResponseEntity<>(false, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

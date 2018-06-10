@@ -3,6 +3,7 @@ package com.killerchess.view.mainpanel;
 import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.core.util.Listener;
 import com.killerchess.view.View;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
@@ -35,6 +36,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
@@ -44,6 +47,9 @@ import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PAT
 
 
 public class MainPanelController {
+
+    // TODO delete after correct implementing multithreading
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
     private final String IMAGES_LOCAL_PATH = "view/images/";
@@ -105,6 +111,10 @@ public class MainPanelController {
     public void handleLogoutButton() {
         //TODO MM
         System.out.println("Logout button clicked!");
+        // TODO MB delete these lines
+        // przykład użycia wątku
+        Listener listener = new Listener();
+        executorService.submit(listener);
     }
 
     public void handleAccountAvatarChange() {
