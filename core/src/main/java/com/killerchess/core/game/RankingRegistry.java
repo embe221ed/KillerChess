@@ -3,6 +3,7 @@ package com.killerchess.core.game;
 import com.killerchess.core.user.User;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ranking")
@@ -37,5 +38,20 @@ public class RankingRegistry {
     }
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RankingRegistry rankingRegistry = (RankingRegistry) o;
+        return Objects.equals(user, rankingRegistry.user) &&
+                Objects.equals(points, rankingRegistry.points) &&
+                Objects.equals(userLogin, rankingRegistry.userLogin);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, points, userLogin);
     }
 }

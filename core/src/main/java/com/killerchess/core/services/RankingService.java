@@ -25,6 +25,6 @@ public class RankingService {
     }
 
     public List<RankingRegistry> findAllSorted(int points) {
-        return rankingRepository.findAllByPointsGreaterThanOrderByPointsDesc(points);
+        return rankingRepository.findAllByPointsGreaterThanEqualOrderByPointsDesc(points);
     }
 }
