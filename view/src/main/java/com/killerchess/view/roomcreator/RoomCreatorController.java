@@ -47,7 +47,8 @@ public class RoomCreatorController {
         var roomDatabaseId = String.format("%s_%s", roomName, UUID.randomUUID());
         var selectedScenario = (RadioButton) toggleGroupForSchemasRadioButtons.getSelectedToggle();
         var scenarioId = selectedScenario.getId();
-
+        // TODO delete after getting rid of unnecessary parameters in REST GameController methods
+        LocalSessionSingleton.getInstance().addParameter("gameId", roomDatabaseId);
         createNewGame(roomName, roomDatabaseId, scenarioId);
     }
 
