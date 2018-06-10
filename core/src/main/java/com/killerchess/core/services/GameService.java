@@ -52,8 +52,7 @@ public class GameService {
         return gameRepository.findAllByGuestIsNull();
     }
 
-    public List<String> getListOfGameStatesForGame(String gameId){
-        List<String> listOfGameStates = gameRepository.getListOfStatesForGame(gameId);
-        return  listOfGameStates;
+    public List<String> getListOfGameStatesForGame(String gameId) {
+        return gameRepository.getListOfStatesForGame(gameId);
     }
 }
