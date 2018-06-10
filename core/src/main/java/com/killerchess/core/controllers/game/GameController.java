@@ -98,20 +98,8 @@ public class GameController {
     @RequestMapping(method = RequestMethod.GET, value = "/gameStateChanged")
     public ResponseEntity<Boolean> isGameStateChanged(HttpServletRequest request) {
         try {
+            // TODO implement method which returns true if game have changed state
             HttpSession session = request.getSession();
-            var attributes = session.getAttributeNames();
-            int oldLength = 1000;
-            while (attributes.hasMoreElements()) {
-                String attributeName = attributes.nextElement();
-                if (attributeName.equals("oldLength"))
-                    oldLength = Integer.parseInt(session.getAttribute("oldLength").toString());
-            }
-            int newLength = gameService.findAvailableGames().size();
-            System.out.println(newLength + " > " + oldLength);
-            if (newLength > oldLength) {
-                return new ResponseEntity<>(true, HttpStatus.OK);
-            }
-            session.setAttribute("oldLength", newLength);
             return new ResponseEntity<>(false, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

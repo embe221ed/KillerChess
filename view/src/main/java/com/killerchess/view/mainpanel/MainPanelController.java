@@ -50,8 +50,9 @@ import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PAT
 
 public class MainPanelController {
 
-
+    // TODO delete after correct implementing multithreading
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
@@ -113,6 +114,7 @@ public class MainPanelController {
         //TODO MM
         System.out.println("Logout button clicked!");
         // TODO MB delete these lines
+        // przykład użycia wątku
         Listener listener = new Listener();
         executorService.submit(listener);
     }
