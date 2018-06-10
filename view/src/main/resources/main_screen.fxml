@@ -11,7 +11,9 @@
     <left>
         <AnchorPane prefHeight="518.0" prefWidth="219.0" style="-fx-background-color: #50a682;" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="createRoom" layoutX="40.0" layoutY="437.0" mnemonicParsing="false" onAction="#handleNewRoomButtonClicked" prefHeight="58.0" prefWidth="136.0" style="-fx-background-color: #0099ff;" text="Stwórz pokój" textFill="WHITE" />
+                <Button fx:id="createRoom" layoutX="40.0" layoutY="437.0" mnemonicParsing="false"
+                        onAction="#handleNewRoomButtonClicked" prefHeight="58.0" prefWidth="136.0"
+                        style="-fx-background-color: #0099ff;" text="Create room" textFill="WHITE"/>
                 <ScrollPane layoutX="10.0" layoutY="14.0" prefHeight="414.0" prefWidth="180.0">
                     <content>
                         <VBox fx:id="roomsVBox" prefHeight="414.0" prefWidth="177.0"
@@ -26,14 +28,16 @@
             <children>
                 <TextArea editable="false" layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0"
                           style="-fx-background-color: #FBF9E7;"
-                          text="Wybierz pokój. &#10;Kliknij raz aby zobaczyć więcej informacjio pokoju. &#10;Kliknij dwa razy żeby rozpocząć grę.&#10;&#10;"/>
-                <Text fx:id="nickName" layoutX="29.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nick:" wrappingWidth="368.9921875" />
+                          text="Choose room.&#10;Click once to see more information about the room.&#10;Double-click to start the game.&#10;&#10;&#10;"/>
+                <Text fx:id="usernameText" layoutX="29.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Username:" wrappingWidth="368.9921875"/>
                 <ImageView fx:id="userAvatar" fitHeight="150.0" fitWidth="200.0" layoutX="140.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@images/no_avatar.jpg" />
                     </image>
                 </ImageView>
-                <Text fx:id="rankingPointsForActualUser" layoutX="29.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Punkty rankingowe: " wrappingWidth="138.29180908203125" />
+                <Text fx:id="rankingPointsForActualUser" layoutX="29.0" layoutY="237.0" strokeType="OUTSIDE"
+                      strokeWidth="0.0" text="Ranking Points: " wrappingWidth="138.29180908203125"/>
             </children>
         </AnchorPane>
     </center>
@@ -61,15 +65,15 @@
                     </children>
                 </AnchorPane>
                 <TextArea fx:id="rankingText" editable="false" layoutX="9.0" layoutY="56.0" prefHeight="443.0"
-                          prefWidth="182.0" text="Ranking graczy:"/>
+                          prefWidth="182.0" text="Player's ranking:"/>
                 <TextArea fx:id="helpText" editable="false" layoutX="6.0" layoutY="56.0" prefHeight="439.0"
                           prefWidth="175.0"
                           text="Tu będą jakieś info &#10;odnośnie tego widoku. &#10;Jak się gra itd."/>
                 <Button fx:id="logoutButton" layoutX="32.0" layoutY="437.0" mnemonicParsing="false"
                         onAction="#handleLogoutButton" prefHeight="58.0" prefWidth="136.0"
-                        style="-fx-background-color: #0099ff;" text="Wyloguj" textFill="WHITE"/>
+                        style="-fx-background-color: #0099ff;" text="Logout" textFill="WHITE"/>
                 <Text fx:id="choosePawnText" layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Wybierz wygląd pionków:" wrappingWidth="181.9830722808838"/>
+                      text="Choose the look of pawns:" wrappingWidth="181.9830722808838"/>
             </children>
             <ImageView fx:id="firstPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="14.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
@@ -89,17 +93,17 @@
                     <Image url="@images/sample.jpg"/>
                 </image>
             </ImageView>
-            <ImageView fx:id="actualPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="118.0" layoutY="175.0"
+            <ImageView fx:id="actualPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="143.0" layoutY="170.0"
                        pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@images/sample.jpg"/>
                 </image>
             </ImageView>
-            <Text fx:id="actualPawnChoiceText" layoutX="14.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                  text="Aktualny:" wrappingWidth="80.98307228088379"/>
+            <Text fx:id="actualPawnChoiceText" layoutX="14.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                  text="Actual Pawn Choice:" wrappingWidth="122.98307228088379"/>
             <Button fx:id="changeAvatarButton" layoutX="32.0" layoutY="259.0" mnemonicParsing="false"
                     onAction="#handleAccountAvatarChange" prefHeight="58.0" prefWidth="136.0"
-                    style="-fx-background-color: #0099ff;" text="Zmień zdjęcie " textFill="WHITE"/>
+                    style="-fx-background-color: #0099ff;" text="Change avatar" textFill="WHITE"/>
         </AnchorPane>
     </right>
 </BorderPane>

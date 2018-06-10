@@ -43,13 +43,13 @@ public class LocalSessionSingleton {
         return cookie;
     }
 
+    public void setCookie(HttpCookie cookie) {
+        this.cookie = cookie;
+    }
+
     public void setCookie(ResponseEntity responseEntity) {
         List<HttpCookie> cookies = HttpCookie.parse(responseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE));
         this.cookie = cookies.get(0);
-    }
-
-    public void setCookie(HttpCookie cookie) {
-        this.cookie = cookie;
     }
 
     public void clearCookie() {
@@ -67,10 +67,9 @@ public class LocalSessionSingleton {
         return restTemplate.exchange(url, httpMethod, requestEntity, responseEntity);
     }
 
-    public <T> ResponseEntity<List<T>> exchange(String url, HttpMethod httpMethod, MultiValueMap<String, String>
-            parameters,
-                                                ParameterizedTypeReference<List<T>>
-                                                        parameterizedTypeReference) {
+    public <T> ResponseEntity<T> exchange(String url, HttpMethod httpMethod,
+                                          MultiValueMap<String, String> parameters,
+                                          ParameterizedTypeReference<T> parameterizedTypeReference) {
         var requestEntity = getHttpEntity(parameters);
         var restTemplate = new RestTemplate();
         return restTemplate.exchange(url, httpMethod, requestEntity, parameterizedTypeReference);

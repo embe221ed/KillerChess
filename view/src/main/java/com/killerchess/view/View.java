@@ -27,8 +27,12 @@ public class View extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
-        primaryStage.setResizable(false);
+        setPrimaryStageProperties(primaryStage);
         this.changeScene("/loging.fxml");
+    }
+
+    private void setPrimaryStageProperties(Stage primaryStage) {
+        primaryStage.setResizable(false);
     }
 
     public void changeScene(String fxml) throws Exception {

@@ -6,8 +6,11 @@ import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -19,6 +22,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ClassPathResource;
@@ -26,7 +30,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,6 +37,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
@@ -43,7 +47,7 @@ import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PAT
 
 public class MainPanelController {
 
-    public Text nickName;
+    private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
@@ -61,13 +65,16 @@ public class MainPanelController {
     public Text choosePawnText;
     public VBox roomsVBox;
     public Button changeAvatarButton;
-
-
-    private String nick;
+    private final String IMAGES_LOCAL_PATH = "images";
     private String userPoints;
-    private int panelWidth;
-    private int panelHeight;
+    private final String AVATAR_FILENAME_PREFIX = "/avatar_";
+    private final String JPG_FILETYPE_EXTENSION = ".jpg";
     private boolean selectedAccountTab = true;
+    public Text usernameText;
+    private String username;
+    private double panelWidth;
+    private double panelHeight;
+    private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
 
     @FXML
     public void initialize() {
@@ -76,46 +83,112 @@ public class MainPanelController {
         setRanking();
         initializeComponents();
         accountImageListener();
-        rankingImageListener();
-        hideHelpInfo();
-        helpImageListener();
         if (selectedAccountTab) {
             accountListeners();
         }
+        rankingImageListener();
+        hideHelpInfo();
+        helpImageListener();
         initializeRoomsVBox();
     }
 
-    private void initializeRoomsVBox() {
-        Text title = new Text(" Pokoje:");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        roomsVBox.getChildren().add(title);
-
-        ResponseEntity<List<GameDTO>> roomsResponse = LocalSessionSingleton.getInstance().exchange
-                (LoginController.HOST + AVAILABLE_GAMES,
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<GameDTO>>() {
-                        });
-
-        List<GameDTO> gamesList = roomsResponse.getBody();
-        List<TextArea> gamesOptions = new ArrayList<>();
-
-        for (GameDTO gameDTO : gamesList) {
-            TextArea gameOption = new TextArea();
-            gameOption.setEditable(false);
-            gameOption.setText("Pokój: " + gameDTO.getGameName() + "\n"
-                    + "host: " + gameDTO.getHost() + "\n");
-            gamesOptions.add(gameOption);
+    public void handleNewRoomButtonClicked() {
+        try {
+            View.getInstance().changeScene("/room_creator.fxml");
+        } catch (HttpStatusCodeException e) {
+            if (e.getStatusCode().is4xxClientError()) {
+                CustomAlert.showAndWait(e.getResponseBodyAsString(), Alert.AlertType.ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
-        for (TextArea gameOption : gamesOptions) {
-            VBox.setMargin(gameOption, new Insets(0, 0, 0, 8));
-            roomsVBox.getChildren().add(gameOption);
+    public void handleLogoutButton() {
+        //TODO MM
+        System.out.println("Logout button clicked!");
+    }
+
+    public void handleAccountAvatarChange() {
+        FileChooser chooser = new FileChooser();
+        File file = chooser.showOpenDialog(new Stage());
+        if (file != null) {
+            try {
+                String mimeType = Files.probeContentType(file.toPath());
+                if (mimeType != null && mimeType.equals(IMAGE_JPEG_MIME_TYPE)) {
+                    //TODO MM move images from resources. Allow png format
+                    ClassPathResource resource = new ClassPathResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX
+                            + username + JPG_FILETYPE_EXTENSION);
+                    Files.copy(file.toPath(), Paths.get(ClassLoader.getSystemResource(resource.getPath()).toURI()),
+                            StandardCopyOption.REPLACE_EXISTING);
+                    Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username
+                            + JPG_FILETYPE_EXTENSION, panelWidth / 3, panelHeight / 2,
+                            false, false);
+                    userAvatar.setImage(image);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
 
-        roomsVBox.setOnMouseClicked((e) -> {
-            roomsVBox.requestFocus();
-        });
+    private void getPanelSize() {
+        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+        this.panelWidth = visualBounds.getWidth();
+        this.panelHeight = visualBounds.getHeight();
+    }
 
-        //TODO make listeners for TextAreas. One click brings information about room, two starts game.
+    private void setUserParameters() {
+        var responseEntity = localSessionSingleton.exchange(
+                LoginController.HOST + GET_LOGIN_PATH,
+                HttpMethod.GET, null, ResponseEntity.class);
+        this.username = responseEntity.getHeaders().getFirst("username");
+
+        ResponseEntity<RankingRegistryDTO> response = localSessionSingleton.exchange(
+                LoginController.HOST + GET_USER_RANKING_PATH,
+                HttpMethod.GET, null, RankingRegistryDTO.class);
+        this.userPoints = String.valueOf(response.getBody().getPoints());
+    }
+
+    private void setRanking() {
+        ResponseEntity<List<RankingRegistryDTO>> rankingResponse = localSessionSingleton.exchange(
+                LoginController.HOST + RANKING_PATH, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<RankingRegistryDTO>>() {
+                });
+        List<RankingRegistryDTO> rankingList = rankingResponse.getBody();
+
+        IntStream.range(0, rankingList.size()).forEach(i -> rankingText.setText(getRankingText(i, rankingList.get(i))));
+
+        rankingText.setEditable(false);
+        rankingText.setVisible(false);
+    }
+
+    private String getRankingText(int i, RankingRegistryDTO rankingRegistryDTO) {
+        return rankingText.getText() + "\n" + i + ") " + rankingRegistryDTO.getUsername()
+                + " [" + rankingRegistryDTO.getPoints() + "]";
+    }
+
+    private void initializeComponents() {
+        setNameAndPointsForUser();
+
+        File file;
+        try {
+            ClassPathResource resource = new ClassPathResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX
+                    + username + JPG_FILETYPE_EXTENSION);
+            file = resource.getFile();
+        } catch (IOException e) {
+            file = null;
+        }
+        if (file != null) {
+            Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION,
+                    panelWidth / 3, panelHeight / 2, false, false);
+            userAvatar.setImage(image);
+        }
+    }
+
+    private void setNameAndPointsForUser() {
+        usernameText.setText(usernameText.getText() + " " + username);
+        rankingPointsForActualUser.setText(rankingPointsForActualUser.getText() + " " + userPoints);
     }
 
     private void accountImageListener() {
@@ -129,19 +202,19 @@ public class MainPanelController {
 
     private void accountListeners() {
         firstPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            //TODO
+            //TODO MM
             System.out.println("First Pawn Chosen");
             event.consume();
         });
 
         secondPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            //TODO
+            //TODO MM
             System.out.println("Second Pawn Chosen");
             event.consume();
         });
 
         thirdPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            //TODO
+            //TODO MM
             System.out.println("Third Pawn Chosen");
             event.consume();
         });
@@ -161,6 +234,15 @@ public class MainPanelController {
         changeAvatarButton.setDisable(!bool);
     }
 
+    private void rankingImageListener() {
+        rankingImage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            rankingText.setVisible(true);
+            helpText.setVisible(false);
+            enableAccountFunctions(false);
+            event.consume();
+        });
+    }
+
     private void hideHelpInfo() {
         helpText.setEditable(false);
         helpText.setVisible(false);
@@ -175,101 +257,39 @@ public class MainPanelController {
         });
     }
 
-    private void rankingImageListener() {
-        rankingImage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            rankingText.setVisible(true);
-            helpText.setVisible(false);
-            enableAccountFunctions(false);
-            event.consume();
-        });
-    }
+    private void initializeRoomsVBox() {
+        Text title = new Text(" Rooms:");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        getRoomsVBoxChildren().add(title);
 
-    private void setRanking() {
-        ResponseEntity<List<RankingRegistryDTO>> rankingResponse = LocalSessionSingleton.getInstance().exchange
-                (LoginController.HOST + RANKING_PATH,
-                        HttpMethod.GET, null, new ParameterizedTypeReference<List<RankingRegistryDTO>>() {
-                        });
-        List<RankingRegistryDTO> rankingList = rankingResponse.getBody();
+        ResponseEntity<List<GameDTO>> roomsResponse = localSessionSingleton.exchange(
+                LoginController.HOST + AVAILABLE_GAMES, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<GameDTO>>() {
+                });
 
-        for (int i = 0; i < rankingList.size(); i++) {
-            rankingText.setText(rankingText.getText() + "\n" + (i + 1) + ") " + rankingList.get(i).getUsername() + " " +
-                    "[" + rankingList.get(i).getPoints() + "]");
-        }
-        rankingText.setEditable(false);
-        rankingText.setVisible(false);
-    }
+        List<GameDTO> gamesList = roomsResponse.getBody();
+        List<TextArea> gamesOptions = new ArrayList<>();
 
-    private void setUserParameters() {
-        var responseEntity = LocalSessionSingleton.getInstance().exchange(LoginController.HOST + GET_LOGIN_PATH,
-                HttpMethod.GET, null, ResponseEntity.class);
-        this.nick = responseEntity.getHeaders().getFirst("username");
-
-        ResponseEntity<RankingRegistryDTO> response = LocalSessionSingleton.getInstance().exchange(LoginController
-                        .HOST + GET_USER_RANKING_PATH,
-                HttpMethod.GET, null, RankingRegistryDTO.class);
-        this.userPoints = String.valueOf(response.getBody().getPoints());
-    }
-
-    private void getPanelSize() {
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        this.panelWidth = gd.getDisplayMode().getWidth();
-        this.panelHeight = gd.getDisplayMode().getHeight();
-    }
-
-
-    private void initializeComponents() {
-        nickName.setText(nickName.getText() + " " + nick);
-        rankingPointsForActualUser.setText(rankingPointsForActualUser.getText() + " " + userPoints);
-
-        File file;
-        try {
-            ClassPathResource resource = new ClassPathResource("images/avatar_" + nick + ".jpg");
-            file = resource.getFile();
-        } catch (IOException e) {
-            file = null;
-        }
-        if (file != null) {
-            Image image = new Image("images/avatar_" + nick + ".jpg", panelWidth / 3, panelHeight / 2, false, false);
-            userAvatar.setImage(image);
+        for (GameDTO gameDTO : gamesList) {
+            TextArea gameOption = new TextArea();
+            gameOption.setEditable(false);
+            gameOption.setText("Room: " + gameDTO.getGameName() + "\n"
+                    + "host: " + gameDTO.getHost() + "\n");
+            gamesOptions.add(gameOption);
         }
 
-    }
-
-    public void handleNewRoomButtonClicked() {
-        try {
-            View.getInstance().changeScene("/room_creator.fxml");
-        } catch (HttpStatusCodeException e) {
-            if (e.getStatusCode().is4xxClientError()) {
-                CustomAlert.showAndWait(e.getResponseBodyAsString(), Alert.AlertType.ERROR);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (TextArea gameOption : gamesOptions) {
+            VBox.setMargin(gameOption, new Insets(0, 0, 0, 8));
+            getRoomsVBoxChildren().add(gameOption);
         }
+
+        roomsVBox.setOnMouseClicked((e) -> roomsVBox.requestFocus());
+
+        //TODO MM make listeners for TextAreas. One click brings information about room, two starts game.
     }
 
-    public void handleLogoutButton() {
-        //TODO
-        System.out.println("Logout button clicked!");
+    private ObservableList<Node> getRoomsVBoxChildren() {
+        return roomsVBox.getChildren();
     }
 
-    public void handleAccountAvatarChange() {
-        FileChooser chooser = new FileChooser();
-        File file = chooser.showOpenDialog(new Stage());
-        if (file != null) {
-            try {
-                String mimeType = Files.probeContentType(file.toPath());
-                if (mimeType != null && mimeType.equals("image/jpeg")) {
-                    //TODO move images from resources. Allow png format
-                    ClassPathResource resource = new ClassPathResource("images/avatar_" + nick + ".jpg");
-                    Files.copy(file.toPath(), Paths.get(ClassLoader.getSystemResource(resource.getPath()).toURI()),
-                            StandardCopyOption.REPLACE_EXISTING);
-                    Image image = new Image("images/avatar_" + nick + ".jpg", panelWidth / 3, panelHeight / 2, false,
-                            false);
-                    userAvatar.setImage(image);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
