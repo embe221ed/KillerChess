@@ -30,7 +30,7 @@ public class LocalSessionSingleton {
         return instance;
     }
 
-    public void addParameter(String key, String value) {
+    public void setParameter(String key, String value) {
         parameters.put(key, value);
     }
 
