@@ -17,8 +17,8 @@ import java.util.List;
 @RestController
 public class RankingController {
 
-    private static final String RANKING_PATH = "/ranking";
-    private static final String GET_USER_RANKING_PATH = "/getUserRanking";
+    public static final String RANKING_PATH = "/ranking";
+    public static final String GET_USER_RANKING_PATH = "/getUserRanking";
 
     private final RankingService rankingService;
 
@@ -28,7 +28,7 @@ public class RankingController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = RANKING_PATH)
-    public ResponseEntity<List> getRanking() {
+    public ResponseEntity<List<RankingRegistryDTO>> getRanking() {
         List<RankingRegistry> rankingRegistries = rankingService.findAllSorted(0);
         List<RankingRegistryDTO> rankingRegistryDTOS = new ArrayList<>();
         for (RankingRegistry rankingRegistry : rankingRegistries) {

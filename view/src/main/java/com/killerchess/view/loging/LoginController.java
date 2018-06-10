@@ -29,12 +29,13 @@ public class LoginController {
             loginParametersMap.add("username", login);
             loginParametersMap.add("password", password);
             LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-            var responseEntity = localSessionSingleton.exchange(HOST + LOGIN_PATH, HttpMethod.POST, loginParametersMap, ResponseEntity.class);
+            var responseEntity = localSessionSingleton.exchange(HOST + LOGIN_PATH, HttpMethod.POST,
+                    loginParametersMap, ResponseEntity.class);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 if (!localSessionSingleton.isCookieSet()) {
                     localSessionSingleton.setCookie(responseEntity);
                 }
-                View.getInstance().changeScene("/room_creator.fxml");
+                View.getInstance().changeScene("/main_screen.fxml");
             }
         } catch (HttpStatusCodeException e) {
             if (e.getStatusCode().is4xxClientError()) {

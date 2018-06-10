@@ -1,5 +1,6 @@
 package com.killerchess.core.session;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -66,6 +67,13 @@ public class LocalSessionSingleton {
         return restTemplate.exchange(url, httpMethod, requestEntity, responseEntity);
     }
 
+    public <T> ResponseEntity<T> exchange(String url, HttpMethod httpMethod,
+                                          MultiValueMap<String, String> parameters,
+                                          ParameterizedTypeReference<T> parameterizedTypeReference) {
+        var requestEntity = getHttpEntity(parameters);
+        var restTemplate = new RestTemplate();
+        return restTemplate.exchange(url, httpMethod, requestEntity, parameterizedTypeReference);
+    }
     //TODO AK przerobić wszystkie części kodu wykorzystujące tę metodę tak, by wykorzystywać exchange
 
     // (przykład w RoomCreatorController) i tę zrobić prywatną
@@ -83,5 +91,6 @@ public class LocalSessionSingleton {
             return null;
         }
     }
+
 
 }

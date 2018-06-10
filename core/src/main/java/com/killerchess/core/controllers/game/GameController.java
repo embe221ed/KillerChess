@@ -76,7 +76,7 @@ public class GameController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = AVAILABLE_GAMES)
-    public ResponseEntity<List> getAvailableGames() {
+    public ResponseEntity<List<GameDTO>> getAvailableGames() {
         try {
             List<Game> availableGamesList = gameService.findAvailableGames();
             List<GameDTO> availableGamesDTOS = new ArrayList<>();
