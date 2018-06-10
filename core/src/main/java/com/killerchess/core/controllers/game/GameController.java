@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +89,30 @@ public class GameController {
                 availableGamesDTOS.add(availableGameDTO);
             }
             return new ResponseEntity<>(availableGamesDTOS, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // TODO MB delete after testing of Listener
+    @RequestMapping(method = RequestMethod.GET, value = "/gameStateChanged")
+    public ResponseEntity<Boolean> isGameStateChanged(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            var attributes = session.getAttributeNames();
+            int oldLength = 1000;
+            while (attributes.hasMoreElements()) {
+                String attributeName = attributes.nextElement();
+                if (attributeName.equals("oldLength"))
+                    oldLength = Integer.parseInt(session.getAttribute("oldLength").toString());
+            }
+            int newLength = gameService.findAvailableGames().size();
+            System.out.println(newLength + " > " + oldLength);
+            if (newLength > oldLength) {
+                return new ResponseEntity<>(true, HttpStatus.OK);
+            }
+            session.setAttribute("oldLength", newLength);
+            return new ResponseEntity<>(false, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

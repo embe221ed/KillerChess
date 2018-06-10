@@ -3,6 +3,7 @@ package com.killerchess.view.mainpanel;
 import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.core.util.Listener;
 import com.killerchess.view.View;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
@@ -107,6 +108,9 @@ public class MainPanelController {
     public void handleLogoutButton() {
         //TODO MM
         System.out.println("Logout button clicked!");
+        // TODO MB delete these lines
+        Thread thread = new Thread(new Listener(), "listener_thread");
+        thread.start();
     }
 
     public void handleAccountAvatarChange() {
