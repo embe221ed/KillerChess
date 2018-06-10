@@ -25,13 +25,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -48,6 +46,9 @@ import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PAT
 public class MainPanelController {
 
     private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
+    private final String IMAGES_LOCAL_PATH = "view/images/";
+    private final String AVATAR_FILENAME_PREFIX = "/avatar_";
+    private final String JPG_FILETYPE_EXTENSION = ".jpg";
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
@@ -65,12 +66,9 @@ public class MainPanelController {
     public Text choosePawnText;
     public VBox roomsVBox;
     public Button changeAvatarButton;
-    private final String IMAGES_LOCAL_PATH = "images";
-    private String userPoints;
-    private final String AVATAR_FILENAME_PREFIX = "/avatar_";
-    private final String JPG_FILETYPE_EXTENSION = ".jpg";
-    private boolean selectedAccountTab = true;
     public Text usernameText;
+    private String userPoints;
+    private boolean selectedAccountTab = true;
     private String username;
     private double panelWidth;
     private double panelHeight;
@@ -116,14 +114,9 @@ public class MainPanelController {
             try {
                 String mimeType = Files.probeContentType(file.toPath());
                 if (mimeType != null && mimeType.equals(IMAGE_JPEG_MIME_TYPE)) {
-                    //TODO MM move images from resources. Allow png format
-                    ClassPathResource resource = new ClassPathResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX
-                            + username + JPG_FILETYPE_EXTENSION);
-                    Files.copy(file.toPath(), Paths.get(ClassLoader.getSystemResource(resource.getPath()).toURI()),
-                            StandardCopyOption.REPLACE_EXISTING);
-                    Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username
-                            + JPG_FILETYPE_EXTENSION, panelWidth / 3, panelHeight / 2,
-                            false, false);
+                    File f = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION);
+                    Files.copy(file.toPath(), Paths.get(f.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+                    Image image = new Image("file:" + f.getPath(), panelWidth / 3, panelHeight / 2, false, false);
                     userAvatar.setImage(image);
                 }
             } catch (Exception e) {
@@ -171,17 +164,9 @@ public class MainPanelController {
     private void initializeComponents() {
         setNameAndPointsForUser();
 
-        File file;
-        try {
-            ClassPathResource resource = new ClassPathResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX
-                    + username + JPG_FILETYPE_EXTENSION);
-            file = resource.getFile();
-        } catch (IOException e) {
-            file = null;
-        }
-        if (file != null) {
-            Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION,
-                    panelWidth / 3, panelHeight / 2, false, false);
+        File file = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION);
+        if (file.exists() && !file.isDirectory()) {
+            Image image = new Image("file:" + file.getPath(), panelWidth / 3, panelHeight / 2, false, false);
             userAvatar.setImage(image);
         }
     }
