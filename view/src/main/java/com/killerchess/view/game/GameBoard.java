@@ -36,7 +36,6 @@ public class GameBoard extends Application {
     private Group chessmanGroup = new Group();
 
     private Button availableMovesButton;
-    private Button availableCapturesButton;
     private ChessBoard chessBoard;
 
     private StateInterpreter stateInterpreter;
@@ -60,9 +59,7 @@ public class GameBoard extends Application {
         root.setPrefSize((WIDTH + 1) * TILE_SIZE, HEIGHT * TILE_SIZE);
         root.getChildren().addAll(tileGroup, chessmanGroup);
         setAvailableMovesButton();
-        setAvailableCapturesButton();
         root.getChildren().add(availableMovesButton);
-        root.getChildren().add(availableCapturesButton);
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
                 Tile tile = drawAndReturnTile(x, y);
@@ -71,15 +68,6 @@ public class GameBoard extends Application {
         }
 
         return root;
-    }
-
-    private void setAvailableCapturesButton() {
-        availableCapturesButton = new Button();
-        availableCapturesButton.setText("BICIE");
-        availableCapturesButton.setLayoutX(800.0);
-        availableCapturesButton.setLayoutY(100.0);
-        availableCapturesButton.setPrefSize(100.0, 100.0);
-        setAvailableCapturesButtonOnClickFunction();
     }
 
     private void setAvailableMovesButton() {
@@ -91,8 +79,8 @@ public class GameBoard extends Application {
         setAvailableMovesButtonOnClickFunction();
     }
 
-    private void setAvailableCapturesButtonOnClickFunction() {
-        availableCapturesButton.setOnMouseClicked(e -> {
+    private void setAvailableMovesButtonOnClickFunction() {
+        availableMovesButton.setOnMouseClicked(e -> {
             if (currentChessmanImage != null) {
                 double currentChessmanX = currentChessmanImage.getPrevMouseX();
                 double currentChessmanY = currentChessmanImage.getPrevMouseY();
@@ -103,63 +91,43 @@ public class GameBoard extends Application {
                 Set<Pair<Integer, Integer>> possibleChessmans = null;
                 Set<Pair<Integer, Integer>> possibleMoves = null;
 
-                Set<Pair<Integer, Integer>> fieldsToHighLight;
+                Set<Pair<Integer, Integer>> fieldsToHighLight = null;
 
                 if (possibleCaptures == null || possibleCaptures.size() == 0) {
                     var chessmansWithGivenColor = chessBoard.getAllChessmansWithGivenColor(currentChessmanImage.getChessman().getColour());
-                    if (chessmansWithGivenColor == null || chessmansWithGivenColor.size() == 0) {
-                        for (Chessman chessman : chessmansWithGivenColor) {
-                            Pair<Integer, Integer> chessmanPosition = chessBoard.getChessmanPosition(chessman);
+                    if (chessmansWithGivenColor != null && chessmansWithGivenColor.size() != 0) {
+                        for (Chessman possibleChessman : chessmansWithGivenColor) {
+                            Pair<Integer, Integer> chessmanPosition = chessBoard.getChessmanPosition(possibleChessman);
                             if (chessmanPosition != null) {
-                                var captures = chessman.getPossibleCaptures(chessBoard, chessmanPosition);
+                                chessboard[chessmanPosition.getValue()][chessmanPosition.getKey()].highlightRed();
+                                var captures = possibleChessman.getPossibleCaptures(chessBoard, chessmanPosition);
                                 if (captures != null && captures.size() != 0) {
                                     if (possibleChessmans == null)
                                         possibleChessmans = new HashSet<Pair<Integer, Integer>>();
                                     possibleChessmans.add(chessmanPosition);
                                 }
                             }
-
                         }
-                    } else {
+                    }
+                    if (possibleChessmans == null || possibleChessmans.size() == 0) {
                         possibleMoves = currentChessmanImage.getChessman().getPossibleMoves(chessBoard,
                                 new Pair<>(toBoard(currentChessmanY), toBoard(currentChessmanX)));
-                    }
-
-                    if (possibleChessmans != null && possibleChessmans.size() != 0)
+                        if (possibleMoves != null || possibleMoves.size() != 0)
+                            fieldsToHighLight = possibleMoves;
+                    } else {
                         fieldsToHighLight = possibleChessmans;
-                    else
-                        fieldsToHighLight = possibleMoves;
+                    }
 
                 } else {
                     fieldsToHighLight = possibleCaptures;
                 }
 
-                if (fieldsToHighLight != null)
-
+                if (fieldsToHighLight != null) {
                     for (int y = 0; y < HEIGHT; y++) {
                         for (int x = 0; x < WIDTH; x++) {
                             if (fieldsToHighLight.contains(new Pair<>(x, y))) {
                                 chessboard[y][x].highlightBlue();
                             }
-                        }
-                    }
-            }
-        });
-    }
-
-    private void setAvailableMovesButtonOnClickFunction() {
-        availableMovesButton.setOnMouseClicked(e -> {
-            if (currentChessmanImage != null) {
-                double currentChessmanX = currentChessmanImage.getPrevMouseX();
-                double currentChessmanY = currentChessmanImage.getPrevMouseY();
-                for (int y = 0; y < HEIGHT; y++) {
-                    for (int x = 0; x < WIDTH; x++) {
-                        if (currentChessmanImage.getChessman().getPossibleCaptures(chessBoard,
-                                new Pair<>(toBoard(currentChessmanY), toBoard(currentChessmanX))).contains(new Pair<>(x, y))) {
-                            chessboard[y][x].highlightBlue();
-                        } else if (currentChessmanImage.getChessman().getPossibleMoves(chessBoard,
-                                new Pair<>(toBoard(currentChessmanY), toBoard(currentChessmanX))).contains(new Pair<>(x, y))) {
-                            chessboard[y][x].highlightBlue();
                         }
                     }
                 }
