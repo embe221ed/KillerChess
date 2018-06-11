@@ -1,6 +1,7 @@
 package com.killerchess.core.chessboard;
 
 import com.killerchess.core.chessmans.Chessman;
+import com.killerchess.core.chessmans.EmptyField;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -21,6 +22,18 @@ public class ChessBoard {
         int row = position.getKey();
         int col = position.getValue();
         return getChessmanAt(row, col);
+    }
+
+    public void setChessBoard(Chessman chessman, int i, int j) {
+        chessBoard.get(i).set(j, chessman);
+    }
+
+    public void moveChessman(int prevCoordX, int prevCoordY, int newCoordX, int newCoordY) {
+        Chessman chessman = getChessmanAt(prevCoordY, prevCoordX);
+        System.out.println(chessman.toString());
+        Chessman emptyField = new EmptyField(chessman.getColour());
+        setChessBoard(chessman, newCoordY, newCoordX);
+        setChessBoard(emptyField, prevCoordY, prevCoordX);
     }
 
     public int getChessBoardColumnsSize() {

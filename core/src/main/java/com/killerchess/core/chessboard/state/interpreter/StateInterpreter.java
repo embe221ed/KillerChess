@@ -24,7 +24,7 @@ public class StateInterpreter {
         return new ChessBoard(chessBoard);
     }
 
-    ObjectNode convertChessBoardToJsonBoard(ChessBoard chessBoard) {
+    public ObjectNode convertChessBoardToJsonBoard(ChessBoard chessBoard) {
         var colSize = chessBoard.getChessBoardColumnsSize();
         var rowSize = chessBoard.getChessBoardRowsSize();
 

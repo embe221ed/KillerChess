@@ -3,6 +3,7 @@ package com.killerchess.view.roomcreator;
 import com.killerchess.core.chessboard.scenarios.GameScenariosEnum;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
+import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import javafx.collections.ObservableList;
@@ -48,6 +49,7 @@ public class RoomCreatorController {
         var selectedScenario = (RadioButton) toggleGroupForSchemasRadioButtons.getSelectedToggle();
         var scenarioId = selectedScenario.getId();
         createNewGame(roomName, roomDatabaseId, scenarioId);
+        new GameBoard().start(View.getInstance().getStage());
     }
 
     private void createNewGame(String roomName, String roomDatabaseId, String scenarioId) throws Exception {
