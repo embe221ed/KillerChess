@@ -19,8 +19,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.killerchess.core.controllers.game.GameController.*;
-import static com.killerchess.core.controllers.state.GameStateController.NEW_STATE_PATH;
-import static com.killerchess.core.controllers.state.GameStateController.STATE_PARAM;
 
 public class RoomCreatorController {
 
@@ -96,7 +94,7 @@ public class RoomCreatorController {
     }
 
     private void changeSceneToChessBoard() throws Exception {
-        View.getInstance().changeScene("/chessboard.fxml");
+        View.getInstance().changeScene("/main_screen.fxml");
     }
 
     private void initializeVBoxWithGameScenarios() {

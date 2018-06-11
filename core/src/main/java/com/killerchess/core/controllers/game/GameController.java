@@ -4,7 +4,6 @@ import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.game.Game;
 import com.killerchess.core.services.GameService;
 import com.killerchess.core.services.UserService;
-import com.killerchess.core.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,10 @@ public class GameController {
 
     public static final String NEW_GAME_PATH = "/newGame";
     public static final String GAME_BOARD_PATH = "/gameBoard";
+    public static final String GAME_BOARD_LIST_PATH = "/listOfGameStates";
     public static final String AVAILABLE_GAMES = "/availableGames";
+    public static final String NEW_STATE_PATH = "/newState";
+    public static final String STATE_PARAM = "state";
     public static final String GAME_ID_PARAM = "gameId";
     public static final String GAME_NAME_PARAM = "gameName";
     public static final String GAME_STATE_PARAM = "gameState";
@@ -43,25 +45,26 @@ public class GameController {
                                           @RequestParam(value = GAME_NAME_PARAM) String gameName,
                                           HttpServletRequest request) {
         var username = request.getSession().getAttribute("username").toString();
-        User user = new User(username);
-        if (userService.existsUser(user)) {
+        if (userService.existsLogin(username)) {
             gameService.initNewGame(gameId, gameName, username);
             return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = GAME_BOARD_LIST_PATH)
+    public ResponseEntity<List<String>> listOfGameStatesForGame(@RequestParam(value = GAME_ID_PARAM) String gameId) {
+        try {
+            List<String> availableGamesList = gameService.getListOfGameStatesForGame(gameId);
+            return new ResponseEntity<>(availableGamesList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = GAME_BOARD_PATH)
-    public String gameBoard(@RequestParam(value = GAME_ID_PARAM) String gameId,
-                            @RequestParam(value = GAME_STATE_NUMBER_PARAM) Integer gameStateNumber) {
-        //TODO trzeba zaimplementować.
-        return null;
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "GAME_BOARD_PATH")
+    @RequestMapping(method = RequestMethod.POST, value = NEW_STATE_PATH)
     public ResponseEntity gameBoard(@RequestParam(value = GAME_ID_PARAM) String gameId,
-                                    @RequestParam(value = GAME_STATE_PARAM) String gameState) {
+                                    @RequestParam(value = STATE_PARAM) String gameState) {
         try {
             gameService.saveSpecificGameState(gameId, gameState);
         } catch (Exception e) {
@@ -73,7 +76,7 @@ public class GameController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = AVAILABLE_GAMES)
-    public ResponseEntity<List> getAvailableGames() {
+    public ResponseEntity<List<GameDTO>> getAvailableGames() {
         try {
             List<Game> availableGamesList = gameService.findAvailableGames();
             List<GameDTO> availableGamesDTOS = new ArrayList<>();

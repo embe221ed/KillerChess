@@ -52,4 +52,7 @@ public class GameService {
         return gameRepository.findAllByGuestIsNull();
     }
 
+    public List<String> getListOfGameStatesForGame(String gameId) {
+        return gameRepository.getListOfStatesForGame(gameId);
+    }
 }

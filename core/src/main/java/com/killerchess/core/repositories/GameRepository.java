@@ -2,6 +2,8 @@ package com.killerchess.core.repositories;
 
 import com.killerchess.core.game.Game;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,6 +11,9 @@ import java.util.List;
 @Repository
 public interface GameRepository extends JpaRepository<Game, String> {
     Game findByGameId(String id);
+
+    @Query("select state from GameState where game_id = :gameId")
+    List<String> getListOfStatesForGame(@Param("gameId") String gameId);
 
     List<Game> findAllByGuestIsNull();
 }
