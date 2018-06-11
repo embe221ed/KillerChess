@@ -3,6 +3,7 @@ package com.killerchess.view.game;
 import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
+import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.game.Game;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.core.user.User;
@@ -15,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +28,7 @@ public class GameBoard extends Application {
 
     private final int UNPROPER_COORDINATE_VALUE = 100;
 
-    private Tile[][] chessboard = new Tile[WIDTH][HEIGHT];
+    private Tile[][] chessBoardOfChessmansImages = new Tile[WIDTH][HEIGHT];
 
     private ChessmanImage currentChessmanImage;
     private int currentChessmanXCoordinate = UNPROPER_COORDINATE_VALUE;
@@ -35,7 +37,7 @@ public class GameBoard extends Application {
     private Group tileGroup = new Group();
     private Group chessmanGroup = new Group();
 
-    private Button availableMovesButton;
+    private Button helpButton;
     private ChessBoard chessBoard;
 
     private StateInterpreter stateInterpreter;
@@ -58,8 +60,8 @@ public class GameBoard extends Application {
         Pane root = new Pane();
         root.setPrefSize((WIDTH + 1) * TILE_SIZE, HEIGHT * TILE_SIZE);
         root.getChildren().addAll(tileGroup, chessmanGroup);
-        setAvailableMovesButton();
-        root.getChildren().add(availableMovesButton);
+        setHelpButton();
+        root.getChildren().add(helpButton);
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
                 Tile tile = drawAndReturnTile(x, y);
@@ -70,74 +72,87 @@ public class GameBoard extends Application {
         return root;
     }
 
-    private void setAvailableMovesButton() {
-        availableMovesButton = new Button();
-        availableMovesButton.setText("RUCHY");
-        availableMovesButton.setLayoutX(800.0);
-        availableMovesButton.setLayoutY(0.0);
-        availableMovesButton.setPrefSize(100.0, 100.0);
-        setAvailableMovesButtonOnClickFunction();
+    private void setHelpButton() {
+        helpButton = new Button();
+        helpButton.setText("POMOC");
+        helpButton.setLayoutX(800.0);
+        helpButton.setLayoutY(0.0);
+        helpButton.setPrefSize(100.0, 100.0);
+        setHelpButtonMouseOnClickFunction();
     }
 
-    private void setAvailableMovesButtonOnClickFunction() {
-        availableMovesButton.setOnMouseClicked(e -> {
+    private void setHelpButtonMouseOnClickFunction() {
+        helpButton.setOnMouseClicked(e -> {
             if (currentChessmanImage != null) {
                 double currentChessmanX = currentChessmanImage.getPrevMouseX();
                 double currentChessmanY = currentChessmanImage.getPrevMouseY();
 
-                var possibleCaptures = currentChessmanImage.getChessman().getPossibleCaptures(chessBoard,
+                var currentChessmanPossibleCaptures = currentChessmanImage.getChessman().getPossibleCaptures(chessBoard,
                         new Pair<>(toBoard(currentChessmanY), toBoard(currentChessmanX)));
 
-                Set<Pair<Integer, Integer>> possibleChessmans = null;
-                Set<Pair<Integer, Integer>> possibleMoves = null;
+                if (currentChessmanPossibleCaptures == null)
+                    currentChessmanPossibleCaptures = new HashSet<>();
 
-                Set<Pair<Integer, Integer>> fieldsToHighLight = null;
+                Set<Pair<Integer, Integer>> otherChessmansThatCanCapture = new HashSet<>();
+                Set<Pair<Integer, Integer>> possibleMoves = new HashSet<>();
+                Set<Pair<Integer, Integer>> fieldsToHighLight = new HashSet<>();
 
-                if (possibleCaptures == null || possibleCaptures.size() == 0) {
+                if (currentChessmanPossibleCaptures.isEmpty()) {
                     var chessmansWithGivenColor = chessBoard.getAllChessmansWithGivenColor(currentChessmanImage.getChessman().getColour());
-                    if (chessmansWithGivenColor != null && chessmansWithGivenColor.size() != 0) {
-                        for (Chessman possibleChessman : chessmansWithGivenColor) {
-                            Pair<Integer, Integer> chessmanPosition = chessBoard.getChessmanPosition(possibleChessman);
-                            if (chessmanPosition != null) {
-                                chessboard[chessmanPosition.getValue()][chessmanPosition.getKey()].highlightRed();
-                                var captures = possibleChessman.getPossibleCaptures(chessBoard, chessmanPosition);
-                                if (captures != null && captures.size() != 0) {
-                                    if (possibleChessmans == null)
-                                        possibleChessmans = new HashSet<Pair<Integer, Integer>>();
-                                    possibleChessmans.add(chessmanPosition);
-                                }
-                            }
-                        }
+                    if (!chessmansWithGivenColor.isEmpty()) {
+                        findOtherChessmansThatCanCapture(chessmansWithGivenColor, otherChessmansThatCanCapture);
                     }
-                    if (possibleChessmans == null || possibleChessmans.size() == 0) {
-                        possibleMoves = currentChessmanImage.getChessman().getPossibleMoves(chessBoard,
-                                new Pair<>(toBoard(currentChessmanY), toBoard(currentChessmanX)));
-                        if (possibleMoves != null || possibleMoves.size() != 0)
-                            fieldsToHighLight = possibleMoves;
-                    } else {
-                        fieldsToHighLight = possibleChessmans;
-                    }
-
+                    fieldsToHighLight = decideIfHighlightOtherChessmansOrPossibleMoves(otherChessmansThatCanCapture, currentChessmanX,
+                                                                    currentChessmanY, fieldsToHighLight, possibleMoves);
                 } else {
-                    fieldsToHighLight = possibleCaptures;
+                    fieldsToHighLight = currentChessmanPossibleCaptures;
                 }
 
-                if (fieldsToHighLight != null) {
-                    for (int y = 0; y < HEIGHT; y++) {
+                if (!fieldsToHighLight.isEmpty()) {
+                    for (int y = 0; y < HEIGHT; y++)
                         for (int x = 0; x < WIDTH; x++) {
                             if (fieldsToHighLight.contains(new Pair<>(x, y))) {
-                                chessboard[y][x].highlightBlue();
+                                chessBoardOfChessmansImages[y][x].highlightBlue();
                             }
                         }
-                    }
                 }
             }
         });
     }
 
+    private void findOtherChessmansThatCanCapture(Set<Chessman> chessmansWithGivenColor, Set<Pair<Integer, Integer>> possibleChessmans){
+        for (Chessman possibleChessman : chessmansWithGivenColor) {
+            Pair<Integer, Integer> chessmanPosition = chessBoard.getChessmanPosition(possibleChessman);
+            if (chessmanPosition != null) {
+                var captures = possibleChessman.getPossibleCaptures(chessBoard, chessmanPosition);
+                if (captures != null && captures.size() != 0) {
+                    if (possibleChessmans == null)
+                        possibleChessmans = new HashSet<>();
+                    possibleChessmans.add(chessmanPosition);
+                }
+            }
+        }
+    }
+
+    private Set<Pair<Integer, Integer>> decideIfHighlightOtherChessmansOrPossibleMoves(Set<Pair<Integer, Integer>> otherChessmansThatCanCapture,
+                                                                                       double currentChessmanX, double currentChessmanY,
+                                                                                       Set<Pair<Integer, Integer>> fieldsToHighLight,
+                                                                                       Set<Pair<Integer, Integer>> possibleMoves){
+        if (otherChessmansThatCanCapture == null || otherChessmansThatCanCapture.size() == 0) {
+            //WholeBoard();
+            possibleMoves = currentChessmanImage.getChessman().getPossibleMoves(chessBoard,
+                    new Pair<>(toBoard(currentChessmanY), toBoard(currentChessmanX)));
+            if (possibleMoves != null && possibleMoves.size() != 0)
+                fieldsToHighLight = possibleMoves;
+        } else {
+            fieldsToHighLight = otherChessmansThatCanCapture;
+        }
+        return fieldsToHighLight;
+    }
+
     private Tile drawAndReturnTile(int x, int y) {
         Tile tile = new Tile((x + y) % 2 == 0, x, y);
-        chessboard[x][y] = tile;
+        chessBoardOfChessmansImages[x][y] = tile;
         tileGroup.getChildren().add(tile);
         return tile;
     }
@@ -161,79 +176,118 @@ public class GameBoard extends Application {
     }
 
     private int toBoard(double pixel) {
-        return (int) (pixel + TILE_SIZE / 2) / TILE_SIZE;
+        return (int) (pixel / TILE_SIZE);
     }
 
     private MoveResult tryMove(ChessmanImage chessmanImage, int newX, int newY) {
-        double prevChessmanX = chessmanImage.getPrevMouseX();
-        double prevChessmanY = chessmanImage.getPrevMouseY();
+        if(chessmanImage != null) {
+            double prevChessmanX = chessmanImage.getPrevMouseX();
+            double prevChessmanY = chessmanImage.getPrevMouseY();
+            if (chessmanImage.getChessman().getPossibleCaptures(chessBoard,
+                    new Pair<>(toBoard(prevChessmanY), toBoard(prevChessmanX))).contains(new Pair<>(newY, newX))) {
+                return new MoveResult(MoveType.KILL);
+            } else if (chessmanImage.getChessman().getPossibleMoves(chessBoard,
+                    new Pair<>(toBoard(prevChessmanY), toBoard(prevChessmanX))).contains(new Pair<>(newY, newX))) {
 
-        if (chessmanImage.getChessman().getPossibleCaptures(chessBoard,
-                new Pair<>(toBoard(prevChessmanY), toBoard(prevChessmanX))).contains(new Pair<>(newY, newX))) {
-            return new MoveResult(MoveType.KILL);
-        } else if (chessmanImage.getChessman().getPossibleMoves(chessBoard,
-                new Pair<>(toBoard(prevChessmanY), toBoard(prevChessmanX))).contains(new Pair<>(newY, newX))) {
-
-            return new MoveResult(MoveType.NORMAL);
-        } else {
-            return new MoveResult(MoveType.NONE);
+                return new MoveResult(MoveType.NORMAL);
+            } else {
+                return new MoveResult(MoveType.NONE);
+            }
         }
+        return new MoveResult(MoveType.NONE);
     }
 
     private void unhighlightAllBoard() {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                chessboard[x][y].removeHighlight();
+                chessBoardOfChessmansImages[x][y].removeHighlight();
             }
         }
     }
 
     private void setChessmanImageMouseFunctions(ChessmanImage chessmanImage) {
-        chessmanImage.setOnMousePressed(e -> {
-            if (canPlayerMoveChessman(chessmanImage)) {
-                unhighlightAllBoard();
-                chessmanImage.setMouseX(e.getSceneX());
-                chessmanImage.setMouseY(e.getSceneY());
-                chessmanImage.setPrevMouseX((int) (e.getSceneX() / 100) * 100 + 7);
-                chessmanImage.setPrevMouseY((int) (e.getSceneY() / 100) * 100 + 7);
+        if (chessmanImage != null) {
+            chessmanImage.setOnMousePressed(e -> {
+                if (canPlayerMoveChessman(chessmanImage)) {
+                    unhighlightAllBoard();
+                    chessmanImage.setMouseX(e.getSceneX());
+                    chessmanImage.setMouseY(e.getSceneY());
+                    chessmanImage.setPrevMouseX((int) (e.getSceneX() / 100) * 100 + 7);
+                    chessmanImage.setPrevMouseY((int) (e.getSceneY() / 100) * 100 + 7);
+                    chessmanImage.setPrevChessmanY(toBoard(e.getSceneY()));
+                    chessmanImage.setPrevChessmanX(toBoard(e.getSceneX()));
 
-                currentChessmanXCoordinate = toBoard(chessmanImage.getLayoutX());
-                getCurrentChessmanYCoordinate = toBoard(chessmanImage.getLayoutY());
-                currentChessmanImage = chessboard[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].getChessmanImage();
-                chessboard[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].highlightGreen();
-                System.out.println(currentChessmanXCoordinate);
-                System.out.println(getCurrentChessmanYCoordinate);
-            }
-        });
-        chessmanImage.setOnMouseDragged(e -> {
-            if (canPlayerMoveChessman(chessmanImage)) {
-                unhighlightAllBoard();
-                chessmanImage.relocate(e.getSceneX(), e.getScreenY());
-            }
-        });
-
-        chessmanImage.setOnMouseReleased(e -> {
-            if (canPlayerMoveChessman(chessmanImage)) {
-                int newX = toBoard(chessmanImage.getLayoutX());
-                int newY = toBoard(chessmanImage.getLayoutY());
-
-                MoveResult result = tryMove(chessmanImage, newX, newY);
-
-                switch (result.getMoveType()) {
-                    case NONE:
-                        chessmanImage.abortMove();
-                        break;
-                    case NORMAL:
-                        chessmanImage.move(newX, newY);
-                        System.out.println(newX);
-                        System.out.println(newY);
-                        chessboard[newX][newY].setChessmanImage(chessmanImage);
-                        break;
-                    case KILL:
-                        //   chessmanImage
+                    currentChessmanXCoordinate = toBoard(chessmanImage.getLayoutX());
+                    getCurrentChessmanYCoordinate = toBoard(chessmanImage.getLayoutY());
+                    currentChessmanImage = chessBoardOfChessmansImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].getChessmanImage();
+                    chessBoardOfChessmansImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].highlightGreen();
                 }
+            });
+            chessmanImage.setOnMouseDragged(e -> {
+                if (canPlayerMoveChessman(chessmanImage)) {
+                    unhighlightAllBoard();
+                    chessmanImage.relocate(e.getSceneX() - 50, e.getScreenY() - 50);
+                }
+            });
+
+            chessmanImage.setOnMouseReleased(e -> {
+                if (canPlayerMoveChessman(chessmanImage)) {
+                    int newX = toBoard(chessmanImage.getLayoutX());
+                    int newY = toBoard(chessmanImage.getLayoutY());
+
+                    MoveResult result = tryMove(chessmanImage, newX, newY);
+
+                    switch (result.getMoveType()) {
+                        case NONE:
+                            chessmanImage.abortMove();
+                            break;
+                        case NORMAL:
+                            chessmanImage.move(newX, newY);
+                            chessBoardOfChessmansImages[newX][newY].setChessmanImage(new ChessmanImage(chessmanImage));
+                            chessBoardOfChessmansImages[chessmanImage.getPrevChessmanX()][chessmanImage.getPrevChessmanY()]
+                                    .getChessmanImage().setChessman(new EmptyField(chessmanImage.getChessman().getColour()));
+                            updateChessBoardOfChessmans();
+                            break;
+                        case KILL:
+                            //   chessmanImage
+                    }
+                }
+            });
+        }
+    }
+
+
+
+    private void printWholeBoard(){
+        for (int y = 0; y < HEIGHT; y++) {
+            for (int x = 0; x < WIDTH; x++) {
+                System.out.print(chessBoard.getChessmanAt(y,x).getSymbol());
             }
-        });
+            System.out.println("");
+        }
+
+    }
+
+    private void updateChessBoardOfChessmans(){
+       ArrayList<ArrayList<Chessman>> chessboardCurrentState = new ArrayList<>();
+        for (int y = 0; y < HEIGHT; y++) {
+            ArrayList<Chessman> currentChessmansRow = new ArrayList<>();
+            for (int x = 0; x < WIDTH; x++) {
+                currentChessmansRow.add(chessBoardOfChessmansImages[x][y].getChessmanImage().getChessman());
+            }
+            chessboardCurrentState.add(currentChessmansRow);
+        }
+
+        chessBoard = new ChessBoard(chessboardCurrentState);
+
+        printWholeBoard();
+
+       /* for (int y = 0; y < HEIGHT; y++) {
+            for (int x = 0; x < WIDTH; x++) {
+                System.out.print(chessBoard.getChessmanAt(y,x).getSymbol());
+            }
+            System.out.println("");
+        }*/
     }
 
     private Boolean canPlayerMoveChessman(ChessmanImage chessmanImage) {

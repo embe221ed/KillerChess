@@ -6,6 +6,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.io.File;
+import java.lang.reflect.Constructor;
 
 import static com.killerchess.view.game.GameBoard.TILE_SIZE;
 
@@ -17,6 +18,7 @@ public class ChessmanImage extends StackPane {
     private ChessmanColourEnum colour;
     private double mouseX, mouseY;
     private double prevMouseX, prevMouseY;
+    private int prevChessmanX, PrevChessmanY;
 
     public double getMouseX() {
         return mouseX;
@@ -50,6 +52,10 @@ public class ChessmanImage extends StackPane {
         return chessman;
     }
 
+    public void setChessman(Chessman chessman) {
+        this.chessman = chessman;
+    }
+
     public double getPrevMouseX() {
         return prevMouseX;
     }
@@ -66,6 +72,22 @@ public class ChessmanImage extends StackPane {
         this.colour = colour;
     }
 
+    public int getPrevChessmanX() {
+        return prevChessmanX;
+    }
+
+    public void setPrevChessmanX(int prevChessmanX) {
+        this.prevChessmanX = prevChessmanX;
+    }
+
+    public int getPrevChessmanY() {
+        return PrevChessmanY;
+    }
+
+    public void setPrevChessmanY(int prevChessmanY) {
+        PrevChessmanY = prevChessmanY;
+    }
+
     public ChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
         this.colour = chessman.getColour();
         this.chessman = chessman;
@@ -79,6 +101,12 @@ public class ChessmanImage extends StackPane {
             file = new File(filePath);
             setImage(file);
         }
+    }
+
+    public ChessmanImage(ChessmanImage chessmanImageOriginal){
+        this.colour = chessmanImageOriginal.colour;
+        this.type = chessmanImageOriginal.type;
+        this.chessman = chessmanImageOriginal.chessman;
     }
 
     private void createImageFromFile(ChessmanColourEnum chessmanColour,int chessmanStyleNumber){
