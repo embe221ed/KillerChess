@@ -5,6 +5,7 @@ import com.killerchess.core.game.Game;
 import com.killerchess.core.game.GameState;
 import com.killerchess.core.services.GameService;
 import com.killerchess.core.services.UserService;
+import com.killerchess.core.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,8 @@ public class GameController {
     public static final String FIRST_GAME_STATE_PATH = "/addFirstGameState";
     public static final String IS_USERS_MOVE = "/isUsersMove";
     public static final String NEW_STATE_PATH = "/newState";
+    public static final String CHECK_GUEST_PATH = "/checkGuest";
+    public static final String JOIN_GAME_PATH = "/joinGame";
     public static final String GAME_STATE_CHANGED_PATH = "/gameStateChanged";
     public static final String STATE_PARAM = "state";
     public static final String GAME_ID_PARAM = "gameId";
@@ -165,6 +168,41 @@ public class GameController {
             GameState gameState = gameService.getLastGameStateForGame(gameId);
             boolean isUsersMove = gameState.getMove() ^ username.equals(gameState.getGame().getHost().getLogin());
             return new ResponseEntity<>(isUsersMove, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = JOIN_GAME_PATH)
+    public ResponseEntity<Integer> joinGame(@RequestParam(value = GAME_ID_PARAM) String gameId,
+                                            HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            String username = session.getAttribute("username").toString();
+            Game game = gameService.findGame(gameId);
+            if (game == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            User user = new User();
+            user.setLogin(username);
+            game.setGuest(user);
+            gameService.updateGame(game);
+            session.setAttribute(GAME_ID_PARAM, gameId);
+            GameState gameState = gameService.getLastGameStateForGame(gameId);
+            return new ResponseEntity<>(gameState.getGameStateNumber(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = CHECK_GUEST_PATH)
+    public ResponseEntity<Boolean> checkIfGuestIsPresent(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            Game game = gameService.findGame(gameId);
+            boolean isGuestPresent = game.getGuest() != null;
+            return new ResponseEntity<>(isGuestPresent, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

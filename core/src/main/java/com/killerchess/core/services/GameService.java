@@ -71,4 +71,8 @@ public class GameService {
     public Game findGame(String gameId) {
         return gameRepository.findByGameId(gameId);
     }
+
+    public Game updateGame(Game game) {
+        return gameRepository.save(game);
+    }
 }

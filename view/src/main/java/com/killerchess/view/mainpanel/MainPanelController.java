@@ -3,7 +3,6 @@ package com.killerchess.view.mainpanel;
 import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
-import com.killerchess.core.util.Listener;
 import com.killerchess.view.View;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
@@ -29,6 +28,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -80,6 +80,30 @@ public class MainPanelController {
     private double panelHeight;
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
 
+    // TODO delete this line after copying it to proper class
+    private Runnable listener = () -> {
+        LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+        ResponseEntity<Boolean> responseEntity;
+        UriComponentsBuilder builder;
+        try {
+            do {
+                // czas pomiędzy kolejnymi zapytaniami
+                Thread.sleep(15000);
+                builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
+                        .queryParam("gameStateNumber", localSessionSingleton.
+                                getParameter("gameStateNumber"));
+                responseEntity = localSessionSingleton.
+                        exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
+
+            } while (!responseEntity.getBody());
+            // zamiast tego będzie wywołanie metody z GameBoard.java, która aktualizuje GameState
+            // pobierając tą informację z serwera
+            // GameBoard.getInstance().updateGameState();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    };
+
     @FXML
     public void initialize() {
         getPanelSize();
@@ -113,7 +137,6 @@ public class MainPanelController {
         System.out.println("Logout button clicked!");
         // TODO MB delete these lines
         // przykład użycia wątku
-        Listener listener = new Listener();
         executorService.submit(listener);
     }
 

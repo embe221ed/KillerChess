@@ -11,4 +11,5 @@ public interface GameRepository extends JpaRepository<Game, String> {
     Game findByGameId(String id);
 
     List<Game> findAllByGuestIsNull();
+
 }
