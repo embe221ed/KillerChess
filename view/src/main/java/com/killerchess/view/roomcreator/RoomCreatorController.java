@@ -81,7 +81,7 @@ public class RoomCreatorController {
             gameStateCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
 
             var session = LocalSessionSingleton.getInstance();
-            var responseEntity = session.exchange(LoginController.HOST + NEW_STATE_PATH,
+            var responseEntity = session.exchange(LoginController.HOST + FIRST_GAME_STATE_PATH,
                     HttpMethod.POST, gameStateCreationParametersMap, Integer.class);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 session.setParameter(GAME_STATE_NUMBER_PARAM, responseEntity.getBody().toString());

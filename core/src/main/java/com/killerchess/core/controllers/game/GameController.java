@@ -26,6 +26,8 @@ public class GameController {
     public static final String GAME_BOARD_PATH = "/gameBoard";
     public static final String GAME_BOARD_LIST_PATH = "/listOfGameStates";
     public static final String AVAILABLE_GAMES_PATH = "/availableGames";
+    public static final String FIRST_GAME_STATE_PATH = "/addFirstGameState";
+    public static final String IS_USERS_MOVE = "/isUsersMove";
     public static final String NEW_STATE_PATH = "/newState";
     public static final String GAME_STATE_CHANGED_PATH = "/gameStateChanged";
     public static final String STATE_PARAM = "state";
@@ -71,13 +73,30 @@ public class GameController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = FIRST_GAME_STATE_PATH)
+    public ResponseEntity<Integer> addFirstGameState(@RequestParam(value = STATE_PARAM) String gameState,
+                                                     HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            boolean mockGuestMove = false;
+            GameState gameStateObject = gameService.saveSpecificGameState(gameId, gameState, mockGuestMove);
+            return new ResponseEntity<>(gameStateObject.getGameStateNumber(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = NEW_STATE_PATH)
     public ResponseEntity<Integer> saveNewGameState(@RequestParam(value = STATE_PARAM) String gameState,
                                                     HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();
-            GameState gameStateObject = gameService.saveSpecificGameState(gameId, gameState);
+            String username = session.getAttribute("username").toString();
+            Game game = gameService.findGame(gameId);
+            boolean move = username.equals(game.getHost().getLogin());
+            GameState gameStateObject = gameService.saveSpecificGameState(gameId, gameState, move);
             return new ResponseEntity<>(gameStateObject.getGameStateNumber(), HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -133,6 +152,20 @@ public class GameController {
             return new ResponseEntity<>(false, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = IS_USERS_MOVE)
+    public ResponseEntity<Boolean> isUsersMove(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            String username = session.getAttribute("username").toString();
+            String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            GameState gameState = gameService.getLastGameStateForGame(gameId);
+            boolean isUsersMove = gameState.getMove() ^ username.equals(gameState.getGame().getHost().getLogin());
+            return new ResponseEntity<>(isUsersMove, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

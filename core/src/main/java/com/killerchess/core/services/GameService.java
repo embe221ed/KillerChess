@@ -35,7 +35,7 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    public GameState saveSpecificGameState(String gameId, String gameStateStr) throws GameNotFoundException {
+    public GameState saveSpecificGameState(String gameId, String gameStateStr, boolean move) throws GameNotFoundException {
         Game game = gameRepository.findByGameId(gameId);
 
         if (game == null) {
@@ -45,6 +45,7 @@ public class GameService {
         GameState gameState = new GameState();
         gameState.setState(gameStateStr);
         gameState.setGame(game);
+        gameState.setMove(move);
 
         return gameStateRepository.save(gameState);
     }
@@ -65,5 +66,9 @@ public class GameService {
         Game game = gameRepository.findByGameId(gameId);
         List<GameState> gameStates = gameStateRepository.getGameStatesByGameOrderByGameStateNumberDesc(game);
         return gameStates.get(0);
+    }
+
+    public Game findGame(String gameId) {
+        return gameRepository.findByGameId(gameId);
     }
 }
