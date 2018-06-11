@@ -46,7 +46,7 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.POST, value = NEW_GAME_PATH)
     public ResponseEntity newGameWithName(@RequestParam(value = GAME_ID_PARAM) String gameId,
-                                          @RequestParam(value = GAME_NAME_PARAM) String gameName,
+                                          @RequestParam(value = GAME_NAME_PARAM, required = false, defaultValue = "game") String gameName,
                                           HttpServletRequest request) {
         HttpSession session = request.getSession();
         var username = session.getAttribute(USER_NAME_PARAM).toString();
@@ -72,8 +72,8 @@ public class GameController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = NEW_STATE_PATH)
-    public ResponseEntity<Integer> gameBoard(@RequestParam(value = STATE_PARAM) String gameState,
-                                             HttpServletRequest request) {
+    public ResponseEntity<Integer> saveNewGameState(@RequestParam(value = STATE_PARAM) String gameState,
+                                                    HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();

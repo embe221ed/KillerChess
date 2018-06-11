@@ -47,8 +47,6 @@ public class RoomCreatorController {
         var roomDatabaseId = String.format("%s_%s", roomName, UUID.randomUUID());
         var selectedScenario = (RadioButton) toggleGroupForSchemasRadioButtons.getSelectedToggle();
         var scenarioId = selectedScenario.getId();
-        // TODO delete after getting rid of unnecessary parameters in REST GameController methods
-        LocalSessionSingleton.getInstance().setParameter("gameId", roomDatabaseId);
         createNewGame(roomName, roomDatabaseId, scenarioId);
     }
 
@@ -87,7 +85,6 @@ public class RoomCreatorController {
                     HttpMethod.POST, gameStateCreationParametersMap, Integer.class);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 session.setParameter(GAME_STATE_NUMBER_PARAM, responseEntity.getBody().toString());
-                System.out.println(session.getParameter(GAME_STATE_NUMBER_PARAM));
                 changeSceneToChessBoard();
             } else {
                 CustomAlert.showAndWait("Nie udało się stworzyć pierwszego ruchu.", Alert.AlertType.ERROR);

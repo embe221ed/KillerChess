@@ -3,17 +3,17 @@ package com.killerchess.view.game;
 import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
-import javafx.scene.control.Button;
 import com.killerchess.core.game.Game;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.core.user.User;
-import javafx.util.Pair;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 public class GameBoard extends Application {
 
@@ -36,12 +36,11 @@ public class GameBoard extends Application {
     private Button availableCapturesButton;
     private ChessBoard chessBoard;
 
-    private StateInterpreter stateInterpreter;
+    private StateInterpreter stateInterpreter = new StateInterpreter();
     private Game game;
-    LocalSessionSingleton localSessionSingleton;
+    private LocalSessionSingleton localSessionSingleton;
 
     private Parent createContent(String gameBoardStateString){
-        this.stateInterpreter = new StateInterpreter();
         this.chessBoard = stateInterpreter.convertJsonBoardToChessBoard(gameBoardStateString);
         this.localSessionSingleton = LocalSessionSingleton.getInstance();
         this.game = new Game();
