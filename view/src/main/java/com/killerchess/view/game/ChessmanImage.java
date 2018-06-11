@@ -75,7 +75,7 @@ public class ChessmanImage extends StackPane {
         if(type != ChessmanType.EMPTY) {
             String chessmanTypeLowerCase = type.name().toLowerCase();
             String filePath = new StringBuilder("view/images/type_").append(chessmanStyleNumber).
-                    append("_").append(this.colour).append("_").append(chessmanTypeLowerCase).append(".png").toString();
+                    append("_").append(this.colour.toString().toLowerCase()).append("_").append(chessmanTypeLowerCase).append(".png").toString();
             file = new File(filePath);
             setImage(file);
         }
