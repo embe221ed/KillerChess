@@ -41,14 +41,14 @@ public class ChessBoard {
 
 
     public Set<Chessman> getAllChessmansWithGivenColor(ChessmanColourEnum color) {
-        var chessmansWithGivenColor = new HashSet<Chessman>();
+        var chessmenWithGivenColor = new HashSet<Chessman>();
 
-        chessBoard.forEach(chessmen -> chessmansWithGivenColor.addAll(chessmen.stream()
+        chessBoard.forEach(chessmen -> chessmenWithGivenColor.addAll(chessmen.stream()
                 .filter(chessman -> chessman.getColour().equals(color))
                 .collect(Collectors.toSet()))
         );
 
-        return chessmansWithGivenColor;
+        return chessmenWithGivenColor;
     }
 
     public Pair<Integer, Integer> getChessmanPosition(Chessman chessmanToSearch) {
