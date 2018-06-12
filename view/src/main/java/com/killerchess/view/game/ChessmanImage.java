@@ -17,6 +17,7 @@ public class ChessmanImage extends StackPane {
     private ChessmanColourEnum colour;
     private double mouseX, mouseY;
     private double prevMouseX, prevMouseY;
+    private int prevChessmanX, PrevChessmanY;
 
     public double getMouseX() {
         return mouseX;
@@ -66,6 +67,28 @@ public class ChessmanImage extends StackPane {
         this.colour = colour;
     }
 
+    public int getPrevChessmanX() {
+        return prevChessmanX;
+    }
+
+    public void setPrevChessmanX(int prevChessmanX) {
+        this.prevChessmanX = prevChessmanX;
+    }
+
+    public int getPrevChessmanY() {
+        return PrevChessmanY;
+    }
+
+    public void setPrevChessmanY(int prevChessmanY) {
+        PrevChessmanY = prevChessmanY;
+    }
+
+    public ChessmanImage(ChessmanImage chessmanImageOriginal){
+        this.colour = chessmanImageOriginal.colour;
+        this.type = chessmanImageOriginal.type;
+        this.chessman = chessmanImageOriginal.chessman;
+    }
+
     public ChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
         this.colour = chessman.getColour();
         this.chessman = chessman;
@@ -81,14 +104,10 @@ public class ChessmanImage extends StackPane {
         }
     }
 
-    private void createImageFromFile(ChessmanColourEnum chessmanColour,int chessmanStyleNumber){
-        String chessmanTypeLowerCase = type.name().toLowerCase();
-        String filePath = new StringBuilder("view/images/type_").append(chessmanStyleNumber).
-                append("_").append(chessmanColour).append("_").append(chessmanTypeLowerCase).append(".png").toString();
-        File file = new File(filePath);
-        setImage(file);
+    public ChessmanImage(Chessman chessman){
+        this.colour = chessman.getColour();
+        this.chessman = chessman;
     }
-
     private void setImage(File file){
         Image image = new Image(file.toURI().toString());
         imageView = new ImageView();
