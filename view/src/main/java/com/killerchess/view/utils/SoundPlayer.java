@@ -13,6 +13,22 @@ public class SoundPlayer {
     private static final String MOVE = SOUNDS_LOCAL_PATH + "move.wav";
     private static final String CLICK = SOUNDS_LOCAL_PATH + "click.wav";
 
+    public static void playOnChessmanMove() {
+        playSound(MOVE);
+    }
+
+    public static void playOnChessmanClick() {
+        playSound(CLICK);
+    }
+
+    public static void playOnGameStart() {
+        playSound(START_GAME);
+    }
+
+    public static void playOnGameEnd() {
+        playSound(END_GAME);
+    }
+
     private static void playSound(String filePath) {
 
         try {
@@ -32,22 +48,6 @@ public class SoundPlayer {
             e.printStackTrace();
         }
 
-    }
-
-    public static void playOnChessmanMove() {
-        playSound(MOVE);
-    }
-
-    public static void playOnChessmanClick() {
-        playSound(CLICK);
-    }
-
-    public static void playOnGameStart() {
-        playSound(START_GAME);
-    }
-
-    public static void playOnGameEnd() {
-        playSound(END_GAME);
     }
 
 }
