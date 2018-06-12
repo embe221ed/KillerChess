@@ -4,35 +4,26 @@ import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.EmptyField;
-import javafx.scene.control.Button;
-import com.killerchess.core.game.Game;
 import com.killerchess.core.session.LocalSessionSingleton;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import javafx.util.Pair;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class GameBoard extends Application {
 
@@ -61,20 +52,9 @@ public class GameBoard extends Application {
     private Pane root;
 
     private StateInterpreter stateInterpreter = new StateInterpreter();
-    private Game game;
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
 
     private static GameBoard instance;
-  
-    private Stage stage;
-    private Button availableMovesButton;
-    private Button availableCapturesButton;
-    private ChessBoard chessBoard;
-    private Pane root;
-    private StateInterpreter stateInterpreter = new StateInterpreter();
-    private Game game;
-    private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private Runnable listener = () -> {
         ResponseEntity<Boolean> responseEntity;
@@ -109,7 +89,6 @@ public class GameBoard extends Application {
   
     private Parent createContent(String gameBoardStateString) {
         this.chessBoard = stateInterpreter.convertJsonBoardToChessBoard(gameBoardStateString);
-        this.game = new Game();
 
         root = new Pane();
         root.setPrefSize((WIDTH + 3) * TILE_SIZE, HEIGHT * TILE_SIZE);
@@ -353,7 +332,6 @@ public class GameBoard extends Application {
                         completeKilllMove(chessmanImage, newX, newY);
                         break;
                 }
-                moveChessman(currentChessmanXCoordinate, getCurrentChessmanYCoordinate, newX, newY);
                 Platform.runLater(listener);
             }
         });

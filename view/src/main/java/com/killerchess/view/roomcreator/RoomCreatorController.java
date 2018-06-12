@@ -52,7 +52,11 @@ public class RoomCreatorController {
         var selectedScenario = (RadioButton) toggleGroupForSchemasRadioButtons.getSelectedToggle();
         var scenarioId = selectedScenario.getId();
         createNewGame(roomName, roomDatabaseId, scenarioId);
-        new GameBoard().start(View.getInstance().getStage());
+        try {
+            new GameBoard().start(View.getInstance().getStage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Runnable hostJoinedListener = () -> {
@@ -119,7 +123,11 @@ public class RoomCreatorController {
     private void changeSceneToGameBoard() {
         Stage stage = View.getInstance().getStage();
         GameBoard gameBoard = GameBoard.getInstance();
-        gameBoard.start(stage);
+        try {
+            gameBoard.start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         gameBoard.disableAllChessmen();
         waitForHost();
     }

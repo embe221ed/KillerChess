@@ -39,9 +39,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import java.util.stream.IntStream;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
@@ -327,7 +324,11 @@ public class MainPanelController {
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
                     Stage stage = View.getInstance().getStage();
                     GameBoard gameBoard = GameBoard.getInstance();
-                    gameBoard.start(stage);
+                    try {
+                        gameBoard.start(stage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     gameBoard.enableAllChessmen();
                 }
             }

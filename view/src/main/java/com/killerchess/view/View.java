@@ -52,9 +52,5 @@ public class View extends Application {
         stage.show();
     }
 
-    public Stage getStage() {
-        stage.setResizable(true);
-        return stage;
-    }
 }
 
