@@ -14,6 +14,6 @@ public class RegisterService {
     }
 
     public Boolean isValidUser(String login, String password) {
-        return !password.toLowerCase().equals(login.toLowerCase());
+        return login != null && !login.equals("") && !password.toLowerCase().equals(login.toLowerCase());
     }
 }
