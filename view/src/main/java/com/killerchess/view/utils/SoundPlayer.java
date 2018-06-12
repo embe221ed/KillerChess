@@ -7,12 +7,13 @@ import java.io.IOException;
 
 public class SoundPlayer {
 
-    private final String end_game = "view/sounds/end_game.wav";
-    private final String start_game = "view/sounds/start_game.wav";
-    private final String move = "view/sounds/move.wav";
-    private final String click = "view/sounds/click.wav";
+    private static final String SOUNDS_LOCAL_PATH = "view/sounds/";
+    private static final String END_GAME = SOUNDS_LOCAL_PATH + "end_game.wav";
+    private static final String START_GAME = SOUNDS_LOCAL_PATH + "start_game.wav";
+    private static final String MOVE = SOUNDS_LOCAL_PATH + "move.wav";
+    private static final String CLICK = SOUNDS_LOCAL_PATH + "click.wav";
 
-    private void playSound(String filePath) {
+    private static void playSound(String filePath) {
 
         try {
             AudioInputStream inputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(filePath)));
@@ -33,20 +34,20 @@ public class SoundPlayer {
 
     }
 
-    public void playOnChessmanMove() {
-        playSound(move);
+    public static void playOnChessmanMove() {
+        playSound(MOVE);
     }
 
-    public void playOnChessmanClick() {
-        playSound(click);
+    public static void playOnChessmanClick() {
+        playSound(CLICK);
     }
 
-    public void playOnGameStart() {
-        playSound(start_game);
+    public static void playOnGameStart() {
+        playSound(START_GAME);
     }
 
-    public void playOnGameEnd() {
-        playSound(end_game);
+    public static void playOnGameEnd() {
+        playSound(END_GAME);
     }
 
 }
