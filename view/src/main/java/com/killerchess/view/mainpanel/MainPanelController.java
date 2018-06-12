@@ -305,44 +305,45 @@ public class MainPanelController {
         for (TextArea gameOption : gamesOptions) {
             VBox.setMargin(gameOption, new Insets(0, 0, 0, 8));
             getRoomsVBoxChildren().add(gameOption);
-
-            gameOption.setOnMouseClicked(event -> {
-                Optional<GameDTO> gameForClickedRoom = gamesList.stream()
-                        .filter(gameDTO -> gameDTO.getGameId().equals(gameOption.getId()))
-                        .findFirst();
-                boolean isGameForClickedRoomPresent = gameForClickedRoom.isPresent();
-                GameDTO game = null;
-                if (isGameForClickedRoomPresent) {
-                    game = gameForClickedRoom.get();
-                }
-
-                if (event.getClickCount() == 1 && isGameForClickedRoomPresent) {
-                    String gameGuest = game.getGuest();
-                    roomInfo.setText("Room name: " + game.getGameName() + "\n"
-                            + "Host: " + game.getHost() + "\n"
-                            + "Guest: " + (gameGuest == null ? "empty" : gameGuest) + "\n"
-                            + "Unique game ID: " + game.getGameId());
-
-                }
-
-                if (event.getClickCount() == 2 && isGameForClickedRoomPresent) {
-                    MultiValueMap<String, String> joinGameParametersMap = new LinkedMultiValueMap<>();
-                    joinGameParametersMap.add(GAME_ID_PARAM, game.getGameId());
-                    var responseEntity = localSessionSingleton.exchange(LoginController.HOST + JOIN_GAME_PATH,
-                            HttpMethod.POST, joinGameParametersMap, Integer.class);
-                    if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                        Stage stage = View.getInstance().getStage();
-                        GameBoard gameBoard = GameBoard.getInstance();
-                        gameBoard.start(stage);
-                        gameBoard.enableAllChessmen();
-                    }
-                }
-            });
+            createEventsForGames(gamesList, gameOption);
         }
 
         roomsVBox.setOnMouseClicked((e) -> roomsVBox.requestFocus());
+    }
 
-        //TODO MM make listeners for TextAreas. One click brings information about room, two starts game.
+    private void createEventsForGames(List<GameDTO> gamesList, TextArea gameOption) {
+        gameOption.setOnMouseClicked(event -> {
+            Optional<GameDTO> gameForClickedRoom = gamesList.stream()
+                    .filter(gameDTO -> gameDTO.getGameId().equals(gameOption.getId()))
+                    .findFirst();
+            boolean isGameForClickedRoomPresent = gameForClickedRoom.isPresent();
+            GameDTO game = null;
+            if (isGameForClickedRoomPresent) {
+                game = gameForClickedRoom.get();
+            }
+
+            if (event.getClickCount() == 1 && isGameForClickedRoomPresent) {
+                String gameGuest = game.getGuest();
+                roomInfo.setText("Room name: " + game.getGameName() + "\n"
+                        + "Host: " + game.getHost() + "\n"
+                        + "Guest: " + (gameGuest == null ? "empty" : gameGuest) + "\n"
+                        + "Unique game ID: " + game.getGameId());
+
+            }
+
+            if (event.getClickCount() == 2 && isGameForClickedRoomPresent) {
+                MultiValueMap<String, String> joinGameParametersMap = new LinkedMultiValueMap<>();
+                joinGameParametersMap.add(GAME_ID_PARAM, game.getGameId());
+                var responseEntity = localSessionSingleton.exchange(LoginController.HOST + JOIN_GAME_PATH,
+                        HttpMethod.POST, joinGameParametersMap, Integer.class);
+                if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                    Stage stage = View.getInstance().getStage();
+                    GameBoard gameBoard = GameBoard.getInstance();
+                    gameBoard.start(stage);
+                    gameBoard.enableAllChessmen();
+                }
+            }
+        });
     }
 
 

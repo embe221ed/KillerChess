@@ -54,7 +54,7 @@ public class RoomCreatorController {
         createNewGame(roomName, roomDatabaseId, scenarioId);
     }
 
-    private Runnable listener = () -> {
+    private Runnable hostJoinedListener = () -> {
         LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
         ResponseEntity<Boolean> responseEntity;
         UriComponentsBuilder builder;
@@ -120,7 +120,11 @@ public class RoomCreatorController {
         GameBoard gameBoard = GameBoard.getInstance();
         gameBoard.start(stage);
         gameBoard.disableAllChessmen();
-        Platform.runLater(listener);
+        waitForHost();
+    }
+
+    private void waitForHost() {
+        Platform.runLater(hostJoinedListener);
     }
 
     private void initializeVBoxWithGameScenarios() {
