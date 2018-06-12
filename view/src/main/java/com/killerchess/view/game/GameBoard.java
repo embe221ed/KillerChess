@@ -224,8 +224,8 @@ public class GameBoard extends Application {
 
         chessmanImage.setOnMouseReleased(e -> {
             if(canPlayerMoveChessman(chessmanImage)) {
-                int newX = toBoard(chessmanImage.getLayoutX());
-                int newY = toBoard(chessmanImage.getLayoutY());
+                int newX = toBoard(e.getSceneX());
+                int newY = toBoard(e.getSceneY());
 
                 MoveResult result = tryMove(chessmanImage, newX, newY);
 
@@ -238,6 +238,7 @@ public class GameBoard extends Application {
                         updateBoardOfImagesAfterNormalMove(chessmanImage, newX, newY);
                         break;
                     case KILL:
+                        chessmanImage.move(newX, newY);
                         updateBoardOfImagesAfterKillMove(chessmanImage, newX, newY);
                         break;
                 }
