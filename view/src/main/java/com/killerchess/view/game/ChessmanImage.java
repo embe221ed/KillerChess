@@ -14,9 +14,33 @@ public class ChessmanImage extends StackPane {
     private ChessmanType type;
     private Chessman chessman;
     private ImageView imageView;
-
+    private ChessmanColourEnum colour;
     private double mouseX, mouseY;
     private double prevMouseX, prevMouseY;
+
+    public double getMouseX() {
+        return mouseX;
+    }
+
+    public void setMouseX(double mouseX) {
+        this.mouseX = mouseX;
+    }
+
+    public double getMouseY() {
+        return mouseY;
+    }
+
+    public void setMouseY(double mouseY) {
+        this.mouseY = mouseY;
+    }
+
+    public void setPrevMouseX(double prevMouseX) {
+        this.prevMouseX = prevMouseX;
+    }
+
+    public void setPrevMouseY(double prevMouseY) {
+        this.prevMouseY = prevMouseY;
+    }
 
     private ChessmanType getType(){
         return type;
@@ -34,29 +58,26 @@ public class ChessmanImage extends StackPane {
         return prevMouseY;
     }
 
+    public ChessmanColourEnum getColour() {
+        return colour;
+    }
+
+    public void setColour(ChessmanColourEnum colour) {
+        this.colour = colour;
+    }
+
     public ChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
-        ChessmanType chessmanType = ChessmanType.getTypeFromSymbol(chessman.getSymbol());
-        ChessmanColourEnum colour = chessman.getColour();
+        this.colour = chessman.getColour();
         this.chessman = chessman;
-        this.type = chessmanType;
+        this.type = ChessmanType.getTypeFromSymbol(chessman.getSymbol());
         relocate(x * GameBoard.TILE_SIZE + 7, y * GameBoard.TILE_SIZE + 7);
         File file;
         if(type != ChessmanType.EMPTY) {
             String chessmanTypeLowerCase = type.name().toLowerCase();
             String filePath = new StringBuilder("view/images/type_").append(chessmanStyleNumber).
-                    append("_").append(colour).append("_").append(chessmanTypeLowerCase).append(".png").toString();
+                    append("_").append(this.colour.toString().toLowerCase()).append("_").append(chessmanTypeLowerCase).append(".png").toString();
             file = new File(filePath);
             setImage(file);
-
-            setOnMousePressed(e ->{
-                mouseX = e.getSceneX();
-                mouseY = e.getSceneY();
-                prevMouseX = (int)(e.getSceneX()/100) * 100 + 7;
-                prevMouseY = (int)(e.getSceneY()/100) * 100 + 7;
-            });
-            setOnMouseDragged(e ->{
-                relocate(e.getSceneX(), e.getScreenY());
-            });
         }
     }
 
