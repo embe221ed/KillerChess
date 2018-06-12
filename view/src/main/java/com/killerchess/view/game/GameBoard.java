@@ -236,10 +236,12 @@ public class GameBoard extends Application {
                     case NORMAL:
                         chessmanImage.move(newX, newY);
                         updateBoardOfImagesAfterNormalMove(chessmanImage, newX, newY);
+                        currentChessmanImage = null;
                         break;
                     case KILL:
                         chessmanImage.move(newX, newY);
                         updateBoardOfImagesAfterKillMove(chessmanImage, newX, newY);
+                        currentChessmanImage = null;
                         break;
                 }
 
