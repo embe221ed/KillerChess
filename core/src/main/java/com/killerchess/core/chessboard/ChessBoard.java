@@ -1,10 +1,14 @@
 package com.killerchess.core.chessboard;
 
 import com.killerchess.core.chessmans.Chessman;
+import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.chessmans.EmptyField;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ChessBoard {
 
@@ -46,5 +50,29 @@ public class ChessBoard {
 
     public ArrayList<ArrayList<Chessman>> getChessBoardCopy() {
         return new ArrayList<>(chessBoard);
+    }
+
+
+    public Set<Chessman> getAllChessmansWithGivenColor(ChessmanColourEnum color) {
+        var chessmenWithGivenColor = new HashSet<Chessman>();
+
+        chessBoard.forEach(chessmen -> chessmenWithGivenColor.addAll(chessmen.stream()
+                .filter(chessman -> chessman.getColour().equals(color))
+                .collect(Collectors.toSet()))
+        );
+
+        return chessmenWithGivenColor;
+    }
+
+    public Pair<Integer, Integer> getChessmanPosition(Chessman chessmanToSearch) {
+        for (ArrayList<Chessman> chessmen : chessBoard) {
+            for (Chessman chessman : chessmen) {
+                if (chessman.equals(chessmanToSearch)) {
+                    return new Pair<>(chessBoard.indexOf(chessmen), chessmen.indexOf(chessman));
+                }
+            }
+        }
+
+        return null;
     }
 }

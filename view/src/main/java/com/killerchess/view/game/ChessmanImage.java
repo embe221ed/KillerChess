@@ -17,56 +17,63 @@ public class ChessmanImage extends StackPane {
     private ChessmanColourEnum colour;
     private double mouseX, mouseY;
     private double prevMouseX, prevMouseY;
+    private int prevChessmanX, PrevChessmanY;
 
-    public double getMouseX() {
-        return mouseX;
-    }
-
-    public void setMouseX(double mouseX) {
+    void setMouseX(double mouseX) {
         this.mouseX = mouseX;
     }
 
-    public double getMouseY() {
-        return mouseY;
-    }
-
-    public void setMouseY(double mouseY) {
+    void setMouseY(double mouseY) {
         this.mouseY = mouseY;
     }
 
-    public void setPrevMouseX(double prevMouseX) {
+    void setPrevMouseX(double prevMouseX) {
         this.prevMouseX = prevMouseX;
     }
 
-    public void setPrevMouseY(double prevMouseY) {
+    void setPrevMouseY(double prevMouseY) {
         this.prevMouseY = prevMouseY;
     }
 
-    private ChessmanType getType(){
-        return type;
-    }
-
-    public Chessman getChessman() {
+    Chessman getChessman() {
         return chessman;
     }
 
-    public double getPrevMouseX() {
+    double getPrevMouseX() {
         return prevMouseX;
     }
 
-    public double getPrevMouseY() {
+    double getPrevMouseY() {
         return prevMouseY;
     }
 
-    public ChessmanColourEnum getColour() {
+    ChessmanColourEnum getColour() {
         return colour;
     }
 
-    public void setColour(ChessmanColourEnum colour) {
-        this.colour = colour;
+    int getPrevChessmanX() {
+        return prevChessmanX;
     }
 
-    public ChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
+    void setPrevChessmanX(int prevChessmanX) {
+        this.prevChessmanX = prevChessmanX;
+    }
+
+    int getPrevChessmanY() {
+        return PrevChessmanY;
+    }
+
+    void setPrevChessmanY(int prevChessmanY) {
+        PrevChessmanY = prevChessmanY;
+    }
+
+    public ChessmanImage(ChessmanImage chessmanImageOriginal){
+        this.colour = chessmanImageOriginal.colour;
+        this.type = chessmanImageOriginal.type;
+        this.chessman = chessmanImageOriginal.chessman;
+    }
+
+    ChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
         this.colour = chessman.getColour();
         this.chessman = chessman;
         this.type = ChessmanType.getTypeFromSymbol(chessman.getSymbol());
@@ -74,21 +81,18 @@ public class ChessmanImage extends StackPane {
         File file;
         if(type != ChessmanType.EMPTY) {
             String chessmanTypeLowerCase = type.name().toLowerCase();
-            String filePath = new StringBuilder("view/images/type_").append(chessmanStyleNumber).
-                    append("_").append(this.colour).append("_").append(chessmanTypeLowerCase).append(".png").toString();
+            String chessmanColourLowerCase = chessman.getColour().toString().toLowerCase();
+            String filePath = "view/images/type_" + chessmanStyleNumber +
+                    "_" + chessmanColourLowerCase + "_" + chessmanTypeLowerCase + ".png";
             file = new File(filePath);
             setImage(file);
         }
     }
 
-    private void createImageFromFile(ChessmanColourEnum chessmanColour,int chessmanStyleNumber){
-        String chessmanTypeLowerCase = type.name().toLowerCase();
-        String filePath = new StringBuilder("view/images/type_").append(chessmanStyleNumber).
-                append("_").append(chessmanColour).append("_").append(chessmanTypeLowerCase).append(".png").toString();
-        File file = new File(filePath);
-        setImage(file);
+    ChessmanImage(Chessman chessman){
+        this.colour = chessman.getColour();
+        this.chessman = chessman;
     }
-
     private void setImage(File file){
         Image image = new Image(file.toURI().toString());
         imageView = new ImageView();
@@ -96,13 +100,17 @@ public class ChessmanImage extends StackPane {
         getChildren().addAll(imageView);
     }
 
-    public void move(int x,int y){
-        prevMouseX = x * TILE_SIZE;
-        prevMouseY = y * TILE_SIZE;
+    void move(int x, int y){
+        prevMouseX = x * TILE_SIZE + 7;
+        prevMouseY = y * TILE_SIZE + 7;
         relocate(prevMouseX, prevMouseY);
     }
 
-    public void abortMove(){
+    void abortMove(){
         relocate(prevMouseX, prevMouseY);
+    }
+
+    void removeImage(){
+        imageView.setImage(null);
     }
 }

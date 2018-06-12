@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-// simple class which main method displays starting window of app
 
 public class View extends Application {
 
@@ -51,6 +50,11 @@ public class View extends Application {
         }
         stage.sizeToScene();
         stage.show();
+    }
+
+    public Stage getStage() {
+        stage.setResizable(true);
+        return stage;
     }
 }
 
