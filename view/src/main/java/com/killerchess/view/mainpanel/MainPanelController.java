@@ -217,7 +217,7 @@ public class MainPanelController {
         firstPawnChoice.setImage(generateImageForPawnTemplates(1));
         secondPawnChoice.setImage(generateImageForPawnTemplates(2));
         thirdPawnChoice.setImage(generateImageForPawnTemplates(3));
-        //TODO set actualPawnChoice
+        //TODO MM set actualPawnChoice
         actualPawnChoice.setImage(generateImageForPawnTemplates(1));
     }
 
