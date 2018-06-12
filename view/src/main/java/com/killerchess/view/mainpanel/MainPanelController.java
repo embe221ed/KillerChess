@@ -7,6 +7,7 @@ import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
+import com.killerchess.view.utils.Templates;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -209,27 +210,40 @@ public class MainPanelController {
             Image image = new Image("file:" + file.getPath(), panelWidth / 3, panelHeight / 2, false, false);
             userAvatar.setImage(image);
         }
-        
-        setPawnTemplatesImage();
+
+        setActualPawnTemplateImage();
     }
 
-    private void setPawnTemplatesImage() {
-        firstPawnChoice.setImage(generateImageForPawnTemplates(1));
-        secondPawnChoice.setImage(generateImageForPawnTemplates(2));
-        thirdPawnChoice.setImage(generateImageForPawnTemplates(3));
-        //TODO MM set actualPawnChoice
-        actualPawnChoice.setImage(generateImageForPawnTemplates(1));
+    private void setNameAndPointsForUser() {
+        usernameText.setText(usernameText.getText() + " " + username);
+        rankingPointsForActualUser.setText(rankingPointsForActualUser.getText() + " " + userPoints);
+    }
+
+    private void setActualPawnTemplateImage() {
+        String actualPawn = localSessionSingleton.getParameter("template");
+        if (actualPawn == null) {
+            actualPawn = Templates.FIRST.getTemplateFileName();
+        }
+        actualPawnChoice.setImage(generateActualImageForPawnTemplate(actualPawn));
+    }
+
+    private Image generateActualImageForPawnTemplate(String actualPawn) {
+        if (actualPawn.equals(Templates.FIRST.getTemplateFileName())) {
+            return generateImageForPawnTemplates(1);
+        }
+        if (actualPawn.equals(Templates.SECOND.getTemplateFileName())) {
+            return generateImageForPawnTemplates(2);
+        }
+        if (actualPawn.equals(Templates.THIRD.getTemplateFileName())) {
+            return generateImageForPawnTemplates(3);
+        }
+        return null;
     }
 
     private Image generateImageForPawnTemplates(int index) {
         String path = IMAGES_LOCAL_PATH + PAWN_FILENAME_PREFIX + index + BLACK_BISHOP_SUFFIX;
         File file = new File(path);
         return new Image(file.toURI().toString());
-    }
-
-    private void setNameAndPointsForUser() {
-        usernameText.setText(usernameText.getText() + " " + username);
-        rankingPointsForActualUser.setText(rankingPointsForActualUser.getText() + " " + userPoints);
     }
 
     private void accountImageListener() {
@@ -243,20 +257,20 @@ public class MainPanelController {
 
     private void accountListeners() {
         firstPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            //TODO MM
-            System.out.println("First Pawn Chosen");
+            localSessionSingleton.setParameter("template", Templates.FIRST.toString());
+            actualPawnChoice.setImage(generateActualImageForPawnTemplate(Templates.FIRST.toString()));
             event.consume();
         });
 
         secondPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            //TODO MM
-            System.out.println("Second Pawn Chosen");
+            localSessionSingleton.setParameter("template", Templates.SECOND.toString());
+            actualPawnChoice.setImage(generateActualImageForPawnTemplate(Templates.SECOND.toString()));
             event.consume();
         });
 
         thirdPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            //TODO MM
-            System.out.println("Third Pawn Chosen");
+            localSessionSingleton.setParameter("template", Templates.THIRD.toString());
+            actualPawnChoice.setImage(generateActualImageForPawnTemplate(Templates.THIRD.toString()));
             event.consume();
         });
     }

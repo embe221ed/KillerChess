@@ -81,7 +81,7 @@
                         <ImageView fx:id="firstTemplate" fitHeight="50.0" fitWidth="40.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
-                                <Image url="@images/sample.jpg"/>
+                                <Image url="@images/type_1_black_bishop.png"/>
                             </image>
                             <HBox.margin>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
@@ -90,7 +90,7 @@
                         <ImageView fx:id="secondTemplate" fitHeight="50.0" fitWidth="40.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
-                                <Image url="@images/sample.jpg"/>
+                                <Image url="@images/type_2_black_bishop.png"/>
                             </image>
                             <HBox.margin>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
@@ -99,7 +99,7 @@
                         <ImageView fx:id="thirdTemplate" fitHeight="50.0" fitWidth="40.0" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
-                                <Image url="@images/sample.jpg"/>
+                                <Image url="@images/type_3_black_bishop.png"/>
                             </image>
                             <HBox.margin>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
