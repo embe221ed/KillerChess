@@ -7,6 +7,8 @@ import com.killerchess.core.chessmans.EmptyField;
 import javafx.scene.control.Button;
 import com.killerchess.core.game.Game;
 import com.killerchess.core.session.LocalSessionSingleton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -17,6 +19,7 @@ import javafx.stage.Stage;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +35,9 @@ public class GameBoard extends Application {
     private Tile[][] chessBoardOfChessmansImages = new Tile[WIDTH][HEIGHT];
 
     private ChessmanImage currentChessmanImage;
+    private Image killerChessLogoImage;
+    private ImageView killerChessLogoImageView;
+
     private int currentChessmanXCoordinate = UNPROPER_COORDINATE_VALUE;
     private int getCurrentChessmanYCoordinate = UNPROPER_COORDINATE_VALUE;
 
@@ -78,10 +84,14 @@ public class GameBoard extends Application {
         this.localSessionSingleton = LocalSessionSingleton.getInstance();
         this.game = new Game();
 
+
+
         Pane root = new Pane();
-        root.setPrefSize((WIDTH + 1) * TILE_SIZE, HEIGHT * TILE_SIZE);
+        root.setPrefSize((WIDTH + 3) * TILE_SIZE, HEIGHT * TILE_SIZE);
         root.getChildren().addAll(tileGroup, chessmanGroup);
         setHelpButton();
+        setKillerChessLogoImage();
+        root.getChildren().add(killerChessLogoImageView);
         root.getChildren().add(helpButton);
         drawTiles();
         return root;
@@ -106,6 +116,8 @@ public class GameBoard extends Application {
         root.getChildren().addAll(tileGroup, chessmanGroup);
         root.setPrefSize((WIDTH + 1) * TILE_SIZE, HEIGHT * TILE_SIZE);
         setHelpButton();
+        setKillerChessLogoImage();
+        root.getChildren().add(killerChessLogoImageView);
         root.getChildren().add(helpButton);
         drawTiles();
         stage.getScene().setRoot(root);
@@ -114,10 +126,18 @@ public class GameBoard extends Application {
     private void setHelpButton(){
         helpButton = new Button();
         helpButton.setText("POMOC");
-        helpButton.setLayoutX(800.0);
-        helpButton.setLayoutY(0.0);
+        helpButton.setLayoutX(900.0);
+        helpButton.setLayoutY(40.0);
         helpButton.setPrefSize(100.0,100.0);
         setHelpButtonMouseOnClickFunction();
+    }
+
+    private void setKillerChessLogoImage(){
+        File killerChessLogoFile = new File("view/images/killer_chess_logo.jpg");
+        killerChessLogoImage = new Image(killerChessLogoFile.toURI().toString());
+        killerChessLogoImageView = new ImageView();
+        killerChessLogoImageView.setImage(killerChessLogoImage);
+        killerChessLogoImageView.relocate(810,0);
     }
 
     private void setHelpButtonMouseOnClickFunction() {
