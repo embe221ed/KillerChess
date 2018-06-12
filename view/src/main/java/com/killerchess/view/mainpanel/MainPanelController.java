@@ -4,6 +4,7 @@ import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
+import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import javafx.collections.ObservableList;
@@ -27,7 +28,10 @@ import javafx.stage.Stage;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -35,20 +39,26 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
-import static com.killerchess.core.controllers.game.GameController.AVAILABLE_GAMES;
+import static com.killerchess.core.controllers.game.GameController.*;
 import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PATH;
 
 
 public class MainPanelController {
 
+
     private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
     private final String IMAGES_LOCAL_PATH = "view/images/";
     private final String AVATAR_FILENAME_PREFIX = "/avatar_";
     private final String JPG_FILETYPE_EXTENSION = ".jpg";
+    private final String PAWN_FILENAME_PREFIX = "type_";
+    private final String BLACK_BISHOP_SUFFIX = "_black_bishop.png";
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
@@ -65,14 +75,41 @@ public class MainPanelController {
     public Text actualPawnChoiceText;
     public Text choosePawnText;
     public VBox roomsVBox;
+    public TextArea roomInfo;
     public Button changeAvatarButton;
     public Text usernameText;
+    // TODO delete after correct implementing multithreading
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private String userPoints;
     private boolean selectedAccountTab = true;
     private String username;
     private double panelWidth;
     private double panelHeight;
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+
+    // TODO delete this line after copying it to proper class
+    private Runnable listener = () -> {
+        LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+        ResponseEntity<Boolean> responseEntity;
+        UriComponentsBuilder builder;
+        try {
+            do {
+                // czas pomiędzy kolejnymi zapytaniami
+                Thread.sleep(15000);
+                builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
+                        .queryParam("gameStateNumber", localSessionSingleton.
+                                getParameter("gameStateNumber"));
+                responseEntity = localSessionSingleton.
+                        exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
+
+            } while (!responseEntity.getBody());
+            // zamiast tego będzie wywołanie metody z GameBoard.java, która aktualizuje GameState
+            // pobierając tą informację z serwera
+            // GameBoard.getInstance().updateGameState();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    };
 
     @FXML
     public void initialize() {
@@ -105,6 +142,9 @@ public class MainPanelController {
     public void handleLogoutButton() {
         //TODO MM
         System.out.println("Logout button clicked!");
+        // TODO MB delete these lines
+        // przykład użycia wątku
+        executorService.submit(listener);
     }
 
     public void handleAccountAvatarChange() {
@@ -169,6 +209,22 @@ public class MainPanelController {
             Image image = new Image("file:" + file.getPath(), panelWidth / 3, panelHeight / 2, false, false);
             userAvatar.setImage(image);
         }
+        
+        setPawnTemplatesImage();
+    }
+
+    private void setPawnTemplatesImage() {
+        firstPawnChoice.setImage(generateImageForPawnTemplates(1));
+        secondPawnChoice.setImage(generateImageForPawnTemplates(2));
+        thirdPawnChoice.setImage(generateImageForPawnTemplates(3));
+        //TODO MM set actualPawnChoice
+        actualPawnChoice.setImage(generateImageForPawnTemplates(1));
+    }
+
+    private Image generateImageForPawnTemplates(int index) {
+        String path = IMAGES_LOCAL_PATH + PAWN_FILENAME_PREFIX + index + BLACK_BISHOP_SUFFIX;
+        File file = new File(path);
+        return new Image(file.toURI().toString());
     }
 
     private void setNameAndPointsForUser() {
@@ -248,7 +304,7 @@ public class MainPanelController {
         getRoomsVBoxChildren().add(title);
 
         ResponseEntity<List<GameDTO>> roomsResponse = localSessionSingleton.exchange(
-                LoginController.HOST + AVAILABLE_GAMES, HttpMethod.GET, null,
+                LoginController.HOST + AVAILABLE_GAMES_PATH, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<GameDTO>>() {
                 });
 
@@ -258,20 +314,55 @@ public class MainPanelController {
         for (GameDTO gameDTO : gamesList) {
             TextArea gameOption = new TextArea();
             gameOption.setEditable(false);
-            gameOption.setText("Room: " + gameDTO.getGameName() + "\n"
-                    + "host: " + gameDTO.getHost() + "\n");
+            gameOption.setText("Room: " + gameDTO.getGameName() + "\n" + "host: " + gameDTO.getHost() + "\n");
+            gameOption.setId(gameDTO.getGameId());
             gamesOptions.add(gameOption);
         }
 
         for (TextArea gameOption : gamesOptions) {
             VBox.setMargin(gameOption, new Insets(0, 0, 0, 8));
             getRoomsVBoxChildren().add(gameOption);
+            createEventsForGames(gamesList, gameOption);
         }
 
         roomsVBox.setOnMouseClicked((e) -> roomsVBox.requestFocus());
-
-        //TODO MM make listeners for TextAreas. One click brings information about room, two starts game.
     }
+
+    private void createEventsForGames(List<GameDTO> gamesList, TextArea gameOption) {
+        gameOption.setOnMouseClicked(event -> {
+            Optional<GameDTO> gameForClickedRoom = gamesList.stream()
+                    .filter(gameDTO -> gameDTO.getGameId().equals(gameOption.getId()))
+                    .findFirst();
+            boolean isGameForClickedRoomPresent = gameForClickedRoom.isPresent();
+            GameDTO game = null;
+            if (isGameForClickedRoomPresent) {
+                game = gameForClickedRoom.get();
+            }
+
+            if (event.getClickCount() == 1 && isGameForClickedRoomPresent) {
+                String gameGuest = game.getGuest();
+                roomInfo.setText("Room name: " + game.getGameName() + "\n"
+                        + "Host: " + game.getHost() + "\n"
+                        + "Guest: " + (gameGuest == null ? "empty" : gameGuest) + "\n"
+                        + "Unique game ID: " + game.getGameId());
+
+            }
+
+            if (event.getClickCount() == 2 && isGameForClickedRoomPresent) {
+                MultiValueMap<String, String> joinGameParametersMap = new LinkedMultiValueMap<>();
+                joinGameParametersMap.add(GAME_ID_PARAM, game.getGameId());
+                var responseEntity = localSessionSingleton.exchange(LoginController.HOST + JOIN_GAME_PATH,
+                        HttpMethod.POST, joinGameParametersMap, Integer.class);
+                if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                    Stage stage = View.getInstance().getStage();
+                    GameBoard gameBoard = GameBoard.getInstance();
+                    gameBoard.start(stage);
+                    gameBoard.enableAllChessmen();
+                }
+            }
+        });
+    }
+
 
     private ObservableList<Node> getRoomsVBoxChildren() {
         return roomsVBox.getChildren();

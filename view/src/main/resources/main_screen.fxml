@@ -26,7 +26,7 @@
     <center>
         <AnchorPane prefHeight="446.0" prefWidth="438.0" style="-fx-background-color: #E0E0C8;" BorderPane.alignment="CENTER">
             <children>
-                <TextArea editable="false" layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0"
+                <TextArea fx:id="roomInfo" editable="false" layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0"
                           style="-fx-background-color: #FBF9E7;"
                           text="Choose room.&#10;Click once to see more information about the room.&#10;Double-click to start the game.&#10;&#10;&#10;"/>
                 <Text fx:id="usernameText" layoutX="29.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0"
@@ -78,25 +78,25 @@
             <ImageView fx:id="firstPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="14.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@images/sample.jpg"/>
+                    <Image url="@../../../images/type_1_black_bishop.png"/>
                 </image>
             </ImageView>
             <ImageView fx:id="secondPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="75.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@images/sample.jpg"/>
+                    <Image url="@../../../images/type_2_black_bishop.png"/>
                 </image>
             </ImageView>
             <ImageView fx:id="thirdPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="136.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@images/sample.jpg"/>
+                    <Image url="@../../../images/type_3_black_bishop.png"/>
                 </image>
             </ImageView>
             <ImageView fx:id="actualPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="143.0" layoutY="170.0"
                        pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@images/sample.jpg"/>
+                    <Image url="@../../../images/type_1_black_bishop.png"/>
                 </image>
             </ImageView>
             <Text fx:id="actualPawnChoiceText" layoutX="14.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0"

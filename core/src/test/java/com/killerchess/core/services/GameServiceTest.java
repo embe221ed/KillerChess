@@ -86,7 +86,7 @@ public class GameServiceTest {
             gameService.initNewGame(gamePrefix + gameId,
                     gameNamePrefix + gameId,
                     userPrefix + gameId);
-            gameService.saveSpecificGameState(gamePrefix + gameId, "gameState");
+            gameService.saveSpecificGameState(gamePrefix + gameId, "gameState", true);
 
             assertEquals(gameService.getListOfGameStatesForGame(gamePrefix + gameId).size(), 1);
 

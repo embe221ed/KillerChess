@@ -11,6 +11,16 @@ public class GameState {
 
     private int gameStateNumber;
     private Game game;
+    private Boolean move;
+
+    @Column(name = "move")
+    public Boolean getMove() {
+        return move;
+    }
+
+    public void setMove(Boolean move) {
+        this.move = move;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,11 +9,11 @@ import com.killerchess.core.game.Game;
 import com.killerchess.core.session.LocalSessionSingleton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.util.Pair;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.springframework.http.HttpMethod;
@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javafx.util.Pair;
 
 public class GameBoard extends Application {
 
@@ -53,6 +54,15 @@ public class GameBoard extends Application {
     private StateInterpreter stateInterpreter = new StateInterpreter();
     private Game game;
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+
+    private static GameBoard instance;
+
+    public static GameBoard getInstance() {
+        if(instance == null) {
+            instance = new GameBoard();
+        }
+        return instance;
+    }
 
    /* private Runnable listener = () -> {
         ResponseEntity<Boolean> responseEntity;
@@ -409,6 +419,14 @@ public class GameBoard extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         this.stage = primaryStage;
+    }
+
+    public void disableAllChessmen() {
+        chessmanGroup.setDisable(true);
+    }
+
+    public void enableAllChessmen() {
+        chessmanGroup.setDisable(false);
     }
 
     public static void main(String[] args) {
