@@ -52,6 +52,7 @@ public class RoomCreatorController {
         var selectedScenario = (RadioButton) toggleGroupForSchemasRadioButtons.getSelectedToggle();
         var scenarioId = selectedScenario.getId();
         createNewGame(roomName, roomDatabaseId, scenarioId);
+        new GameBoard().start(View.getInstance().getStage());
     }
 
     private Runnable hostJoinedListener = () -> {

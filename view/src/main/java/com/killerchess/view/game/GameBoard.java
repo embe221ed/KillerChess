@@ -10,6 +10,7 @@ import com.killerchess.core.session.LocalSessionSingleton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,6 +25,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javafx.util.Pair;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GameBoard extends Application {
 
@@ -56,15 +65,18 @@ public class GameBoard extends Application {
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
 
     private static GameBoard instance;
+  
+    private Stage stage;
+    private Button availableMovesButton;
+    private Button availableCapturesButton;
+    private ChessBoard chessBoard;
+    private Pane root;
+    private StateInterpreter stateInterpreter = new StateInterpreter();
+    private Game game;
+    private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public static GameBoard getInstance() {
-        if(instance == null) {
-            instance = new GameBoard();
-        }
-        return instance;
-    }
-
-   /* private Runnable listener = () -> {
+    private Runnable listener = () -> {
         ResponseEntity<Boolean> responseEntity;
         UriComponentsBuilder builder;
         try {
@@ -87,22 +99,26 @@ public class GameBoard extends Application {
             e.printStackTrace();
         }
     };
-*/
-    private Parent createContent(String gameBoardStateString){
-        this.stateInterpreter = new StateInterpreter();
+
+    public static GameBoard getInstance() {
+        if (instance == null) {
+            instance = new GameBoard();
+        }
+        return instance;
+    }
+  
+    private Parent createContent(String gameBoardStateString) {
         this.chessBoard = stateInterpreter.convertJsonBoardToChessBoard(gameBoardStateString);
-        this.localSessionSingleton = LocalSessionSingleton.getInstance();
         this.game = new Game();
 
-
-
-        Pane root = new Pane();
+        root = new Pane();
         root.setPrefSize((WIDTH + 3) * TILE_SIZE, HEIGHT * TILE_SIZE);
         root.getChildren().addAll(tileGroup, chessmanGroup);
         setHelpButton();
         setKillerChessLogoImage();
         root.getChildren().add(killerChessLogoImageView);
         root.getChildren().add(helpButton);
+
         drawTiles();
         return root;
     }
@@ -237,20 +253,20 @@ public class GameBoard extends Application {
         return tile;
     }
 
-    private void drawChessman(int x, int y, Tile tile){
-        var chessman = chessBoard.getChessmanAt(y,x);
+    private void drawChessman(int x, int y, Tile tile) {
+        var chessman = chessBoard.getChessmanAt(y, x);
         ChessmanImage chessmanImage = createChesmanImageFromChesman(chessman, x, y);
         tile.setChessmanImage(chessmanImage);
         chessmanGroup.getChildren().add(chessmanImage);
     }
 
     private ChessmanImage createChesmanImageFromChesman(Chessman chessman, int x, int y) {
-        ChessmanImage chessmanImage = createChessmanImage(chessman,1, x, y);
+        ChessmanImage chessmanImage = createChessmanImage(chessman, 1, x, y);
         setChessmanImageMouseFunctions(chessmanImage);
         return chessmanImage;
     }
 
-    private ChessmanImage createChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
+    private ChessmanImage createChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y) {
         return new ChessmanImage(chessman, chessmanStyleNumber, x, y);
     }
 
@@ -258,7 +274,7 @@ public class GameBoard extends Application {
         return (int)(pixel / TILE_SIZE);
     }
 
-    private MoveResult tryMove(ChessmanImage chessmanImage, int newX, int newY){
+    private MoveResult tryMove(ChessmanImage chessmanImage, int newX, int newY) {
         double prevChessmanX = chessmanImage.getPrevMouseX();
         double prevChessmanY = chessmanImage.getPrevMouseY();
 
@@ -270,12 +286,10 @@ public class GameBoard extends Application {
 
         else if (canGivenChessmanStepIntoNewTile(chessmanImage,prevChessmanX,prevChessmanY, newX, newY)){
             return new MoveResult(MoveType.NORMAL);
-        }
-        else{
+        } else {
             return new MoveResult(MoveType.NONE);
         }
     }
-
 
     private Boolean thereAreOtherChessmansThatCanBeat(ChessmanImage chessmanImage){
         return findPositionsOfOtherChessmansThatCanCapture(chessmanImage).size() != 0;
@@ -339,6 +353,8 @@ public class GameBoard extends Application {
                         completeKilllMove(chessmanImage, newX, newY);
                         break;
                 }
+                moveChessman(currentChessmanXCoordinate, getCurrentChessmanYCoordinate, newX, newY);
+                Platform.runLater(listener);
             }
         });
     }
