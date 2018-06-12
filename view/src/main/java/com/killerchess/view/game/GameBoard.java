@@ -218,7 +218,7 @@ public class GameBoard extends Application {
         chessmanImage.setOnMouseDragged(e ->{
             if(canPlayerMoveChessman(chessmanImage)) {
                 unhighlightAllBoard();
-                chessmanImage.relocate(e.getSceneX(), e.getScreenY());
+                chessmanImage.relocate(e.getSceneX() - 50, e.getScreenY() - 50);
             }
         });
 
@@ -238,8 +238,10 @@ public class GameBoard extends Application {
                         updateBoardOfImagesAfterNormalMove(chessmanImage, newX, newY);
                         break;
                     case KILL:
-                     //   chessmanImage
+                        updateBoardOfImagesAfterKillMove(chessmanImage, newX, newY);
+                        break;
                 }
+
             }
         });
     }
@@ -263,6 +265,15 @@ public class GameBoard extends Application {
     private void updateBoardOfImagesAfterNormalMove(ChessmanImage chessmanImage, int newX, int newY){
         chessBoardOfChessmansImages[chessmanImage.getPrevChessmanX()][chessmanImage.getPrevChessmanY()].
                 setChessmanImage(new ChessmanImage(new EmptyField(chessmanImage.getColour())));
+        chessBoardOfChessmansImages[newX][newY].setChessmanImage(chessmanImage);
+        updateChessBoardOfChessmans();
+    }
+
+    private void updateBoardOfImagesAfterKillMove(ChessmanImage chessmanImage, int newX, int newY){
+        chessBoardOfChessmansImages[chessmanImage.getPrevChessmanX()][chessmanImage.getPrevChessmanY()].
+                setChessmanImage(new ChessmanImage(new EmptyField(chessmanImage.getColour())));
+
+        chessBoardOfChessmansImages[newX][newY].getChessmanImage().removeImage();
         chessBoardOfChessmansImages[newX][newY].setChessmanImage(chessmanImage);
         updateChessBoardOfChessmans();
     }

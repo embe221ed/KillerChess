@@ -116,12 +116,16 @@ public class ChessmanImage extends StackPane {
     }
 
     public void move(int x,int y){
-        prevMouseX = x * TILE_SIZE;
-        prevMouseY = y * TILE_SIZE;
+        prevMouseX = x * TILE_SIZE + 7;
+        prevMouseY = y * TILE_SIZE + 7;
         relocate(prevMouseX, prevMouseY);
     }
 
     public void abortMove(){
         relocate(prevMouseX, prevMouseY);
+    }
+
+    public void removeImage(){
+        imageView.setImage(null);
     }
 }
