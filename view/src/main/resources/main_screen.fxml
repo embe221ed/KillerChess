@@ -78,25 +78,25 @@
             <ImageView fx:id="firstPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="14.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@images/sample.jpg"/>
+                    <Image url="@../../../images/type_1_black_bishop.png"/>
                 </image>
             </ImageView>
             <ImageView fx:id="secondPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="75.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@images/sample.jpg"/>
+                    <Image url="@../../../images/type_2_black_bishop.png"/>
                 </image>
             </ImageView>
             <ImageView fx:id="thirdPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="136.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@images/sample.jpg"/>
+                    <Image url="@../../../images/type_3_black_bishop.png"/>
                 </image>
             </ImageView>
             <ImageView fx:id="actualPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="143.0" layoutY="170.0"
                        pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@images/sample.jpg"/>
+                    <Image url="@../../../images/type_1_black_bishop.png"/>
                 </image>
             </ImageView>
             <Text fx:id="actualPawnChoiceText" layoutX="14.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0"

@@ -46,18 +46,19 @@ import java.util.stream.IntStream;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
-import static com.killerchess.core.controllers.game.GameController.AVAILABLE_GAMES_PATH;
-import static com.killerchess.core.controllers.game.GameController.GAME_ID_PARAM;
-import static com.killerchess.core.controllers.game.GameController.JOIN_GAME_PATH;
+import static com.killerchess.core.controllers.game.GameController.*;
 import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PATH;
 
 
 public class MainPanelController {
 
+
     private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
     private final String IMAGES_LOCAL_PATH = "view/images/";
     private final String AVATAR_FILENAME_PREFIX = "/avatar_";
     private final String JPG_FILETYPE_EXTENSION = ".jpg";
+    private final String PAWN_FILENAME_PREFIX = "type_";
+    private final String BLACK_BISHOP_SUFFIX = "_black_bishop.png";
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
@@ -208,6 +209,22 @@ public class MainPanelController {
             Image image = new Image("file:" + file.getPath(), panelWidth / 3, panelHeight / 2, false, false);
             userAvatar.setImage(image);
         }
+        
+        setPawnTemplatesImage();
+    }
+
+    private void setPawnTemplatesImage() {
+        firstPawnChoice.setImage(generateImageForPawnTemplates(1));
+        secondPawnChoice.setImage(generateImageForPawnTemplates(2));
+        thirdPawnChoice.setImage(generateImageForPawnTemplates(3));
+        //TODO set actualPawnChoice
+        actualPawnChoice.setImage(generateImageForPawnTemplates(1));
+    }
+
+    private Image generateImageForPawnTemplates(int index) {
+        String path = IMAGES_LOCAL_PATH + PAWN_FILENAME_PREFIX + index + BLACK_BISHOP_SUFFIX;
+        File file = new File(path);
+        return new Image(file.toURI().toString());
     }
 
     private void setNameAndPointsForUser() {
