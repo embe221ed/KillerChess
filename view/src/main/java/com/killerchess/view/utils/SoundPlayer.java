@@ -12,15 +12,6 @@ public class SoundPlayer {
     private final String move = "view/sounds/move.wav";
     private final String click = "view/sounds/click.wav";
 
-    public static void main(String[] args) {
-        SoundPlayer soundPlayer = new SoundPlayer();
-
-        soundPlayer.playOnGameStart();
-        soundPlayer.playOnGameEnd();
-        soundPlayer.playOnChessmanClick();
-        soundPlayer.playOnChessmanMove();
-    }
-
     private void playSound(String filePath) {
 
         try {
