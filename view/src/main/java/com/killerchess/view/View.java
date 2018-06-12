@@ -47,5 +47,10 @@ public class View extends Application {
         stage.sizeToScene();
         stage.show();
     }
+
+    public Stage getStage() {
+        stage.setResizable(true);
+        return stage;
+    }
 }
 

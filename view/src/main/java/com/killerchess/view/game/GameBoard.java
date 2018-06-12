@@ -33,12 +33,20 @@ public class GameBoard extends Application {
     private Group chessmanGroup = new Group();
 
     private Button availableMovesButton;
-    private Button availableCapturesButton;
     private ChessBoard chessBoard;
 
     private StateInterpreter stateInterpreter = new StateInterpreter();
     private Game game;
     private LocalSessionSingleton localSessionSingleton;
+
+    private static GameBoard instance;
+
+    public static GameBoard getInstance() {
+        if(instance == null) {
+            instance = new GameBoard();
+        }
+        return instance;
+    }
 
     private Parent createContent(String gameBoardStateString){
         this.chessBoard = stateInterpreter.convertJsonBoardToChessBoard(gameBoardStateString);
@@ -211,7 +219,7 @@ public class GameBoard extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         Scene scene = new Scene(createContent("{\"1\":[\"RW\",\"HW\",\"BW\",\"QW\",\"KW\",\"BW\",\"HW\",\"RW\"" +
                                                                 "],\"2\":[\"PW\",\"PW\",\"PW\",\"PW\",\"PW\",\"PW\",\"PW\",\"PW\"]," +
                                                                 "\"3\":[\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\",\"XX\"],\"4\":" +
@@ -221,6 +229,14 @@ public class GameBoard extends Application {
                                                                 "8\":[\"RB\",\"HB\",\"BB\",\"QB\",\"KB\",\"BB\",\"HB\",\"RB\"]}"));
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public void disableAllChessmen() {
+        chessmanGroup.setDisable(true);
+    }
+
+    public void enableAllChessmen() {
+        chessmanGroup.setDisable(false);
     }
 
     public static void main(String[] args) {

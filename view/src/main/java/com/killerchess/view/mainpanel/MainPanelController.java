@@ -4,6 +4,7 @@ import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
+import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import javafx.collections.ObservableList;
@@ -27,6 +28,8 @@ import javafx.stage.Stage;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -36,6 +39,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
@@ -43,13 +47,12 @@ import java.util.stream.IntStream;
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
 import static com.killerchess.core.controllers.game.GameController.AVAILABLE_GAMES_PATH;
+import static com.killerchess.core.controllers.game.GameController.GAME_ID_PARAM;
+import static com.killerchess.core.controllers.game.GameController.JOIN_GAME_PATH;
 import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PATH;
 
 
 public class MainPanelController {
-
-    // TODO delete after correct implementing multithreading
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
     private final String IMAGES_LOCAL_PATH = "view/images/";
@@ -71,8 +74,11 @@ public class MainPanelController {
     public Text actualPawnChoiceText;
     public Text choosePawnText;
     public VBox roomsVBox;
+    public TextArea roomInfo;
     public Button changeAvatarButton;
     public Text usernameText;
+    // TODO delete after correct implementing multithreading
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private String userPoints;
     private boolean selectedAccountTab = true;
     private String username;
@@ -291,20 +297,54 @@ public class MainPanelController {
         for (GameDTO gameDTO : gamesList) {
             TextArea gameOption = new TextArea();
             gameOption.setEditable(false);
-            gameOption.setText("Room: " + gameDTO.getGameName() + "\n"
-                    + "host: " + gameDTO.getHost() + "\n");
+            gameOption.setText("Room: " + gameDTO.getGameName() + "\n" + "host: " + gameDTO.getHost() + "\n");
+            gameOption.setId(gameDTO.getGameId());
             gamesOptions.add(gameOption);
         }
 
         for (TextArea gameOption : gamesOptions) {
             VBox.setMargin(gameOption, new Insets(0, 0, 0, 8));
             getRoomsVBoxChildren().add(gameOption);
+
+            gameOption.setOnMouseClicked(event -> {
+                Optional<GameDTO> gameForClickedRoom = gamesList.stream()
+                        .filter(gameDTO -> gameDTO.getGameId().equals(gameOption.getId()))
+                        .findFirst();
+                boolean isGameForClickedRoomPresent = gameForClickedRoom.isPresent();
+                GameDTO game = null;
+                if (isGameForClickedRoomPresent) {
+                    game = gameForClickedRoom.get();
+                }
+
+                if (event.getClickCount() == 1 && isGameForClickedRoomPresent) {
+                    String gameGuest = game.getGuest();
+                    roomInfo.setText("Room name: " + game.getGameName() + "\n"
+                            + "Host: " + game.getHost() + "\n"
+                            + "Guest: " + (gameGuest == null ? "empty" : gameGuest) + "\n"
+                            + "Unique game ID: " + game.getGameId());
+
+                }
+
+                if (event.getClickCount() == 2 && isGameForClickedRoomPresent) {
+                    MultiValueMap<String, String> joinGameParametersMap = new LinkedMultiValueMap<>();
+                    joinGameParametersMap.add(GAME_ID_PARAM, game.getGameId());
+                    var responseEntity = localSessionSingleton.exchange(LoginController.HOST + JOIN_GAME_PATH,
+                            HttpMethod.POST, joinGameParametersMap, Integer.class);
+                    if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                        Stage stage = View.getInstance().getStage();
+                        GameBoard gameBoard = GameBoard.getInstance();
+                        gameBoard.start(stage);
+                        gameBoard.enableAllChessmen();
+                    }
+                }
+            });
         }
 
         roomsVBox.setOnMouseClicked((e) -> roomsVBox.requestFocus());
 
         //TODO MM make listeners for TextAreas. One click brings information about room, two starts game.
     }
+
 
     private ObservableList<Node> getRoomsVBoxChildren() {
         return roomsVBox.getChildren();
