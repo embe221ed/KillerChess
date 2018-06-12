@@ -7,6 +7,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ChessBoard {
 
@@ -42,23 +43,23 @@ public class ChessBoard {
     public Set<Chessman> getAllChessmansWithGivenColor(ChessmanColourEnum color) {
         var chessmansWithGivenColor = new HashSet<Chessman>();
 
-        for (ArrayList<Chessman> chessmans : chessBoard) {
-            for (Chessman chessman : chessmans) {
-                if (chessman.getColour().equals(color))
-                    chessmansWithGivenColor.add(chessman);
-            }
-        }
+        chessBoard.forEach(chessmen -> chessmansWithGivenColor.addAll(chessmen.stream()
+                .filter(chessman -> chessman.getColour().equals(color))
+                .collect(Collectors.toSet()))
+        );
 
         return chessmansWithGivenColor;
     }
 
     public Pair<Integer, Integer> getChessmanPosition(Chessman chessmanToSearch) {
-        for (ArrayList<Chessman> chessmans : chessBoard) {
-            for (Chessman chessman : chessmans) {
-                if (chessman.equals(chessmanToSearch))
-                    return new Pair<>(chessBoard.indexOf(chessmans), chessmans.indexOf(chessman));
+        for (ArrayList<Chessman> chessmen : chessBoard) {
+            for (Chessman chessman : chessmen) {
+                if (chessman.equals(chessmanToSearch)) {
+                    return new Pair<>(chessBoard.indexOf(chessmen), chessmen.indexOf(chessman));
+                }
             }
         }
+
         return null;
     }
 }
