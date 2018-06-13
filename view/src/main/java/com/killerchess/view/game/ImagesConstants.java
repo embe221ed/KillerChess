@@ -16,5 +16,7 @@ public final class ImagesConstants {
 
     public static final String BLACK_BISHOP_SUFFIX = "_black_bishop.png";
 
+    public final static String REFRESH_BUTTON_FILEPATH = "refresh.png";
+
     private ImagesConstants() { }
 }

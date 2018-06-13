@@ -5,10 +5,12 @@ import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
+import com.killerchess.view.game.ImagesConstants;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.Templates;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -33,7 +35,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -76,7 +81,7 @@ public class MainPanelController {
     private double panelWidth;
     private double panelHeight;
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-
+    public Button refreshRooms;
 
     @FXML
     public void initialize() {
@@ -92,6 +97,20 @@ public class MainPanelController {
         hideHelpInfo();
         helpImageListener();
         initializeRoomsVBox();
+        addImageToRefreshButton();
+    }
+
+    private void addImageToRefreshButton() {
+        try {
+            BufferedImage bufferedImage = ImageIO.read(new File(ImagesConstants.IMAGES_LOCAL_PATH
+                    + ImagesConstants.REFRESH_BUTTON_FILEPATH));
+            ImageView imageView = new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
+            imageView.setFitHeight(50);
+            imageView.setFitWidth(50);
+            refreshRooms.setGraphic(imageView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleNewRoomButtonClicked() {
@@ -349,4 +368,8 @@ public class MainPanelController {
         return roomsVBox.getChildren();
     }
 
+    public void handleRefreshRoomsButtonClicked() {
+        roomsVBox.getChildren().clear();
+        initializeRoomsVBox();
+    }
 }
