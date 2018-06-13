@@ -4,9 +4,7 @@ import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChessBoard {
@@ -49,6 +47,20 @@ public class ChessBoard {
         );
 
         return chessmenWithGivenColor;
+    }
+
+    public Map<ChessmanColourEnum, Boolean> checkGameBoardForChessmen() {
+        Map<ChessmanColourEnum, Boolean> map = new HashMap<>();
+        map.put(ChessmanColourEnum.WHITE, false);
+        map.put(ChessmanColourEnum.BLACK, false);
+        for (var row : chessBoard) {
+            for (var chessman : row) {
+                if (!map.get(chessman.getColour())) map.put(chessman.getColour(), true);
+                else if (map.get(ChessmanColourEnum.BLACK) && map.get(ChessmanColourEnum.WHITE))
+                    return map;
+            }
+        }
+        return map;
     }
 
     public Pair<Integer, Integer> getChessmanPosition(Chessman chessmanToSearch) {

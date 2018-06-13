@@ -451,6 +451,16 @@ public class GameBoard extends Application {
         chessmanImage.move(newX, newY);
         updateBoardOfImagesAfterKillMove(chessmanImage, newX, newY);
         currentChessmanImage = null;
+        if (!chessBoard.checkGameBoardForChessmen().get(chessmanColour))
+            endOfGame();
+    }
+
+    private void endOfGame() {
+        var responseEntity = localSessionSingleton.
+                exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
+                        HttpMethod.GET,
+                        null,
+                        ResponseEntity.class);
     }
 
     private Boolean isUsersMove() {
