@@ -354,10 +354,14 @@ public class MainPanelController {
                 var responseEntity = localSessionSingleton.exchange(LoginController.HOST + JOIN_GAME_PATH,
                         HttpMethod.POST, joinGameParametersMap, Integer.class);
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                    Stage stage = View.getInstance().getStage();
-                    GameBoard gameBoard = GameBoard.getInstance();
-                    gameBoard.start(stage);
-                    gameBoard.enableAllChessmen();
+                    try {
+                        Stage stage = View.getInstance().getStage();
+                        GameBoard gameBoard = GameBoard.getInstance();
+                        gameBoard.start(stage);
+                        gameBoard.enableAllChessmen();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

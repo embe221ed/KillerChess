@@ -46,7 +46,7 @@ public class RoomCreatorController {
         initializeVBoxWithGameScenarios();
     }
 
-    public void handleCreateRoomButtonClick() {
+    public void handleCreateRoomButtonClick() throws Exception {
         var roomName = roomNameTextField.getCharacters().toString();
         var roomDatabaseId = String.format("%s_%s", roomName, UUID.randomUUID());
         var selectedScenario = (RadioButton) toggleGroupForSchemasRadioButtons.getSelectedToggle();
@@ -72,7 +72,7 @@ public class RoomCreatorController {
         }
     };
 
-    private void createNewGame(String roomName, String roomDatabaseId, String scenarioId) {
+    private void createNewGame(String roomName, String roomDatabaseId, String scenarioId) throws Exception {
         MultiValueMap<String, String> roomCreationParametersMap = new LinkedMultiValueMap<>();
         roomCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
         roomCreationParametersMap.add(GAME_NAME_PARAM, roomName);
@@ -90,7 +90,7 @@ public class RoomCreatorController {
         }
     }
 
-    private void createInitialMoveInGame(String roomDatabaseId, String scenarioId) {
+    private void createInitialMoveInGame(String roomDatabaseId, String scenarioId) throws Exception {
         Optional<String> scenarioArrangement = GameScenariosEnum.getAllEnumConstants().stream()
                 .filter(gameScenariosEnum -> gameScenariosEnum.getId().toString().equals(scenarioId))
                 .findFirst()
@@ -115,7 +115,7 @@ public class RoomCreatorController {
         }
     }
 
-    private void changeSceneToGameBoard() {
+    private void changeSceneToGameBoard() throws Exception {
         Stage stage = View.getInstance().getStage();
         GameBoard gameBoard = GameBoard.getInstance();
         gameBoard.start(stage);
