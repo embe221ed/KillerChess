@@ -48,17 +48,11 @@ import static com.killerchess.core.controllers.app.RankingController.GET_USER_RA
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
 import static com.killerchess.core.controllers.game.GameController.*;
 import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PATH;
+import static com.killerchess.view.game.ImagesConstants.*;
 
 
 public class MainPanelController {
 
-
-    private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
-    private final String IMAGES_LOCAL_PATH = "view/images/";
-    private final String AVATAR_FILENAME_PREFIX = "/avatar_";
-    private final String JPG_FILETYPE_EXTENSION = ".jpg";
-    private final String PAWN_FILENAME_PREFIX = "type_";
-    private final String BLACK_BISHOP_SUFFIX = "_black_bishop.png";
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
@@ -154,7 +148,7 @@ public class MainPanelController {
             try {
                 String mimeType = Files.probeContentType(file.toPath());
                 if (mimeType != null && mimeType.equals(IMAGE_JPEG_MIME_TYPE)) {
-                    File f = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION);
+                    File f = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILE_TYPE_EXTENSION);
                     Files.copy(file.toPath(), Paths.get(f.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
                     Image image = new Image("file:" + f.getPath(), panelWidth / 3, panelHeight / 2, false, false);
                     userAvatar.setImage(image);
@@ -204,7 +198,7 @@ public class MainPanelController {
     private void initializeComponents() {
         setNameAndPointsForUser();
 
-        File file = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION);
+        File file = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILE_TYPE_EXTENSION);
         if (file.exists() && !file.isDirectory()) {
             Image image = new Image("file:" + file.getPath(), panelWidth / 3, panelHeight / 2, false, false);
             userAvatar.setImage(image);
@@ -354,10 +348,14 @@ public class MainPanelController {
                 var responseEntity = localSessionSingleton.exchange(LoginController.HOST + JOIN_GAME_PATH,
                         HttpMethod.POST, joinGameParametersMap, Integer.class);
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                    Stage stage = View.getInstance().getStage();
-                    GameBoard gameBoard = GameBoard.getInstance();
-                    gameBoard.start(stage);
-                    gameBoard.enableAllChessmen();
+                    try {
+                        Stage stage = View.getInstance().getStage();
+                        GameBoard gameBoard = GameBoard.getInstance();
+                        gameBoard.start(stage);
+                        gameBoard.enableAllChessmen();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
