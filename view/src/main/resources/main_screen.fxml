@@ -71,7 +71,7 @@
                           prefWidth="182.0" text="Player's ranking:"/>
                 <TextArea fx:id="helpText" editable="false" layoutX="6.0" layoutY="56.0" prefHeight="439.0"
                           prefWidth="175.0"
-                          text="Tu będą jakieś info &#10;odnośnie tego widoku. &#10;Jak się gra itd."/>
+                          text="----------------------------&#10;Welcome to KillerChess!&#10;----------------------------&#10;&#10;Rules:&#10; - capturing is compulsory,&#10; - the king has no royal power,&#10; - a player wins by losing &#10;   all his pieces, or&#10;   being stalemated.&#10;&#10;To play create a room&#10;and wait for the opponent&#10;or choose a room, that&#10;already exists.&#10;&#10;Good luck!"/>
                 <Button fx:id="logoutButton" layoutX="32.0" layoutY="437.0" mnemonicParsing="false"
                         onAction="#handleLogoutButton" prefHeight="58.0" prefWidth="136.0"
                         style="-fx-background-color: #0099ff;" text="Logout" textFill="WHITE"/>
