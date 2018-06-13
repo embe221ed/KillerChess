@@ -419,8 +419,10 @@ public class GameBoard extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         this.stage = primaryStage;
-        if (!canPlayerMoveChessman())
+        if (!canPlayerMoveChessman()) {
+
             waitForOpponentsMove(listener);
+        }
     }
 
     public void disableAllChessmen() {

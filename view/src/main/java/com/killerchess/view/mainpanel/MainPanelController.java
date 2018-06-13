@@ -330,6 +330,7 @@ public class MainPanelController {
                         e.printStackTrace();
                     }
                     gameBoard.enableAllChessmen();
+                    localSessionSingleton.setParameter("gameStateNumber", responseEntity.getBody().toString());
                 }
             }
         });
