@@ -336,9 +336,13 @@ public class GameBoard extends Application {
                         break;
                 }
                 updateGameState();
-                Platform.runLater(listener);
+                waitForOpponentsMove(listener);
             }
         });
+    }
+
+    private void waitForOpponentsMove(Runnable listener) {
+        Platform.runLater(listener);
     }
 
     private void updateGameState() {
@@ -374,11 +378,6 @@ public class GameBoard extends Application {
     }
 
     private Boolean isUsersMove() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         ResponseEntity<Boolean> responseEntity = localSessionSingleton.
                 exchange("http://localhost:8080/isUsersMove", HttpMethod.GET, null, Boolean.class);
         return responseEntity.getBody();
@@ -420,6 +419,8 @@ public class GameBoard extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         this.stage = primaryStage;
+        if (!canPlayerMoveChessman())
+            waitForOpponentsMove(listener);
     }
 
     public void disableAllChessmen() {
