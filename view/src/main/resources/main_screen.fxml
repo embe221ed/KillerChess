@@ -11,15 +11,15 @@
     <left>
         <AnchorPane prefHeight="518.0" prefWidth="219.0" style="-fx-background-color: #50a682;" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="createRoom" layoutX="40.0" layoutY="437.0" mnemonicParsing="false"
-                        onAction="#handleNewRoomButtonClicked" prefHeight="58.0" prefWidth="136.0"
+                <Button fx:id="createRoom" layoutX="10.0" layoutY="437.0" mnemonicParsing="false"
+                        onAction="#handleNewRoomButtonClicked" prefHeight="58.0" prefWidth="130.0"
                         style="-fx-background-color: #0099ff;" text="Create room" textFill="WHITE"/>
-                <Button fx:id="reloadRoom" layoutX="40.0" layoutY="370.0" mnemonicParsing="false"
-                        onAction="#handleRefreshRoomsButtonClicked" prefHeight="58.0" prefWidth="136.0"
-                        style="-fx-background-color: #0099ff;" text="Refresh" textFill="WHITE"/>
-                <ScrollPane layoutX="10.0" layoutY="14.0" prefHeight="333.0" prefWidth="198.0">
+                <Button fx:id="reloadRoom" layoutX="145.0" layoutY="437.0" mnemonicParsing="false"
+                        onAction="#handleRefreshRoomsButtonClicked" prefHeight="58.0" prefWidth="58.0"
+                        style="-fx-background-color: #0099ff;"/>
+                <ScrollPane layoutX="10.0" layoutY="14.0" prefHeight="396.0" prefWidth="198.0">
                     <content>
-                        <VBox fx:id="roomsVBox" prefHeight="333.0" prefWidth="195.0"
+                        <VBox fx:id="roomsVBox" prefHeight="396.0" prefWidth="195.0"
                               style="-fx-background-color: #E0E0C8;"/>
                     </content>
                 </ScrollPane>

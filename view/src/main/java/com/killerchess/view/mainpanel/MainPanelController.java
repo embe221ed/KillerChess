@@ -9,6 +9,7 @@ import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.Templates;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -33,7 +34,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -54,6 +58,7 @@ public class MainPanelController {
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
+    public Button reloadRoom;
     public ImageView accountImage;
     public TextArea rankingText;
     public ImageView rankingImage;
@@ -92,6 +97,15 @@ public class MainPanelController {
         hideHelpInfo();
         helpImageListener();
         initializeRoomsVBox();
+        try {
+            BufferedImage bufferedImage = ImageIO.read(new File("view/images/refresh.png"));
+            ImageView value = new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
+            value.setFitHeight(50);
+            value.setFitWidth(50);
+            reloadRoom.setGraphic(value);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleNewRoomButtonClicked() {
