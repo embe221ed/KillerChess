@@ -7,7 +7,7 @@ import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.session.LocalSessionSingleton;
 import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -60,27 +60,31 @@ public class GameBoard extends Application {
 
     private static GameBoard instance;
 
-    private Runnable listener = () -> {
-        ResponseEntity<Boolean> responseEntity;
-        UriComponentsBuilder builder;
-        try {
-            do {
-                // czas pomiędzy kolejnymi zapytaniami
-                Thread.sleep(5000);
-                builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
-                        .queryParam("gameStateNumber", localSessionSingleton.
-                                getParameter("gameStateNumber"));
-                responseEntity = localSessionSingleton.
-                        exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
+    private Task listener = new Task<Void>() {
+        @Override
+        public Void call() {
+            ResponseEntity<Boolean> responseEntity;
+            UriComponentsBuilder builder;
+            try {
+                do {
+                    // czas pomiędzy kolejnymi zapytaniami
+                    Thread.sleep(5000);
+                    builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
+                            .queryParam("gameStateNumber", localSessionSingleton.
+                                    getParameter("gameStateNumber"));
+                    responseEntity = localSessionSingleton.
+                            exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
 
-            } while (!responseEntity.getBody());
-            // zamiast tego będzie wywołanie metody z GameBoard.java, która aktualizuje GameState
-            // pobierając tą informację z serwera
-            // GameBoard.getInstance().updateGameState();
-            System.out.println("You can move now");
-            updateGameBoard();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+                } while (!responseEntity.getBody());
+                // zamiast tego będzie wywołanie metody z GameBoard.java, która aktualizuje GameState
+                // pobierając tą informację z serwera
+                // GameBoard.getInstance().updateGameState();
+                System.out.println("You can move now");
+                updateGameBoard();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     };
 
@@ -344,7 +348,7 @@ public class GameBoard extends Application {
     }
 
     private void waitForOpponentsMove(Runnable listener) {
-        Platform.runLater(listener);
+        new Thread(listener).start();
     }
 
     private void updateGameState() {

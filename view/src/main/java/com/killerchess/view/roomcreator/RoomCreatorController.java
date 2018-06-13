@@ -6,8 +6,8 @@ import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -59,23 +59,28 @@ public class RoomCreatorController {
         }
     }
 
-    private Runnable hostJoinedListener = () -> {
-        LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-        ResponseEntity<Boolean> responseEntity;
-        UriComponentsBuilder builder;
-        try {
-            do {
-                Thread.sleep(5000);
-                builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + CHECK_GUEST_PATH);
-                responseEntity = localSessionSingleton
-                        .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
+    private Task hostJoinedListener = new Task<Void>() {
+        @Override
+        protected Void call() throws Exception {
+            LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+            ResponseEntity<Boolean> responseEntity;
+            UriComponentsBuilder builder;
+            try {
+                do {
+                    Thread.sleep(5000);
+                    builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + CHECK_GUEST_PATH);
+                    responseEntity = localSessionSingleton
+                            .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
 
-            } while (!responseEntity.getBody());
-            System.out.println("Host joined");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+                } while (!responseEntity.getBody());
+                System.out.println("Host joined");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     };
+
 
     private void createNewGame(String roomName, String roomDatabaseId, String scenarioId) {
         MultiValueMap<String, String> roomCreationParametersMap = new LinkedMultiValueMap<>();
@@ -133,7 +138,7 @@ public class RoomCreatorController {
     }
 
     private void waitForHost() {
-        Platform.runLater(hostJoinedListener);
+        new Thread(hostJoinedListener).start();
     }
 
     private void initializeVBoxWithGameScenarios() {
