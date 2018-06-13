@@ -8,8 +8,11 @@ import javafx.scene.image.ImageView;
 import java.io.File;
 
 import static com.killerchess.view.game.GameBoard.TILE_SIZE;
+import static com.killerchess.view.game.ImagesConstants.IMAGES_LOCAL_PATH;
+import static com.killerchess.view.game.ImagesConstants.IMAGE_TYPE_PREFIX;
+import static com.killerchess.view.game.ImagesConstants.PNG_FILE_TYPE_EXTENSION;
 
-public class ChessmanImage extends StackPane {
+class ChessmanImage extends StackPane {
 
     private ChessmanType type;
     private Chessman chessman;
@@ -67,10 +70,9 @@ public class ChessmanImage extends StackPane {
         PrevChessmanY = prevChessmanY;
     }
 
-    public ChessmanImage(ChessmanImage chessmanImageOriginal){
-        this.colour = chessmanImageOriginal.colour;
-        this.type = chessmanImageOriginal.type;
-        this.chessman = chessmanImageOriginal.chessman;
+    ChessmanImage(Chessman chessman){
+        this.colour = chessman.getColour();
+        this.chessman = chessman;
     }
 
     ChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
@@ -78,26 +80,26 @@ public class ChessmanImage extends StackPane {
         this.chessman = chessman;
         this.type = ChessmanType.getTypeFromSymbol(chessman.getSymbol());
         relocate(x * GameBoard.TILE_SIZE + 7, y * GameBoard.TILE_SIZE + 7);
-        File file;
-        if(type != ChessmanType.EMPTY) {
+        setChessmanImage(chessman, chessmanStyleNumber);
+    }
+
+    private void setChessmanImage(Chessman chessman, int chessmanStyleNumber) {
+        if(this.type != ChessmanType.EMPTY) {
             String chessmanTypeLowerCase = type.name().toLowerCase();
             String chessmanColourLowerCase = chessman.getColour().toString().toLowerCase();
-            String filePath = "view/images/type_" + chessmanStyleNumber +
-                    "_" + chessmanColourLowerCase + "_" + chessmanTypeLowerCase + ".png";
-            file = new File(filePath);
-            setImage(file);
+            File imageFile = getCheesmanImageFile(chessmanStyleNumber, chessmanTypeLowerCase, chessmanColourLowerCase);
+
+            Image image = new Image(imageFile.toURI().toString());
+            imageView = new ImageView();
+            imageView.setImage(image);
+            getChildren().add(imageView);
         }
     }
 
-    ChessmanImage(Chessman chessman){
-        this.colour = chessman.getColour();
-        this.chessman = chessman;
-    }
-    private void setImage(File file){
-        Image image = new Image(file.toURI().toString());
-        imageView = new ImageView();
-        imageView.setImage(image);
-        getChildren().addAll(imageView);
+    private File getCheesmanImageFile(int chessmanStyleNumber, String chessmanTypeLowerCase, String chessmanColourLowerCase) {
+        String filePath = IMAGES_LOCAL_PATH + IMAGE_TYPE_PREFIX + chessmanStyleNumber
+                + "_" + chessmanColourLowerCase + "_" + chessmanTypeLowerCase + PNG_FILE_TYPE_EXTENSION;
+        return new File(filePath);
     }
 
     void move(int x, int y){

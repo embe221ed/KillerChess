@@ -6,9 +6,8 @@ import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -87,7 +86,6 @@ public class RoomCreatorController {
             };
         }
     };
-
 
     private void createNewGame(String roomName, String roomDatabaseId, String scenarioId) {
         MultiValueMap<String, String> roomCreationParametersMap = new LinkedMultiValueMap<>();

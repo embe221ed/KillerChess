@@ -49,12 +49,6 @@ import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PAT
 
 public class MainPanelController {
 
-    private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
-    private final String IMAGES_LOCAL_PATH = "view/images/";
-    private final String AVATAR_FILENAME_PREFIX = "/avatar_";
-    private final String JPG_FILETYPE_EXTENSION = ".jpg";
-    private final String PAWN_FILENAME_PREFIX = "type_";
-    private final String BLACK_BISHOP_SUFFIX = "_black_bishop.png";
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;

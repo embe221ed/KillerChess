@@ -35,11 +35,6 @@ public class View extends Application {
         primaryStage.setResizable(false);
     }
 
-    public Stage getStage() {
-        stage.setResizable(true);
-        return this.stage;
-    }
-
     public void changeScene(String fxml) throws Exception {
         Parent page = FXMLLoader.load(getClass().getResource(fxml));
         Scene scene = stage.getScene();
