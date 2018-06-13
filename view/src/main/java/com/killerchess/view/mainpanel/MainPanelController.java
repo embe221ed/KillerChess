@@ -5,6 +5,7 @@ import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
+import com.killerchess.view.game.ImagesConstants;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.Templates;
@@ -58,7 +59,6 @@ public class MainPanelController {
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
-    private final static String REFRESH_BUTTON_FILEPATH = "view/images/refresh.png";
     public ImageView accountImage;
     public TextArea rankingText;
     public ImageView rankingImage;
@@ -102,7 +102,7 @@ public class MainPanelController {
 
     private void addImageToRefreshButton() {
         try {
-            BufferedImage bufferedImage = ImageIO.read(new File(REFRESH_BUTTON_FILEPATH));
+            BufferedImage bufferedImage = ImageIO.read(new File(ImagesConstants.REFRESH_BUTTON_FILEPATH));
             ImageView imageView = new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
             imageView.setFitHeight(50);
             imageView.setFitWidth(50);
