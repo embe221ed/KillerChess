@@ -15,9 +15,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -27,6 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class GameBoard extends Application {
@@ -44,15 +46,21 @@ public class GameBoard extends Application {
     private ImageView killerChessLogoImageView;
     private Image killerChessLogoImage;
     private int currentChessmanXCoordinate = UNPROPER_COORDINATE_VALUE;
+    private List<String> gameStates = new ArrayList<>();
+    private boolean historyModeActive = false;
 
     private Stage stage;
 
-    private Group tileGroup = new Group();
-    private Group chessmanGroup = new Group();
+    private Group tileGroup;
+    private Group chessmanGroup;
+    private Group groups;
+    private Group buttonsGroup;
 
     private Button helpButton;
+    private Button movesHistoryButton;
+    private Button currentGameStateButton;
     private ChessBoard chessBoard;
-    private Pane root;
+    private AnchorPane root;
 
     private StateInterpreter stateInterpreter = new StateInterpreter();
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
@@ -107,44 +115,59 @@ public class GameBoard extends Application {
     }
 
     private Parent createContent(String gameBoardStateString) {
-        this.chessBoard = stateInterpreter.convertJsonBoardToChessBoard(gameBoardStateString);
+        initGameBoard(gameBoardStateString);
 
-        root = new Pane();
-        root.setPrefSize((WIDTH + 3) * TILE_SIZE, HEIGHT * TILE_SIZE);
-        root.getChildren().addAll(tileGroup, chessmanGroup);
-        setHelpButton();
-        setKillerChessLogoImage();
-        root.getChildren().add(killerChessLogoImageView);
-        root.getChildren().add(helpButton);
-
-        drawTiles();
         return root;
     }
 
     private void updateGameBoard() {
+        historyModeActive = false;
+        gameStates.clear();
         ResponseEntity<String> responseEntity = localSessionSingleton
                 .exchange("http://localhost:8080/gameBoard", HttpMethod.GET, null, String.class);
-        chessBoard = stateInterpreter.convertJsonBoardToChessBoard(responseEntity.getBody());
-        root = new Pane();
-        tileGroup = new Group();
-        chessmanGroup = new Group();
-        root.getChildren().addAll(tileGroup, chessmanGroup);
-        root.setPrefSize((WIDTH + 1) * TILE_SIZE, HEIGHT * TILE_SIZE);
-        setHelpButton();
-        setKillerChessLogoImage();
-        root.getChildren().add(killerChessLogoImageView);
-        root.getChildren().add(helpButton);
-        drawTiles();
+        initGameBoard(responseEntity.getBody());
         stage.getScene().setRoot(root);
     }
 
-    private void setHelpButton() {
-        helpButton = new Button();
-        helpButton.setText("POMOC");
-        helpButton.setLayoutX(900.0);
-        helpButton.setLayoutY(40.0);
-        helpButton.setPrefSize(100.0, 100.0);
+    private void initNodes() {
+        tileGroup = new Group();
+        chessmanGroup = new Group();
+        groups = new Group();
+        groups.getChildren().addAll(tileGroup, chessmanGroup);
+        root = new AnchorPane();
+    }
+
+    private void initGameBoard(String gameBoard) {
+        this.chessBoard = stateInterpreter.convertJsonBoardToChessBoard(gameBoard);
+        initNodes();
+        root.setPrefSize((WIDTH + 4) * TILE_SIZE, HEIGHT * TILE_SIZE);
+        AnchorPane.setLeftAnchor(groups, 0.0);
+        setKillerChessLogoImage();
+        initAllButtons();
+        AnchorPane.setRightAnchor(buttonsGroup, 0.0);
+        root.getChildren().addAll(groups, buttonsGroup);
+        drawTiles();
+    }
+
+    private void initAllButtons() {
+        helpButton = initButton(40.0, "POMOC", false);
+        currentGameStateButton = initButton(280.0, "AKTUALNA", !historyModeActive);
+        movesHistoryButton = initButton(160.0, "HISTORIA", historyModeActive && gameStates.isEmpty());
+        setCurrentGameStateButtonOnClickFunction();
+        setMovesHistoryButtonOnClickFunction();
         setHelpButtonMouseOnClickFunction();
+        buttonsGroup = new Group();
+        buttonsGroup.getChildren().addAll(killerChessLogoImageView, helpButton, movesHistoryButton, currentGameStateButton);
+    }
+
+    private Button initButton(double layoutY, String text, boolean disabled) {
+        Button button = new Button();
+        button.setText(text);
+        button.setLayoutX(900.0);
+        button.setLayoutY(layoutY);
+        button.setPrefSize(100.0, 100.0);
+        button.setDisable(disabled);
+        return button;
     }
 
     private void setKillerChessLogoImage() {
@@ -153,6 +176,23 @@ public class GameBoard extends Application {
         killerChessLogoImageView = new ImageView();
         killerChessLogoImageView.setImage(killerChessLogoImage);
         killerChessLogoImageView.relocate(810, 0);
+    }
+
+    private void setCurrentGameStateButtonOnClickFunction() {
+        currentGameStateButton.setOnMouseClicked(e -> {
+            updateGameBoard();
+        });
+    }
+
+    private void setMovesHistoryButtonOnClickFunction() {
+        movesHistoryButton.setOnMouseClicked(e -> {
+            historyModeActive = true;
+            currentGameStateButton.setDisable(false);
+            updateGameStatesList();
+            if (gameStates.size() > 0) {
+                stage.getScene().setRoot(createContent(gameStates.remove(0)));
+            }
+        });
     }
 
     private void setHelpButtonMouseOnClickFunction() {
@@ -182,6 +222,20 @@ public class GameBoard extends Application {
                 }
             }
         });
+    }
+
+    private void updateGameStatesList() {
+        if (gameStates.isEmpty()) {
+            var parameterizedTypeReference = new ParameterizedTypeReference<List<String>>() {
+            };
+            ResponseEntity<List<String>> responseEntity = localSessionSingleton
+                    .exchange("http://localhost:8080/listOfGameStates",
+                            HttpMethod.GET,
+                            null,
+                            parameterizedTypeReference);
+            gameStates = responseEntity.getBody();
+            gameStates.remove(0);
+        }
     }
 
     private void higlightFieldsToRed(Set<Pair<Integer, Integer>> fieldsToHighLight) {
@@ -377,7 +431,7 @@ public class GameBoard extends Application {
     }
 
     private Boolean canPlayerMoveChessman(ChessmanImage chessmanImage) {
-        return isUsersMove() && chessmanImage.getColour().equals(this.chessmanColour);
+        return !historyModeActive && isUsersMove() && chessmanImage.getColour().equals(this.chessmanColour);
     }
 
     private void completeKilllMove(ChessmanImage chessmanImage, int newX, int newY) {
