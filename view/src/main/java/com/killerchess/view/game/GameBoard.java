@@ -6,6 +6,7 @@ import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.view.utils.SoundPlayer;
 import javafx.application.Application;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -321,6 +322,10 @@ public class GameBoard extends Application {
                 getCurrentChessmanYCoordinate = toBoard(chessmanImage.getLayoutY());
                 updateCurrentChessmanImage(chessBoardOfChessmansImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].getChessmanImage());
                 chessBoardOfChessmansImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].highlightGreen();
+                new Thread(() -> {
+                    SoundPlayer.playOnChessmanClick();
+                }).start();
+
             }
         });
 
@@ -341,9 +346,15 @@ public class GameBoard extends Application {
                         completeAbortMove(chessmanImage);
                         return;
                     case NORMAL:
+                        new Thread(() -> {
+                            SoundPlayer.playOnChessmanMove();
+                        }).start();
                         completeNormalMove(chessmanImage, newX, newY);
                         break;
                     case KILL:
+                        new Thread(() -> {
+                            SoundPlayer.playOnChessmanMove();
+                        }).start();
                         completeKilllMove(chessmanImage, newX, newY);
                         break;
                 }
