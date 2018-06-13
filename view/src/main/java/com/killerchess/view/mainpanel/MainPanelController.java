@@ -102,7 +102,8 @@ public class MainPanelController {
 
     private void addImageToRefreshButton() {
         try {
-            BufferedImage bufferedImage = ImageIO.read(new File(ImagesConstants.REFRESH_BUTTON_FILEPATH));
+            BufferedImage bufferedImage = ImageIO.read(new File(ImagesConstants.IMAGES_LOCAL_PATH
+                    + ImagesConstants.REFRESH_BUTTON_FILEPATH));
             ImageView imageView = new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
             imageView.setFitHeight(50);
             imageView.setFitWidth(50);
