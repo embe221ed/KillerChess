@@ -58,7 +58,7 @@ public class MainPanelController {
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
-    public Button reloadRoom;
+    private final static String REFRESH_BUTTON_FILEPATH = "view/images/refresh.png";
     public ImageView accountImage;
     public TextArea rankingText;
     public ImageView rankingImage;
@@ -81,7 +81,7 @@ public class MainPanelController {
     private double panelWidth;
     private double panelHeight;
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-
+    public Button refreshRooms;
 
     @FXML
     public void initialize() {
@@ -97,12 +97,16 @@ public class MainPanelController {
         hideHelpInfo();
         helpImageListener();
         initializeRoomsVBox();
+        addImageToRefreshButton();
+    }
+
+    private void addImageToRefreshButton() {
         try {
-            BufferedImage bufferedImage = ImageIO.read(new File("view/images/refresh.png"));
-            ImageView value = new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
-            value.setFitHeight(50);
-            value.setFitWidth(50);
-            reloadRoom.setGraphic(value);
+            BufferedImage bufferedImage = ImageIO.read(new File(REFRESH_BUTTON_FILEPATH));
+            ImageView imageView = new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
+            imageView.setFitHeight(50);
+            imageView.setFitWidth(50);
+            refreshRooms.setGraphic(imageView);
         } catch (IOException e) {
             e.printStackTrace();
         }
