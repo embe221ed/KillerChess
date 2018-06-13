@@ -3,27 +3,22 @@ package com.killerchess.view.game;
 import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
+import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.chessmans.EmptyField;
-import javafx.scene.control.Button;
 import com.killerchess.core.game.Game;
 import com.killerchess.core.session.LocalSessionSingleton;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import com.killerchess.view.loging.LoginController;
 import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import javafx.util.Pair;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +26,14 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.killerchess.core.controllers.game.GameController.*;
+import static com.killerchess.view.game.ImagesConstants.IMAGES_LOCAL_PATH;
+import static com.killerchess.view.game.ImagesConstants.KILLER_CHESS_LOGO_FILENAME;
 
 public class GameBoard extends Application {
 
@@ -63,17 +64,7 @@ public class GameBoard extends Application {
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
     private ChessmanColourEnum chessmanColour;
 
-    private static GameBoard instance;
-    private StateInterpreter stateInterpreter = new StateInterpreter();
     private Game game;
-    private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-
-    public static GameBoard getInstance() {
-        if (instance == null) {
-            instance = new GameBoard();
-        }
-        return instance;
-    }
 
     private Service listenerService = new Service<Void>() {
         @Override
@@ -108,6 +99,10 @@ public class GameBoard extends Application {
             instance = new GameBoard();
         }
         return instance;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
     private Parent createContent(String gameBoardStateString) {
@@ -188,7 +183,7 @@ public class GameBoard extends Application {
                 Set<Pair<Integer, Integer>> fieldsToHighLight;
 
                 if (currentChessmanPossibleCaptures.isEmpty()) {
-                    var otherChessmenThatCanCapture = findPositionsOfOtherChessmansThatCanCapture();
+                    var otherChessmenThatCanCapture = findPositionsOfOtherChessmenThatCanCapture();
 
                     fieldsToHighLight = decideIfHighlightOtherChessmenOrPossibleMoves(otherChessmenThatCanCapture,
                             currentChessmanImageX, currentChessmanImageY);
@@ -237,7 +232,7 @@ public class GameBoard extends Application {
         return fieldsToHighLight;
     }
 
-    private Set<Pair<Integer, Integer>> findPositionsOfOtherChessmansThatCanCapture() {
+    private Set<Pair<Integer, Integer>> findPositionsOfOtherChessmenThatCanCapture() {
         var positionsOfChessmenThatCanCapture = new HashSet<Pair<Integer, Integer>>();
         var chessmenWithGivenColor =
                 chessBoard.getAllChessmansWithGivenColor(currentChessmanImage.getChessman().getColour());
@@ -264,12 +259,12 @@ public class GameBoard extends Application {
 
     private void drawChessman(int x, int y, Tile tile) {
         var chessman = chessBoard.getChessmanAt(y, x);
-        var chessmanImage = createChesmanImageFromChesman(chessman, x, y);
+        var chessmanImage = createChesmanImageFromChessman(chessman, x, y);
         tile.setChessmanImage(chessmanImage);
         chessmanGroup.getChildren().add(chessmanImage);
     }
 
-    private ChessmanImage createChesmanImageFromChesman(Chessman chessman, int x, int y) {
+    private ChessmanImage createChesmanImageFromChessman(Chessman chessman, int x, int y) {
         var chessmanImage = createChessmanImage(chessman, 1, x, y);
         setChessmanImageMouseFunctions(chessmanImage);
         return chessmanImage;
@@ -300,7 +295,7 @@ public class GameBoard extends Application {
     }
 
     private Boolean thereAreOtherChessmenThatCanBeat() {
-        return findPositionsOfOtherChessmansThatCanCapture().size() != 0;
+        return findPositionsOfOtherChessmenThatCanCapture().size() != 0;
     }
 
     private Boolean canGivenChessmanCaptureOtherChessman(ChessmanImage givenChessmanImage, double prevChessmanX,
@@ -329,7 +324,7 @@ public class GameBoard extends Application {
 
     private void setChessmanImageMouseFunctions(ChessmanImage chessmanImage) {
         chessmanImage.setOnMousePressed(e -> {
-            if (canPlayerMoveChessman()) {
+            if (canPlayerMoveChessman(chessmanImage)) {
                 unhighlightAllBoard();
                 chessmanImage.setMouseX(e.getSceneX());
                 chessmanImage.setMouseY(e.getSceneY());
@@ -347,14 +342,14 @@ public class GameBoard extends Application {
         });
 
         chessmanImage.setOnMouseDragged(e -> {
-            if (canPlayerMoveChessman()) {
+            if (canPlayerMoveChessman(chessmanImage)) {
                 unhighlightAllBoard();
                 chessmanImage.relocate(e.getSceneX() - 50, e.getScreenY() - 50);
             }
         });
 
         chessmanImage.setOnMouseReleased(e -> {
-            if (canPlayerMoveChessman()) {
+            if (canPlayerMoveChessman(chessmanImage)) {
                 int newX = convertPixelValueToBoardValue(e.getSceneX());
                 int newY = convertPixelValueToBoardValue(e.getSceneY());
                 MoveResult result = tryMove(chessmanImage, newX, newY);
@@ -423,7 +418,7 @@ public class GameBoard extends Application {
         for (int y = 0; y < HEIGHT; y++) {
             ArrayList<Chessman> currentChessmenRow = new ArrayList<>();
             for (int x = 0; x < WIDTH; x++) {
-                currentChessmenRow.add(chessBoardOfChessmansImages[x][y].getChessmanImage().getChessman());
+                currentChessmenRow.add(chessBoardOfChessmenImages[x][y].getChessmanImage().getChessman());
             }
             chessboardCurrentState.add(currentChessmenRow);
         }
@@ -436,7 +431,7 @@ public class GameBoard extends Application {
         var emptyFieldImage = new ChessmanImage(new EmptyField(chessmanImage.getColour()));
         chessBoardOfChessmenImages[prevChessmanX][prevChessmanY].setChessmanImage(emptyFieldImage);
         chessBoardOfChessmenImages[newX][newY].setChessmanImage(chessmanImage);
-        updateChessBoardOfChessmans();
+        updateChessBoardOfChessmen();
     }
 
     private void updateBoardOfImagesAfterKillMove(ChessmanImage chessmanImage, int newX, int newY) {
@@ -468,9 +463,5 @@ public class GameBoard extends Application {
         if (!isUsersMove()) {
             waitForOpponentsMove();
         }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

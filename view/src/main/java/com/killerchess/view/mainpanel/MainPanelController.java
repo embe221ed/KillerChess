@@ -45,6 +45,7 @@ import static com.killerchess.core.controllers.app.RankingController.GET_USER_RA
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
 import static com.killerchess.core.controllers.game.GameController.*;
 import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PATH;
+import static com.killerchess.view.game.ImagesConstants.*;
 
 
 public class MainPanelController {
@@ -116,7 +117,7 @@ public class MainPanelController {
             try {
                 String mimeType = Files.probeContentType(file.toPath());
                 if (mimeType != null && mimeType.equals(IMAGE_JPEG_MIME_TYPE)) {
-                    File f = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION);
+                    File f = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILE_TYPE_EXTENSION);
                     Files.copy(file.toPath(), Paths.get(f.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
                     Image image = new Image("file:" + f.getPath(), panelWidth / 3, panelHeight / 2, false, false);
                     userAvatar.setImage(image);
@@ -166,7 +167,7 @@ public class MainPanelController {
     private void initializeComponents() {
         setNameAndPointsForUser();
 
-        File file = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION);
+        File file = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILE_TYPE_EXTENSION);
         if (file.exists() && !file.isDirectory()) {
             Image image = new Image("file:" + file.getPath(), panelWidth / 3, panelHeight / 2, false, false);
             userAvatar.setImage(image);

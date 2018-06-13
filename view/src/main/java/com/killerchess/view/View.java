@@ -16,12 +16,12 @@ public class View extends Application {
         instance = this;
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     public static View getInstance() {
         return instance;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class View extends Application {
     }
 
     private void setPrimaryStageProperties(Stage primaryStage) {
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
     }
 
     public void changeScene(String fxml) throws Exception {
@@ -53,5 +53,8 @@ public class View extends Application {
         LocalSessionSingleton.getInstance().saveToConfigFile();
     }
 
+    public Stage getStage() {
+        return this.stage;
+    }
 }
 
