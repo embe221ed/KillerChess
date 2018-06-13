@@ -9,6 +9,6 @@
         <Label prefHeight="62.0" prefWidth="304.0" text="Pawn promotion, choose a new chess:" BorderPane.alignment="CENTER" />
     </top>
    <center>
-        <HBox fx:id="chessmenVbox" prefHeight="172.0" prefWidth="640.0" BorderPane.alignment="CENTER" />
+        <HBox fx:id="chessmenHbox" prefHeight="172.0" prefWidth="640.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
