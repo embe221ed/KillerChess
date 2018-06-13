@@ -53,6 +53,7 @@ public class ChessBoard {
         Map<ChessmanColourEnum, Boolean> map = new HashMap<>();
         map.put(ChessmanColourEnum.WHITE, false);
         map.put(ChessmanColourEnum.BLACK, false);
+        map.put(ChessmanColourEnum.EMPTY, false);
         for (var row : chessBoard) {
             for (var chessman : row) {
                 if (!map.get(chessman.getColour())) map.put(chessman.getColour(), true);

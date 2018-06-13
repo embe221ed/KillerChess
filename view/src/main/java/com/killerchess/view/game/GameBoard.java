@@ -434,6 +434,14 @@ public class GameBoard extends Application {
         chessmanImage.abortMove();
     }
 
+    private void completeKilllMove(ChessmanImage chessmanImage, int newX, int newY) {
+        chessmanImage.move(newX, newY);
+        updateBoardOfImagesAfterKillMove(chessmanImage, newX, newY);
+        currentChessmanImage = null;
+        if (!chessBoard.checkGameBoardForChessmen().get(chessmanColour))
+            endOfGame();
+    }
+
     private void updateGameState() {
         listenerService.reset();
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
@@ -445,14 +453,6 @@ public class GameBoard extends Application {
 
     private Boolean canPlayerMoveChessman(ChessmanImage chessmanImage) {
         return !historyModeActive && isUsersMove() && chessmanImage.getColour().equals(this.chessmanColour);
-    }
-
-    private void completeKilllMove(ChessmanImage chessmanImage, int newX, int newY) {
-        chessmanImage.move(newX, newY);
-        updateBoardOfImagesAfterKillMove(chessmanImage, newX, newY);
-        currentChessmanImage = null;
-        if (!chessBoard.checkGameBoardForChessmen().get(chessmanColour))
-            endOfGame();
     }
 
     private void endOfGame() {
