@@ -5,7 +5,9 @@ import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.chessmans.EmptyField;
+import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.view.loging.LoginController;
 import javafx.application.Application;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -229,7 +231,7 @@ public class GameBoard extends Application {
             var parameterizedTypeReference = new ParameterizedTypeReference<List<String>>() {
             };
             ResponseEntity<List<String>> responseEntity = localSessionSingleton
-                    .exchange("http://localhost:8080/listOfGameStates",
+                    .exchange(LoginController.HOST + GameController.GAME_BOARD_LIST_PATH,
                             HttpMethod.GET,
                             null,
                             parameterizedTypeReference);
