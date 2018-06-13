@@ -3,6 +3,7 @@ package com.killerchess.view.game;
 import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
+import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.session.LocalSessionSingleton;
 import javafx.application.Application;
@@ -55,6 +56,7 @@ public class GameBoard extends Application {
 
     private StateInterpreter stateInterpreter = new StateInterpreter();
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+    private ChessmanColourEnum chessmanColour;
 
     private static GameBoard instance;
 
@@ -296,7 +298,7 @@ public class GameBoard extends Application {
 
     private void setChessmanImageMouseFunctions(ChessmanImage chessmanImage) {
         chessmanImage.setOnMousePressed(e -> {
-            if (canPlayerMoveChessman()) {
+            if (canPlayerMoveChessman(chessmanImage)) {
                 unhighlightAllBoard();
                 chessmanImage.setMouseX(e.getSceneX());
                 chessmanImage.setMouseY(e.getSceneY());
@@ -313,14 +315,14 @@ public class GameBoard extends Application {
         });
 
         chessmanImage.setOnMouseDragged(e -> {
-            if (canPlayerMoveChessman()) {
-                unhighlightAllBoard();
+//            if (canPlayerMoveChessman()) {
+//                unhighlightAllBoard();
                 chessmanImage.relocate(e.getSceneX() - 50, e.getScreenY() - 50);
-            }
+//            }
         });
 
         chessmanImage.setOnMouseReleased(e -> {
-            if (canPlayerMoveChessman()) {
+//            if (canPlayerMoveChessman()) {
                 int newX = toBoard(e.getSceneX());
                 int newY = toBoard(e.getSceneY());
                 MoveResult result = tryMove(chessmanImage, newX, newY);
@@ -337,7 +339,7 @@ public class GameBoard extends Application {
                 }
                 updateGameState();
                 waitForOpponentsMove(listener);
-            }
+//            }
         });
     }
 
@@ -373,8 +375,8 @@ public class GameBoard extends Application {
         currentChessmanImage = null;
     }
 
-    private Boolean canPlayerMoveChessman() {
-        return isUsersMove();
+    private Boolean canPlayerMoveChessman(ChessmanImage chessmanImage) {
+        return isUsersMove() && chessmanImage.getColour().equals(this.chessmanColour);
     }
 
     private Boolean isUsersMove() {
@@ -411,6 +413,10 @@ public class GameBoard extends Application {
         updateChessBoardOfChessmans();
     }
 
+    private void getUsersChessmenColor(Boolean host) {
+        this.chessmanColour = host ? ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         ResponseEntity<String> responseEntity = localSessionSingleton.
@@ -419,18 +425,19 @@ public class GameBoard extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         this.stage = primaryStage;
-        if (!canPlayerMoveChessman()) {
-
+        Boolean isUserHost = isUsersMove();
+        getUsersChessmenColor(isUserHost);
+        if (!isUserHost) {
             waitForOpponentsMove(listener);
         }
     }
 
     public void disableAllChessmen() {
-        chessmanGroup.setDisable(true);
+//        chessmanGroup.setDisable(true);
     }
 
     public void enableAllChessmen() {
-        chessmanGroup.setDisable(false);
+//        chessmanGroup.setDisable(false);
     }
 
     public static void main(String[] args) {
