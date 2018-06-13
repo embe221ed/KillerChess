@@ -349,4 +349,8 @@ public class MainPanelController {
         return roomsVBox.getChildren();
     }
 
+    public void handleRefreshRoomsButtonClicked() {
+        roomsVBox.getChildren().clear();
+        initializeRoomsVBox();
+    }
 }
