@@ -315,14 +315,14 @@ public class GameBoard extends Application {
         });
 
         chessmanImage.setOnMouseDragged(e -> {
-//            if (canPlayerMoveChessman()) {
-//                unhighlightAllBoard();
+            if (canPlayerMoveChessman(chessmanImage)) {
+                unhighlightAllBoard();
                 chessmanImage.relocate(e.getSceneX() - 50, e.getScreenY() - 50);
-//            }
+            }
         });
 
         chessmanImage.setOnMouseReleased(e -> {
-//            if (canPlayerMoveChessman()) {
+            if (canPlayerMoveChessman(chessmanImage)) {
                 int newX = toBoard(e.getSceneX());
                 int newY = toBoard(e.getSceneY());
                 MoveResult result = tryMove(chessmanImage, newX, newY);
@@ -339,7 +339,7 @@ public class GameBoard extends Application {
                 }
                 updateGameState();
                 waitForOpponentsMove(listener);
-//            }
+            }
         });
     }
 
