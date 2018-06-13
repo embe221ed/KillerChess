@@ -6,6 +6,7 @@ import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.view.loging.LoginController;
 import javafx.application.Application;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -28,6 +29,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.killerchess.core.controllers.game.GameController.*;
 
 public class GameBoard extends Application {
 
@@ -73,9 +76,9 @@ public class GameBoard extends Application {
                     try {
                         do {
                             Thread.sleep(SLEEP_TIME);
-                            builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
-                                    .queryParam("gameStateNumber", localSessionSingleton.
-                                            getParameter("gameStateNumber"));
+                            builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + GAME_STATE_CHANGED_PATH)
+                                    .queryParam(GAME_STATE_NUMBER_PARAM,
+                                            localSessionSingleton.getParameter("gameStateNumber"));
                             responseEntity = localSessionSingleton.
                                     exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
 
@@ -357,8 +360,8 @@ public class GameBoard extends Application {
         listenerService.reset();
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("state", stateInterpreter.convertChessBoardToJsonBoard(chessBoard).toString());
-        ResponseEntity<Integer> responseEntity = localSessionSingleton.
-                exchange("http://localhost:8080/newState", HttpMethod.POST, map, Integer.class);
+        ResponseEntity<Integer> responseEntity = localSessionSingleton
+                .exchange(LoginController.HOST + NEW_STATE_PATH, HttpMethod.POST, map, Integer.class);
         localSessionSingleton.setParameter("gameStateNumber", responseEntity.getBody().toString());
     }
 
@@ -387,19 +390,19 @@ public class GameBoard extends Application {
     }
 
     private Boolean isUsersMove() {
-        ResponseEntity<Boolean> responseEntity = localSessionSingleton.
-                exchange("http://localhost:8080/isUsersMove", HttpMethod.GET, null, Boolean.class);
+        ResponseEntity<Boolean> responseEntity = localSessionSingleton
+                .exchange(LoginController.HOST + IS_USERS_MOVE_PATH, HttpMethod.GET, null, Boolean.class);
         return responseEntity.getBody();
     }
 
-    private void updateChessBoardOfChessmans() {
+    private void updateChessBoardOfChessmen() {
         ArrayList<ArrayList<Chessman>> chessboardCurrentState = new ArrayList<>();
         for (int y = 0; y < HEIGHT; y++) {
-            ArrayList<Chessman> currentChessmansRow = new ArrayList<>();
+            ArrayList<Chessman> currentChessmenRow = new ArrayList<>();
             for (int x = 0; x < WIDTH; x++) {
-                currentChessmansRow.add(chessBoardOfChessmansImages[x][y].getChessmanImage().getChessman());
+                currentChessmenRow.add(chessBoardOfChessmansImages[x][y].getChessmanImage().getChessman());
             }
-            chessboardCurrentState.add(currentChessmansRow);
+            chessboardCurrentState.add(currentChessmenRow);
         }
         chessBoard = new ChessBoard(chessboardCurrentState);
     }
@@ -408,7 +411,7 @@ public class GameBoard extends Application {
         chessBoardOfChessmansImages[chessmanImage.getPrevChessmanX()][chessmanImage.getPrevChessmanY()].
                 setChessmanImage(new ChessmanImage(new EmptyField(chessmanImage.getColour())));
         chessBoardOfChessmansImages[newX][newY].setChessmanImage(chessmanImage);
-        updateChessBoardOfChessmans();
+        updateChessBoardOfChessmen();
     }
 
     private void updateBoardOfImagesAfterKillMove(ChessmanImage chessmanImage, int newX, int newY) {
@@ -417,19 +420,19 @@ public class GameBoard extends Application {
 
         chessBoardOfChessmansImages[newX][newY].getChessmanImage().removeImage();
         chessBoardOfChessmansImages[newX][newY].setChessmanImage(chessmanImage);
-        updateChessBoardOfChessmans();
+        updateChessBoardOfChessmen();
     }
 
     private void getUsersChessmenColor() {
-        ResponseEntity<ChessmanColourEnum> responseEntity = localSessionSingleton.
-                exchange("http://localhost:8080/getColor", HttpMethod.GET, null, ChessmanColourEnum.class);
+        ResponseEntity<ChessmanColourEnum> responseEntity = localSessionSingleton
+                .exchange(LoginController.HOST + GET_COLOR_PATH, HttpMethod.GET, null, ChessmanColourEnum.class);
         this.chessmanColour = responseEntity.getBody();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        ResponseEntity<String> responseEntity = localSessionSingleton.
-                exchange("http://localhost:8080/gameBoard", HttpMethod.GET, null, String.class);
+    public void start(Stage primaryStage) {
+        ResponseEntity<String> responseEntity = localSessionSingleton
+                .exchange(LoginController.HOST + GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         Scene scene = new Scene(createContent(responseEntity.getBody()));
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -438,14 +441,6 @@ public class GameBoard extends Application {
         if (!isUsersMove()) {
             waitForOpponentsMove();
         }
-    }
-
-    public void disableAllChessmen() {
-//        chessmanGroup.setDisable(true);
-    }
-
-    public void enableAllChessmen() {
-//        chessmanGroup.setDisable(false);
     }
 
     public static void main(String[] args) {

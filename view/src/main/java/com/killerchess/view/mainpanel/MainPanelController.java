@@ -329,7 +329,6 @@ public class MainPanelController {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    gameBoard.enableAllChessmen();
                     localSessionSingleton.setParameter("gameStateNumber", responseEntity.getBody().toString());
                 }
             }

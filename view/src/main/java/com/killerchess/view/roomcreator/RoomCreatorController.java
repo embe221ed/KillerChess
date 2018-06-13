@@ -140,7 +140,6 @@ public class RoomCreatorController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        gameBoard.disableAllChessmen();
         waitForHost();
     }
 
@@ -151,8 +150,7 @@ public class RoomCreatorController {
     private void initializeVBoxWithGameScenarios() {
         var vBoxChildren = gameSchemasRadioButtonsVBox.getChildren();
         GameScenariosEnum.getAllEnumConstants()
-                .forEach(gameScenario ->
-                        vBoxChildren.add(createRadioButtonForScenarioInToggleGroup(gameScenario)));
+                .forEach(gameScenario -> vBoxChildren.add(createRadioButtonForScenarioInToggleGroup(gameScenario)));
         fireFirstButton(vBoxChildren);
     }
 
