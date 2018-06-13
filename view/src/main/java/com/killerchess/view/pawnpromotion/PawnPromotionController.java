@@ -2,14 +2,9 @@ package com.killerchess.view.pawnpromotion;
 
 import com.killerchess.view.game.ChessmanTypeEnum;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 import java.io.File;
 import java.util.Arrays;
@@ -29,10 +24,9 @@ public class PawnPromotionController {
     }
 
     private void loadChessmenIconsOnPanel() {
-        String s = "type_1_black_king.png";
         Arrays.stream(ChessmanTypeEnum.values())
                 .filter(this::isChessmanNotPawnNorEmpty)
-                .forEach(chessmanTypeEnum -> loadChessmanOnPanel(chessmanTypeEnum.toString().toLowerCase()));
+                .forEach(chessmanTypeEnum -> loadChessmanOnPanel(chessmanTypeEnum.toString()));
     }
 
     private boolean isChessmanNotPawnNorEmpty(ChessmanTypeEnum chessmanTypeEnum) {
@@ -41,10 +35,15 @@ public class PawnPromotionController {
     }
 
     private void loadChessmanOnPanel(String chessman) {
+        //TODO AK implement choosing type of images
         String type = "1";
-        File file = new File(IMAGES_LOCAL_PATH + "type_" + type + "_black_" + chessman + PNG_FILE_TYPE_EXTENSION);
+        File file = new File(IMAGES_LOCAL_PATH + "type_" + type + "_black_" + chessman.toLowerCase()
+                + PNG_FILE_TYPE_EXTENSION);
         Image image = new Image(file.toURI().toString());
         ImageView imageView = new ImageView(image);
+
+        imageView.setOnMouseClicked(event -> System.out.println(chessman));
+
         chessmenVbox.getChildren().add(imageView);
     }
 
