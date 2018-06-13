@@ -6,6 +6,7 @@ import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
+import com.killerchess.view.utils.SoundPlayer;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -50,7 +51,9 @@ public class RoomCreatorController {
                                     .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
 
                         } while (!responseEntity.getBody());
-                        System.out.println("Host joined");
+                        new Thread(() -> {
+                            SoundPlayer.playOnGameStart();
+                        }).start();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
