@@ -7,6 +7,7 @@ import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -60,25 +61,30 @@ public class RoomCreatorController {
         }
     }
 
-    private Task hostJoinedListener = new Task<Void>() {
+    private Service hostJoinedListenerService = new Service<Void>() {
         @Override
-        protected Void call() throws Exception {
-            LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-            ResponseEntity<Boolean> responseEntity;
-            UriComponentsBuilder builder;
-            try {
-                do {
-                    Thread.sleep(SLEEP_TIME);
-                    builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + CHECK_GUEST_PATH);
-                    responseEntity = localSessionSingleton
-                            .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
+        protected Task<Void> createTask() {
+            return new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+                    ResponseEntity<Boolean> responseEntity;
+                    UriComponentsBuilder builder;
+                    try {
+                        do {
+                            Thread.sleep(SLEEP_TIME);
+                            builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + CHECK_GUEST_PATH);
+                            responseEntity = localSessionSingleton
+                                    .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
 
-                } while (!responseEntity.getBody());
-                System.out.println("Host joined");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
+                        } while (!responseEntity.getBody());
+                        System.out.println("Host joined");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            };
         }
     };
 
@@ -139,7 +145,7 @@ public class RoomCreatorController {
     }
 
     private void waitForHost() {
-        new Thread(hostJoinedListener).start();
+        hostJoinedListenerService.start();
     }
 
     private void initializeVBoxWithGameScenarios() {

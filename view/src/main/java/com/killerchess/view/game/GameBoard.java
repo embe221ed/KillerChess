@@ -7,6 +7,7 @@ import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.session.LocalSessionSingleton;
 import javafx.application.Application;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -61,31 +62,31 @@ public class GameBoard extends Application {
 
     private static GameBoard instance;
 
-    private Task listener = new Task<Void>() {
+    private Service listenerService = new Service<Void>() {
         @Override
-        public Void call() {
-            ResponseEntity<Boolean> responseEntity;
-            UriComponentsBuilder builder;
-            try {
-                do {
-                    // czas pomiędzy kolejnymi zapytaniami
-                    Thread.sleep(SLEEP_TIME);
-                    builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
-                            .queryParam("gameStateNumber", localSessionSingleton.
-                                    getParameter("gameStateNumber"));
-                    responseEntity = localSessionSingleton.
-                            exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
+        protected Task<Void> createTask() {
+            return new Task<>() {
+                @Override
+                public Void call() {
+                    ResponseEntity<Boolean> responseEntity;
+                    UriComponentsBuilder builder;
+                    try {
+                        do {
+                            Thread.sleep(SLEEP_TIME);
+                            builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
+                                    .queryParam("gameStateNumber", localSessionSingleton.
+                                            getParameter("gameStateNumber"));
+                            responseEntity = localSessionSingleton.
+                                    exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
 
-                } while (!responseEntity.getBody());
-                // zamiast tego będzie wywołanie metody z GameBoard.java, która aktualizuje GameState
-                // pobierając tą informację z serwera
-                // GameBoard.getInstance().updateGameState();
-                System.out.println("You can move now");
-                updateGameBoard();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
+                        } while (!responseEntity.getBody());
+                        updateGameBoard();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            };
         }
     };
 
@@ -343,16 +344,17 @@ public class GameBoard extends Application {
                         break;
                 }
                 updateGameState();
-                waitForOpponentsMove(listener);
+                waitForOpponentsMove();
             }
         });
     }
 
-    private void waitForOpponentsMove(Runnable listener) {
-        new Thread(listener).start();
+    private void waitForOpponentsMove() {
+        listenerService.start();
     }
 
     private void updateGameState() {
+        listenerService.reset();
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("state", stateInterpreter.convertChessBoardToJsonBoard(chessBoard).toString());
         ResponseEntity<Integer> responseEntity = localSessionSingleton.
@@ -434,7 +436,7 @@ public class GameBoard extends Application {
         this.stage = primaryStage;
         getUsersChessmenColor();
         if (!isUsersMove()) {
-            waitForOpponentsMove(listener);
+            waitForOpponentsMove();
         }
     }
 
