@@ -417,8 +417,10 @@ public class GameBoard extends Application {
         updateChessBoardOfChessmans();
     }
 
-    private void getUsersChessmenColor(Boolean host) {
-        this.chessmanColour = host ? ChessmanColourEnum.WHITE : ChessmanColourEnum.BLACK;
+    private void getUsersChessmenColor() {
+        ResponseEntity<ChessmanColourEnum> responseEntity = localSessionSingleton.
+                exchange("http://localhost:8080/getColor", HttpMethod.GET, null, ChessmanColourEnum.class);
+        this.chessmanColour = responseEntity.getBody();
     }
 
     @Override
@@ -429,9 +431,8 @@ public class GameBoard extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         this.stage = primaryStage;
-        Boolean isUserHost = isUsersMove();
-        getUsersChessmenColor(isUserHost);
-        if (!isUserHost) {
+        getUsersChessmenColor();
+        if (!isUsersMove()) {
             waitForOpponentsMove(listener);
         }
     }

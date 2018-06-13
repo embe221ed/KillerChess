@@ -1,5 +1,6 @@
 package com.killerchess.core.controllers.game;
 
+import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.game.Game;
 import com.killerchess.core.game.GameState;
@@ -33,6 +34,7 @@ public class GameController {
     public static final String CHECK_GUEST_PATH = "/checkGuest";
     public static final String JOIN_GAME_PATH = "/joinGame";
     public static final String GAME_STATE_CHANGED_PATH = "/gameStateChanged";
+    public static final String GET_COLOR_PATH = "/getColor";
     public static final String STATE_PARAM = "state";
     public static final String GAME_ID_PARAM = "gameId";
     public static final String GAME_NAME_PARAM = "gameName";
@@ -106,6 +108,20 @@ public class GameController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = GET_COLOR_PATH)
+    public ResponseEntity<ChessmanColourEnum> getUsersColor(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            String username = session.getAttribute("username").toString();
+            Game game = gameService.findGame(gameId);
+            return (game.getHost().getLogin().equals(username) ?
+                    new ResponseEntity<>(ChessmanColourEnum.WHITE, HttpStatus.OK) : new ResponseEntity<>(ChessmanColourEnum.BLACK, HttpStatus.OK));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = GAME_BOARD_PATH)
