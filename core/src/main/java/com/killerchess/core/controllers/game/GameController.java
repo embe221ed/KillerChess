@@ -1,5 +1,6 @@
 package com.killerchess.core.controllers.game;
 
+import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.game.Game;
 import com.killerchess.core.game.GameState;
@@ -28,17 +29,18 @@ public class GameController {
     public static final String GAME_BOARD_LIST_PATH = "/listOfGameStates";
     public static final String AVAILABLE_GAMES_PATH = "/availableGames";
     public static final String FIRST_GAME_STATE_PATH = "/addFirstGameState";
-    public static final String IS_USERS_MOVE = "/isUsersMove";
+    public static final String IS_USERS_MOVE_PATH = "/isUsersMove";
     public static final String NEW_STATE_PATH = "/newState";
     public static final String CHECK_GUEST_PATH = "/checkGuest";
     public static final String JOIN_GAME_PATH = "/joinGame";
     public static final String GAME_STATE_CHANGED_PATH = "/gameStateChanged";
+    public static final String GET_COLOR_PATH = "/getColor";
     public static final String STATE_PARAM = "state";
     public static final String GAME_ID_PARAM = "gameId";
     public static final String GAME_NAME_PARAM = "gameName";
-    public static final String GAME_STATE_PARAM = "gameState";
     public static final String GAME_STATE_NUMBER_PARAM = "gameStateNumber";
-    public static final String USER_NAME_PARAM = "username";
+    public static final String USERNAME_PARAM = "username";
+    public static final String USERNAME_ATTRIBUTE = "username";
 
     private final GameService gameService;
     private final UserService userService;
@@ -54,7 +56,7 @@ public class GameController {
                                           @RequestParam(value = GAME_NAME_PARAM, required = false, defaultValue = "game") String gameName,
                                           HttpServletRequest request) {
         HttpSession session = request.getSession();
-        var username = session.getAttribute(USER_NAME_PARAM).toString();
+        var username = session.getAttribute(USERNAME_PARAM).toString();
         if (userService.existsLogin(username)) {
             session.setAttribute(GAME_ID_PARAM, gameId);
             session.setAttribute(GAME_NAME_PARAM, gameName);
@@ -96,7 +98,7 @@ public class GameController {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();
-            String username = session.getAttribute("username").toString();
+            String username = session.getAttribute(USERNAME_ATTRIBUTE).toString();
             Game game = gameService.findGame(gameId);
             boolean move = username.equals(game.getHost().getLogin());
             GameState gameStateObject = gameService.saveSpecificGameState(gameId, gameState, move);
@@ -106,6 +108,21 @@ public class GameController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = GET_COLOR_PATH)
+    public ResponseEntity<ChessmanColourEnum> getUsersColor(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            String username = session.getAttribute(USERNAME_ATTRIBUTE).toString();
+            Game game = gameService.findGame(gameId);
+            return game.getHost().getLogin().equals(username)
+                    ? new ResponseEntity<>(ChessmanColourEnum.WHITE, HttpStatus.OK)
+                    : new ResponseEntity<>(ChessmanColourEnum.BLACK, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = GAME_BOARD_PATH)
@@ -159,11 +176,11 @@ public class GameController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = IS_USERS_MOVE)
+    @RequestMapping(method = RequestMethod.GET, value = IS_USERS_MOVE_PATH)
     public ResponseEntity<Boolean> isUsersMove(HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
-            String username = session.getAttribute("username").toString();
+            String username = session.getAttribute(USERNAME_ATTRIBUTE).toString();
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();
             GameState gameState = gameService.getLastGameStateForGame(gameId);
             boolean isUsersMove = gameState.getMove() ^ username.equals(gameState.getGame().getHost().getLogin());
@@ -178,7 +195,7 @@ public class GameController {
                                             HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
-            String username = session.getAttribute("username").toString();
+            String username = session.getAttribute(USERNAME_ATTRIBUTE).toString();
             Game game = gameService.findGame(gameId);
             if (game == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

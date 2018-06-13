@@ -31,7 +31,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -40,25 +39,17 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
 import static com.killerchess.core.controllers.game.GameController.*;
 import static com.killerchess.core.controllers.user.UserController.GET_LOGIN_PATH;
+import static com.killerchess.view.game.ImagesConstants.*;
 
 
 public class MainPanelController {
 
-
-    private final String IMAGE_JPEG_MIME_TYPE = "image/jpeg";
-    private final String IMAGES_LOCAL_PATH = "view/images/";
-    private final String AVATAR_FILENAME_PREFIX = "/avatar_";
-    private final String JPG_FILETYPE_EXTENSION = ".jpg";
-    private final String PAWN_FILENAME_PREFIX = "type_";
-    private final String BLACK_BISHOP_SUFFIX = "_black_bishop.png";
     public Text rankingPointsForActualUser;
     public ImageView userAvatar;
     public Button createRoom;
@@ -78,8 +69,6 @@ public class MainPanelController {
     public TextArea roomInfo;
     public Button changeAvatarButton;
     public Text usernameText;
-    // TODO delete after correct implementing multithreading
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private String userPoints;
     private boolean selectedAccountTab = true;
     private String username;
@@ -87,29 +76,6 @@ public class MainPanelController {
     private double panelHeight;
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
 
-    // TODO delete this line after copying it to proper class
-    private Runnable listener = () -> {
-        LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-        ResponseEntity<Boolean> responseEntity;
-        UriComponentsBuilder builder;
-        try {
-            do {
-                // czas pomiędzy kolejnymi zapytaniami
-                Thread.sleep(15000);
-                builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
-                        .queryParam("gameStateNumber", localSessionSingleton.
-                                getParameter("gameStateNumber"));
-                responseEntity = localSessionSingleton.
-                        exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
-
-            } while (!responseEntity.getBody());
-            // zamiast tego będzie wywołanie metody z GameBoard.java, która aktualizuje GameState
-            // pobierając tą informację z serwera
-            // GameBoard.getInstance().updateGameState();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    };
 
     @FXML
     public void initialize() {
@@ -142,9 +108,6 @@ public class MainPanelController {
     public void handleLogoutButton() {
         //TODO MM
         System.out.println("Logout button clicked!");
-        // TODO MB delete these lines
-        // przykład użycia wątku
-        executorService.submit(listener);
     }
 
     public void handleAccountAvatarChange() {
@@ -154,7 +117,7 @@ public class MainPanelController {
             try {
                 String mimeType = Files.probeContentType(file.toPath());
                 if (mimeType != null && mimeType.equals(IMAGE_JPEG_MIME_TYPE)) {
-                    File f = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION);
+                    File f = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILE_TYPE_EXTENSION);
                     Files.copy(file.toPath(), Paths.get(f.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
                     Image image = new Image("file:" + f.getPath(), panelWidth / 3, panelHeight / 2, false, false);
                     userAvatar.setImage(image);
@@ -204,7 +167,7 @@ public class MainPanelController {
     private void initializeComponents() {
         setNameAndPointsForUser();
 
-        File file = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILETYPE_EXTENSION);
+        File file = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILE_TYPE_EXTENSION);
         if (file.exists() && !file.isDirectory()) {
             Image image = new Image("file:" + file.getPath(), panelWidth / 3, panelHeight / 2, false, false);
             userAvatar.setImage(image);
@@ -356,8 +319,12 @@ public class MainPanelController {
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
                     Stage stage = View.getInstance().getStage();
                     GameBoard gameBoard = GameBoard.getInstance();
-                    gameBoard.start(stage);
-                    gameBoard.enableAllChessmen();
+                    try {
+                        gameBoard.start(stage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    localSessionSingleton.setParameter("gameStateNumber", responseEntity.getBody().toString());
                 }
             }
         });

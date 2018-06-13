@@ -6,8 +6,9 @@ import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -23,6 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.killerchess.core.controllers.game.GameController.*;
+import static com.killerchess.view.game.GameBoard.SLEEP_TIME;
 
 public class RoomCreatorController {
 
@@ -31,6 +33,32 @@ public class RoomCreatorController {
     public VBox gameSchemasRadioButtonsVBox;
 
     private ToggleGroup toggleGroupForSchemasRadioButtons;
+    private Service hostJoinedListenerService = new Service<Void>() {
+        @Override
+        protected Task<Void> createTask() {
+            return new Task<>() {
+                @Override
+                protected Void call() {
+                    LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
+                    ResponseEntity<Boolean> responseEntity;
+                    UriComponentsBuilder builder;
+                    try {
+                        do {
+                            Thread.sleep(SLEEP_TIME);
+                            builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + CHECK_GUEST_PATH);
+                            responseEntity = localSessionSingleton
+                                    .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
+
+                        } while (!responseEntity.getBody());
+                        System.out.println("Host joined");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            };
+        }
+    };
 
     @FXML
     public void initialize() {
@@ -52,25 +80,12 @@ public class RoomCreatorController {
         var selectedScenario = (RadioButton) toggleGroupForSchemasRadioButtons.getSelectedToggle();
         var scenarioId = selectedScenario.getId();
         createNewGame(roomName, roomDatabaseId, scenarioId);
-    }
-
-    private Runnable hostJoinedListener = () -> {
-        LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-        ResponseEntity<Boolean> responseEntity;
-        UriComponentsBuilder builder;
         try {
-            do {
-                Thread.sleep(5000);
-                builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + CHECK_GUEST_PATH);
-                responseEntity = localSessionSingleton
-                        .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
-
-            } while (!responseEntity.getBody());
-            System.out.println("Host joined");
-        } catch (InterruptedException e) {
+            new GameBoard().start(View.getInstance().getStage());
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    };
+    }
 
     private void createNewGame(String roomName, String roomDatabaseId, String scenarioId) {
         MultiValueMap<String, String> roomCreationParametersMap = new LinkedMultiValueMap<>();
@@ -118,20 +133,22 @@ public class RoomCreatorController {
     private void changeSceneToGameBoard() {
         Stage stage = View.getInstance().getStage();
         GameBoard gameBoard = GameBoard.getInstance();
-        gameBoard.start(stage);
-        gameBoard.disableAllChessmen();
+        try {
+            gameBoard.start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         waitForHost();
     }
 
     private void waitForHost() {
-        Platform.runLater(hostJoinedListener);
+        hostJoinedListenerService.start();
     }
 
     private void initializeVBoxWithGameScenarios() {
         var vBoxChildren = gameSchemasRadioButtonsVBox.getChildren();
         GameScenariosEnum.getAllEnumConstants()
-                .forEach(gameScenario ->
-                        vBoxChildren.add(createRadioButtonForScenarioInToggleGroup(gameScenario)));
+                .forEach(gameScenario -> vBoxChildren.add(createRadioButtonForScenarioInToggleGroup(gameScenario)));
         fireFirstButton(vBoxChildren);
     }
 

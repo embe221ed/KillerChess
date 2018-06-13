@@ -71,7 +71,7 @@ public class LocalSessionSingleton {
     }
 
     private void readConfigFile() {
-        InputStream inputStream = null;
+        InputStream inputStream;
         try {
             inputStream = new FileInputStream("config.properties");
 
