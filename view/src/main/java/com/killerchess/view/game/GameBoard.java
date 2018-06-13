@@ -30,6 +30,7 @@ import java.util.Set;
 
 public class GameBoard extends Application {
 
+    public static final int SLEEP_TIME = 1000;
     static final int TILE_SIZE = 100;
     private static final int WIDTH = 8;
     private static final int HEIGHT = 8;
@@ -68,7 +69,7 @@ public class GameBoard extends Application {
             try {
                 do {
                     // czas pomiędzy kolejnymi zapytaniami
-                    Thread.sleep(5000);
+                    Thread.sleep(SLEEP_TIME);
                     builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
                             .queryParam("gameStateNumber", localSessionSingleton.
                                     getParameter("gameStateNumber"));

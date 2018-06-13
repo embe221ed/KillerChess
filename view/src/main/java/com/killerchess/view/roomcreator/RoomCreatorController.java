@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.killerchess.core.controllers.game.GameController.*;
+import static com.killerchess.view.game.GameBoard.SLEEP_TIME;
 
 public class RoomCreatorController {
 
@@ -67,7 +68,7 @@ public class RoomCreatorController {
             UriComponentsBuilder builder;
             try {
                 do {
-                    Thread.sleep(5000);
+                    Thread.sleep(SLEEP_TIME);
                     builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + CHECK_GUEST_PATH);
                     responseEntity = localSessionSingleton
                             .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
