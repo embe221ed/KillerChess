@@ -201,7 +201,7 @@ public class GameController {
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();
             Game game = gameService.findGame(gameId);
             if (game.getGameFinished()) {
-                return new ResponseEntity<>(false, HttpStatus.CONTINUE);
+                return new ResponseEntity<>(false, HttpStatus.CREATED);
             }
             GameState gameState = gameService.getLastGameStateForGame(gameId);
             boolean isUsersMove = gameState.getMove() ^ username.equals(gameState.getGame().getHost().getLogin());

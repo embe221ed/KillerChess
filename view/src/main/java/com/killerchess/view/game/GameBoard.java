@@ -74,7 +74,7 @@ public class GameBoard extends Application {
     private StateInterpreter stateInterpreter = new StateInterpreter();
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
     private ChessmanColourEnum chessmanColour;
-    private int getCurrentChessmanYCoordinate = IMPROPER_COORDINATE_VALUE;
+    private int currentChessmanYCoordinate = IMPROPER_COORDINATE_VALUE;
     private Service listenerService = new Service<Void>() {
         @Override
         protected Task<Void> createTask() {
@@ -285,7 +285,7 @@ public class GameBoard extends Application {
 
     private Set<Pair<Integer, Integer>> findPositionsOfOtherChessmenThatCanCapture(ChessmanImage chessmanImage) {
         Set<Pair<Integer, Integer>> positionsOfChessmenThatCanCapture = new HashSet<>();
-        var chessmenWithGivenColor = chessBoard.getAllChessmansWithGivenColor(currentChessmanImage.getChessman().getColour());
+        var chessmenWithGivenColor = chessBoard.getAllChessmenWithGivenColor(currentChessmanImage.getChessman().getColour());
         if (chessmenWithGivenColor.size() != 0) {
             for (Chessman possibleChessman : chessmenWithGivenColor) {
                 Pair<Integer, Integer> chessmanPosition = chessBoard.getChessmanPosition(possibleChessman);
@@ -384,9 +384,9 @@ public class GameBoard extends Application {
                 chessmanImage.setPrevChessmanX(toBoard(e.getSceneX()));
 
                 currentChessmanXCoordinate = toBoard(chessmanImage.getLayoutX());
-                getCurrentChessmanYCoordinate = toBoard(chessmanImage.getLayoutY());
-                updateCurrentChessmanImage(chessBoardOfChessmenImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].getChessmanImage());
-                chessBoardOfChessmenImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].highlightGreen();
+                currentChessmanYCoordinate = toBoard(chessmanImage.getLayoutY());
+                updateCurrentChessmanImage(chessBoardOfChessmenImages[currentChessmanXCoordinate][currentChessmanYCoordinate].getChessmanImage());
+                chessBoardOfChessmenImages[currentChessmanXCoordinate][currentChessmanYCoordinate].highlightGreen();
                 new Thread(SoundPlayer::playOnChessmanClick).start();
 
             }
@@ -395,7 +395,7 @@ public class GameBoard extends Application {
         chessmanImage.setOnMouseDragged(e -> {
             if (canPlayerMoveChessman(chessmanImage)) {
                 unhighlightAllBoard();
-                chessmanImage.relocate(e.getSceneX() - TILE_SIZE / 2, e.getScreenY() - TILE_SIZE / 2);
+                chessmanImage.relocate(e.getSceneX() - TILE_SIZE / 2, e.getSceneY() - TILE_SIZE / 2);
             }
         });
 
@@ -417,12 +417,19 @@ public class GameBoard extends Application {
                         completeKillMove(chessmanImage, newX, newY);
                         break;
                 }
+                checkIfGameEnded();
                 if (!gameFinished) {
                     updateGameState();
                     waitForOpponentsMove();
                 }
             }
         });
+    }
+
+    private void checkIfGameEnded() {
+        var areMovesPossibleMap = chessBoard.checkGameBoardForChessmen();
+        if (!(areMovesPossibleMap.get(ChessmanColourEnum.BLACK) && areMovesPossibleMap.get(ChessmanColourEnum.WHITE)))
+            endOfGame();
     }
 
     private void updateCurrentChessmanImage(ChessmanImage chessmanImage) {
@@ -443,11 +450,6 @@ public class GameBoard extends Application {
         chessmanImage.move(newX, newY);
         updateBoardOfImagesAfterKillMove(chessmanImage, newX, newY);
         currentChessmanImage = null;
-        if (!chessBoard.checkGameBoardForChessmen().get(chessmanColour
-                .equals(ChessmanColourEnum.BLACK) ?
-                ChessmanColourEnum.WHITE :
-                ChessmanColourEnum.BLACK))
-            endOfGame();
     }
 
     private void updateGameState() {
@@ -482,7 +484,10 @@ public class GameBoard extends Application {
     private Boolean isUsersMove() {
         ResponseEntity<Boolean> responseEntity = localSessionSingleton.
                 exchange(LoginController.HOST + GameController.IS_USERS_MOVE_PATH, HttpMethod.GET, null, Boolean.class);
-        return responseEntity.getBody();
+        if (responseEntity.getStatusCode().equals(HttpStatus.OK))
+            return responseEntity.getBody();
+        finishGame();
+        return false;
     }
 
     private void updateChessBoardOfChessmen() {
@@ -524,7 +529,7 @@ public class GameBoard extends Application {
         this.stage = primaryStage;
         stage.setResizable(false);
         ResponseEntity<String> responseEntity = localSessionSingleton.
-                exchange("http://localhost:8080/gameBoard", HttpMethod.GET, null, String.class);
+                exchange(LoginController.HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         Scene scene = new Scene(createContent(responseEntity.getBody()));
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -38,7 +38,7 @@ public class ChessBoard {
     }
 
 
-    public Set<Chessman> getAllChessmansWithGivenColor(ChessmanColourEnum color) {
+    public Set<Chessman> getAllChessmenWithGivenColor(ChessmanColourEnum color) {
         var chessmenWithGivenColor = new HashSet<Chessman>();
 
         chessBoard.forEach(chessmen -> chessmenWithGivenColor.addAll(chessmen.stream()
@@ -54,15 +54,22 @@ public class ChessBoard {
         map.put(ChessmanColourEnum.WHITE, false);
         map.put(ChessmanColourEnum.BLACK, false);
         map.put(ChessmanColourEnum.EMPTY, false);
-        for (var row : chessBoard) {
-            for (var chessman : row) {
-                if (!map.get(chessman.getColour()) && !chessman.getSymbol().equals('X'))
+        for (int i = 0; i < getChessBoardRowsSize(); ++i) {
+            for (int j = 0; j < getChessBoardColumnsSize(); ++j) {
+                Chessman chessman = getChessmanAt(i, j);
+                if (!map.get(chessman.getColour()) && isChessmanPossibleToMove(chessman, i, j))
                     map.put(chessman.getColour(), true);
                 else if (map.get(ChessmanColourEnum.BLACK) && map.get(ChessmanColourEnum.WHITE))
                     return map;
             }
         }
         return map;
+    }
+
+    private boolean isChessmanPossibleToMove(Chessman chessman, int row, int col) {
+        Pair<Integer, Integer> chessmanCoords = new Pair<>(row, col);
+        return !(chessman.getSymbol().equals('X') ||
+                chessman.getPossibleMoves(this, chessmanCoords).isEmpty());
     }
 
     public Pair<Integer, Integer> getChessmanPosition(Chessman chessmanToSearch) {
