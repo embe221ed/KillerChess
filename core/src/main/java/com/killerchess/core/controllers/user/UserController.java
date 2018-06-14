@@ -18,6 +18,8 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.killerchess.core.config.Constants.USERNAME;
+
 @RestController
 public class UserController {
 
@@ -50,7 +52,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = REGISTER_PATH)
-    public ResponseEntity register(@RequestParam(value = "username") String name,
+    public ResponseEntity register(@RequestParam(value = USERNAME) String name,
                                    @RequestParam(value = "password") String password,
                                    HttpServletRequest request) {
         try {
@@ -79,12 +81,12 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET, value = GET_LOGIN_PATH)
     public ResponseEntity login(HttpServletRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("username", request.getSession().getAttribute("username").toString());
+        headers.set(USERNAME, request.getSession().getAttribute(USERNAME).toString());
         return new ResponseEntity(headers, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = LOGIN_PATH)
-    public ResponseEntity login(@RequestParam(value = "username") String name,
+    public ResponseEntity login(@RequestParam(value = USERNAME) String name,
                                 @RequestParam(value = "password") String password,
                                 HttpServletRequest request) {
         try {
@@ -96,7 +98,7 @@ public class UserController {
             User existingUser = userService.find(user);
             user.setHashedPassword(password, existingUser.getSalt());
             if (user.getPassword().equals(existingUser.getPassword())) {
-                session.setAttribute("username", user.getLogin());
+                session.setAttribute(USERNAME, user.getLogin());
                 return new ResponseEntity(HttpStatus.OK);
             }
             return new ResponseEntity<>("Wrong password.", HttpStatus.NOT_ACCEPTABLE);

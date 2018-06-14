@@ -19,6 +19,8 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.killerchess.core.config.Constants.USERNAME;
+
 @RestController
 public class RankingController {
 
@@ -54,7 +56,7 @@ public class RankingController {
     @RequestMapping(method = RequestMethod.GET, value = GET_USER_RANKING_PATH)
     public ResponseEntity<RankingRegistryDTO> getUserRanking(HttpServletRequest request) {
         try {
-            String username = request.getSession().getAttribute("username").toString();
+            String username = request.getSession().getAttribute(USERNAME).toString();
             RankingRegistry rankingRegistry = rankingService.findByUsername(username);
             RankingRegistryDTO rankingRegistryDTO = new RankingRegistryDTO();
             rankingRegistryDTO.setUsername(rankingRegistry.getUserLogin());
@@ -70,7 +72,7 @@ public class RankingController {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GameController.GAME_ID_PARAM).toString();
-            String winnersLogin = session.getAttribute("username").toString();
+            String winnersLogin = session.getAttribute(USERNAME).toString();
             Game game = gameService.findGame(gameId);
             var gameStates = gameService.getListOfGameStatesForGame(gameId);
             String firstGameState = gameStates.get(gameStates.size() - 1);
