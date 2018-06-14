@@ -75,7 +75,7 @@ public class RankingController {
             var gameStates = gameService.getListOfGameStatesForGame(gameId);
             String firstGameState = gameStates.get(gameStates.size() - 1);
             String lastGameState = gameStates.get(0);
-            countPoints(winnersLogin, firstGameState, lastGameState, winnersLogin.equals(game.getHost().getLogin()));
+            updateUsersRankingPoints(winnersLogin, firstGameState, lastGameState, winnersLogin.equals(game.getHost().getLogin()));
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -93,15 +93,15 @@ public class RankingController {
             var gameStates = gameService.getListOfGameStatesForGame(gameId);
             String firstGameState = gameStates.get(gameStates.size() - 1);
             String lastGameState = gameStates.get(0);
-            countPoints(hostUsername, firstGameState, lastGameState, true);
-            countPoints(guestUsername, firstGameState, lastGameState, false);
+            updateUsersRankingPoints(hostUsername, firstGameState, lastGameState, true);
+            updateUsersRankingPoints(guestUsername, firstGameState, lastGameState, false);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    private void countPoints(String username, String firstGameState, String lastGameState, boolean isHost) {
+    private void updateUsersRankingPoints(String username, String firstGameState, String lastGameState, boolean isHost) {
         RankingRegistry rankingRegistry = rankingService.findByUsername(username);
         int userPoints = rankingRegistry.getPoints();
         userPoints += (isHost) ?

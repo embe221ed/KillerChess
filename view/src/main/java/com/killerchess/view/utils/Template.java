@@ -1,6 +1,6 @@
 package com.killerchess.view.utils;
 
-public enum Templates {
+public enum Template {
     FIRST("first_pawn", 1),
     SECOND("second_pawn", 2),
     THIRD("third_pawn", 3);
@@ -8,7 +8,7 @@ public enum Templates {
     private String filename;
     private int chessmanStyleNumber;
 
-    Templates(String filename, int chessmanStyleNumber) {
+    Template(String filename, int chessmanStyleNumber) {
         this.filename = filename;
         this.chessmanStyleNumber = chessmanStyleNumber;
     }

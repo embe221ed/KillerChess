@@ -49,7 +49,7 @@ public class ChessBoard {
         return chessmenWithGivenColor;
     }
 
-    public Map<ChessmanColourEnum, Boolean> checkGameBoardForChessmen() {
+    public Map<ChessmanColourEnum, Boolean> checkIfBothUsersHaveChessmen() {
         Map<ChessmanColourEnum, Boolean> map = new HashMap<>();
         map.put(ChessmanColourEnum.WHITE, false);
         map.put(ChessmanColourEnum.BLACK, false);
@@ -71,7 +71,7 @@ public class ChessBoard {
         for (int i = 0; i < getChessBoardRowsSize(); ++i) {
             for (int j = 0; j < getChessBoardColumnsSize(); ++j) {
                 Chessman chessman = getChessmanAt(i, j);
-                if (chessman.getColour().equals(chessmanColourEnum))
+                if (chessman.getColour().equals(chessmanColourEnum) && !chessman.getSymbol().equals('X'))
                     if (isChessmanPossibleToMove(chessman, i, j))
                         return false;
             }

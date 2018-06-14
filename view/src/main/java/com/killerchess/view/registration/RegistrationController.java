@@ -4,7 +4,7 @@ import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
-import com.killerchess.view.utils.Templates;
+import com.killerchess.view.utils.Template;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -42,17 +42,17 @@ public class RegistrationController {
 
     private void addTemplateChoiceHandlers() {
         firstTemplate.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter("template", Templates.FIRST.toString());
+            localSessionSingleton.setParameter("template", Template.FIRST.toString());
             changeChosenTemplate(firstTemplate);
             event.consume();
         });
         secondTemplate.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter("template", Templates.SECOND.toString());
+            localSessionSingleton.setParameter("template", Template.SECOND.toString());
             changeChosenTemplate(secondTemplate);
             event.consume();
         });
         thirdTemplate.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter("template", Templates.THIRD.toString());
+            localSessionSingleton.setParameter("template", Template.THIRD.toString());
             changeChosenTemplate(thirdTemplate);
             event.consume();
         });

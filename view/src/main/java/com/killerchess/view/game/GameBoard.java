@@ -134,8 +134,12 @@ public class GameBoard extends Application {
                 .exchange(LoginController.HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         initGameBoard(responseEntity.getBody());
         stage.getScene().setRoot(root);
-        if (responseEntity.getStatusCode().equals(HttpStatus.CREATED))
-            finishGame();
+        if (!gameFinished) {
+            if (responseEntity.getStatusCode().equals(HttpStatus.CREATED))
+                finishGame();
+            else if (chessBoard.isStalemate(chessmanColour))
+                endOfGameStalemate();
+        }
     }
 
     private void initNodes() {
@@ -154,8 +158,6 @@ public class GameBoard extends Application {
         initAllButtons();
         root.getChildren().addAll(groups, buttonsGroup);
         drawTiles();
-        if (chessBoard.isStalemate(chessmanColour))
-            endOfGameStalemate();
     }
 
     private void initAllButtons() {
@@ -429,7 +431,7 @@ public class GameBoard extends Application {
     }
 
     private void checkIfGameEnded() {
-        var areMovesPossibleMap = chessBoard.checkGameBoardForChessmen();
+        var areMovesPossibleMap = chessBoard.checkIfBothUsersHaveChessmen();
         if (!(areMovesPossibleMap.get(ChessmanColourEnum.BLACK) && areMovesPossibleMap.get(ChessmanColourEnum.WHITE))) {
             endOfGame();
         }
@@ -485,7 +487,6 @@ public class GameBoard extends Application {
     }
 
     private void endOfGameStalemate() {
-        updateGameState();
         var responseEntity = localSessionSingleton.
                 exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
                         HttpMethod.GET,

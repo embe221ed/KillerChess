@@ -8,7 +8,7 @@ import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.game.ImagesConstants;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
-import com.killerchess.view.utils.Templates;
+import com.killerchess.view.utils.Template;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -204,26 +204,26 @@ public class MainPanelController {
     private void setActualPawnTemplateImage() {
         String actualPawn = localSessionSingleton.getParameter("template");
         if (actualPawn == null) {
-            actualPawn = Templates.FIRST.getTemplateFileName();
+            actualPawn = Template.FIRST.getTemplateFileName();
         }
         actualPawnChoice.setImage(generateActualImageForPawnTemplate(actualPawn));
     }
 
     private Image generateActualImageForPawnTemplate(String actualPawn) {
-        if (actualPawn.equals(Templates.FIRST.getTemplateFileName())) {
-            localSessionSingleton.setParameter("template", Templates.FIRST.getTemplateFileName());
-            localSessionSingleton.setParameter("template_number", Integer.toString(Templates.FIRST.getChessmanStyleNumber()));
-            return generateImageForPawnTemplates(Templates.FIRST.getChessmanStyleNumber());
+        if (actualPawn.equals(Template.FIRST.getTemplateFileName())) {
+            localSessionSingleton.setParameter("template", Template.FIRST.getTemplateFileName());
+            localSessionSingleton.setParameter("template_number", Integer.toString(Template.FIRST.getChessmanStyleNumber()));
+            return generateImageForPawnTemplates(Template.FIRST.getChessmanStyleNumber());
         }
-        if (actualPawn.equals(Templates.SECOND.getTemplateFileName())) {
-            localSessionSingleton.setParameter("template", Templates.SECOND.getTemplateFileName());
-            localSessionSingleton.setParameter("template_number", Integer.toString(Templates.SECOND.getChessmanStyleNumber()));
-            return generateImageForPawnTemplates(Templates.SECOND.getChessmanStyleNumber());
+        if (actualPawn.equals(Template.SECOND.getTemplateFileName())) {
+            localSessionSingleton.setParameter("template", Template.SECOND.getTemplateFileName());
+            localSessionSingleton.setParameter("template_number", Integer.toString(Template.SECOND.getChessmanStyleNumber()));
+            return generateImageForPawnTemplates(Template.SECOND.getChessmanStyleNumber());
         }
-        if (actualPawn.equals(Templates.THIRD.getTemplateFileName())) {
-            localSessionSingleton.setParameter("template", Templates.THIRD.getTemplateFileName());
-            localSessionSingleton.setParameter("template_number", Integer.toString(Templates.THIRD.getChessmanStyleNumber()));
-            return generateImageForPawnTemplates(Templates.THIRD.getChessmanStyleNumber());
+        if (actualPawn.equals(Template.THIRD.getTemplateFileName())) {
+            localSessionSingleton.setParameter("template", Template.THIRD.getTemplateFileName());
+            localSessionSingleton.setParameter("template_number", Integer.toString(Template.THIRD.getChessmanStyleNumber()));
+            return generateImageForPawnTemplates(Template.THIRD.getChessmanStyleNumber());
         }
         return null;
     }
@@ -245,20 +245,20 @@ public class MainPanelController {
 
     private void accountListeners() {
         firstPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter("template", Templates.FIRST.toString());
-            actualPawnChoice.setImage(generateActualImageForPawnTemplate(Templates.FIRST.toString()));
+            localSessionSingleton.setParameter("template", Template.FIRST.toString());
+            actualPawnChoice.setImage(generateActualImageForPawnTemplate(Template.FIRST.toString()));
             event.consume();
         });
 
         secondPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter("template", Templates.SECOND.toString());
-            actualPawnChoice.setImage(generateActualImageForPawnTemplate(Templates.SECOND.toString()));
+            localSessionSingleton.setParameter("template", Template.SECOND.toString());
+            actualPawnChoice.setImage(generateActualImageForPawnTemplate(Template.SECOND.toString()));
             event.consume();
         });
 
         thirdPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter("template", Templates.THIRD.toString());
-            actualPawnChoice.setImage(generateActualImageForPawnTemplate(Templates.THIRD.toString()));
+            localSessionSingleton.setParameter("template", Template.THIRD.toString());
+            actualPawnChoice.setImage(generateActualImageForPawnTemplate(Template.THIRD.toString()));
             event.consume();
         });
     }
