@@ -7,7 +7,6 @@ import com.killerchess.core.game.Game;
 import com.killerchess.core.game.RankingRegistry;
 import com.killerchess.core.services.GameService;
 import com.killerchess.core.services.RankingService;
-import com.killerchess.core.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,22 +69,18 @@ public class RankingController {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GameController.GAME_ID_PARAM).toString();
+            String winnersLogin = session.getAttribute("username").toString();
             Game game = gameService.findGame(gameId);
-            User host = game.getHost();
-            User guest = game.getGuest();
             var gameStates = gameService.getListOfGameStatesForGame(gameId);
             String firstGameState = gameStates.get(gameStates.size() - 1);
             String lastGameState = gameStates.get(0);
-            RankingRegistry hostRankingRegistry = rankingService.findByUsername(host.getLogin());
-            RankingRegistry guestRankingRegistry = rankingService.findByUsername(guest.getLogin());
-            int hostPoints = hostRankingRegistry.getPoints();
-            int guestPoints = guestRankingRegistry.getPoints();
-            hostPoints += pointsCounter.countWhitePlayerPoints(firstGameState, lastGameState);
-            guestPoints += pointsCounter.countBlackPlayerPoints(firstGameState, lastGameState);
-            hostRankingRegistry.setPoints(hostPoints);
-            guestRankingRegistry.setPoints(guestPoints);
-            rankingService.save(hostRankingRegistry);
-            rankingService.save(guestRankingRegistry);
+            RankingRegistry rankingRegistry = rankingService.findByUsername(winnersLogin);
+            int userPoints = rankingRegistry.getPoints();
+            userPoints += (game.getHost().getLogin().equals(winnersLogin)) ?
+                    pointsCounter.countWhitePlayerPoints(firstGameState, lastGameState) :
+                    pointsCounter.countBlackPlayerPoints(firstGameState, lastGameState);
+            rankingRegistry.setPoints(userPoints);
+            rankingService.save(rankingRegistry);
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);

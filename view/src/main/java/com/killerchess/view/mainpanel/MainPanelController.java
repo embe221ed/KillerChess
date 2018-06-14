@@ -211,13 +211,19 @@ public class MainPanelController {
 
     private Image generateActualImageForPawnTemplate(String actualPawn) {
         if (actualPawn.equals(Templates.FIRST.getTemplateFileName())) {
-            return generateImageForPawnTemplates(1);
+            localSessionSingleton.setParameter("template", Templates.FIRST.getTemplateFileName());
+            localSessionSingleton.setParameter("template_number", Integer.toString(Templates.FIRST.getChessmanStyleNumber()));
+            return generateImageForPawnTemplates(Templates.FIRST.getChessmanStyleNumber());
         }
         if (actualPawn.equals(Templates.SECOND.getTemplateFileName())) {
-            return generateImageForPawnTemplates(2);
+            localSessionSingleton.setParameter("template", Templates.SECOND.getTemplateFileName());
+            localSessionSingleton.setParameter("template_number", Integer.toString(Templates.SECOND.getChessmanStyleNumber()));
+            return generateImageForPawnTemplates(Templates.SECOND.getChessmanStyleNumber());
         }
         if (actualPawn.equals(Templates.THIRD.getTemplateFileName())) {
-            return generateImageForPawnTemplates(3);
+            localSessionSingleton.setParameter("template", Templates.THIRD.getTemplateFileName());
+            localSessionSingleton.setParameter("template_number", Integer.toString(Templates.THIRD.getChessmanStyleNumber()));
+            return generateImageForPawnTemplates(Templates.THIRD.getChessmanStyleNumber());
         }
         return null;
     }

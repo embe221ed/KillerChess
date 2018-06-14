@@ -9,7 +9,6 @@ import com.killerchess.core.controllers.app.RankingController;
 import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.loging.LoginController;
-import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.SoundPlayer;
 import javafx.application.Application;
 import javafx.concurrent.Service;
@@ -17,7 +16,6 @@ import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,20 +39,20 @@ import java.util.Set;
 public class GameBoard extends Application {
 
     public static final int SLEEP_TIME = 1000;
-    static final int TILE_SIZE = 100;
+    static final int TILE_SIZE = 80;
     private static final int WIDTH = 8;
     private static final int HEIGHT = 8;
 
     private static GameBoard instance;
-    private final int UNPROPER_COORDINATE_VALUE = 100;
+    private final int IMPROPER_COORDINATE_VALUE = 100;
 
     private ChessmanImage currentChessmanImage;
-    private Tile[][] chessBoardOfChessmansImages = new Tile[WIDTH][HEIGHT];
+    private Tile[][] chessBoardOfChessmenImages = new Tile[WIDTH][HEIGHT];
     private ImageView killerChessLogoImageView;
-    private Image killerChessLogoImage;
-    private int currentChessmanXCoordinate = UNPROPER_COORDINATE_VALUE;
+    private int currentChessmanXCoordinate = IMPROPER_COORDINATE_VALUE;
     private List<String> gameStates = new ArrayList<>();
     private boolean historyModeActive = false;
+    private boolean gameFinished = false;
 
     private Stage stage;
 
@@ -72,7 +70,7 @@ public class GameBoard extends Application {
     private StateInterpreter stateInterpreter = new StateInterpreter();
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
     private ChessmanColourEnum chessmanColour;
-    private int getCurrentChessmanYCoordinate = UNPROPER_COORDINATE_VALUE;
+    private int getCurrentChessmanYCoordinate = IMPROPER_COORDINATE_VALUE;
     private Service listenerService = new Service<Void>() {
         @Override
         protected Task<Void> createTask() {
@@ -84,9 +82,9 @@ public class GameBoard extends Application {
                     try {
                         do {
                             Thread.sleep(SLEEP_TIME);
-                            builder = UriComponentsBuilder.fromHttpUrl("http://localhost:8080/gameStateChanged")
-                                    .queryParam("gameStateNumber", localSessionSingleton.
-                                            getParameter("gameStateNumber"));
+                            builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + GameController.GAME_STATE_CHANGED_PATH)
+                                    .queryParam(GameController.GAME_STATE_NUMBER_PARAM, localSessionSingleton.
+                                            getParameter(GameController.GAME_STATE_NUMBER_PARAM));
                             responseEntity = localSessionSingleton.
                                     exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
                         } while (!responseEntity.getBody());
@@ -130,7 +128,7 @@ public class GameBoard extends Application {
         historyModeActive = false;
         gameStates.clear();
         ResponseEntity<String> responseEntity = localSessionSingleton
-                .exchange("http://localhost:8080/gameBoard", HttpMethod.GET, null, String.class);
+                .exchange(LoginController.HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         initGameBoard(responseEntity.getBody());
         stage.getScene().setRoot(root);
         if (responseEntity.getStatusCode().equals(HttpStatus.CREATED))
@@ -148,9 +146,12 @@ public class GameBoard extends Application {
     private void initGameBoard(String gameBoard) {
         this.chessBoard = stateInterpreter.convertJsonBoardToChessBoard(gameBoard);
         initNodes();
-        root.setPrefSize((WIDTH + 4) * TILE_SIZE, HEIGHT * TILE_SIZE);
-        AnchorPane.setLeftAnchor(groups, 0.0);
         setKillerChessLogoImage();
+        stage.setMinWidth(WIDTH * TILE_SIZE + killerChessLogoImageView.getFitWidth());
+        stage.setMinHeight(HEIGHT * TILE_SIZE + killerChessLogoImageView.getFitHeight());
+        root.setPrefSize((WIDTH) * TILE_SIZE + killerChessLogoImageView.getFitWidth(),
+                HEIGHT * TILE_SIZE + killerChessLogoImageView.getFitHeight());
+        AnchorPane.setLeftAnchor(groups, 0.0);
         initAllButtons();
         AnchorPane.setRightAnchor(buttonsGroup, 0.0);
         root.getChildren().addAll(groups, buttonsGroup);
@@ -180,21 +181,19 @@ public class GameBoard extends Application {
 
     private void finishGame() {
         helpButton.setDisable(true);
-        CustomAlert.showAndWait("End of game, you lost :(", Alert.AlertType.INFORMATION);
+        gameFinished = true;
     }
 
     private void setKillerChessLogoImage() {
         File killerChessLogoFile = new File("view/images/killer_chess_logo.jpg");
-        killerChessLogoImage = new Image(killerChessLogoFile.toURI().toString());
+        Image killerChessLogoImage = new Image(killerChessLogoFile.toURI().toString());
         killerChessLogoImageView = new ImageView();
         killerChessLogoImageView.setImage(killerChessLogoImage);
         killerChessLogoImageView.relocate(810, 0);
     }
 
     private void setCurrentGameStateButtonOnClickFunction() {
-        currentGameStateButton.setOnMouseClicked(e -> {
-            updateGameBoard();
-        });
+        currentGameStateButton.setOnMouseClicked(e -> updateGameBoard());
     }
 
     private void setMovesHistoryButtonOnClickFunction() {
@@ -223,15 +222,15 @@ public class GameBoard extends Application {
                 Set<Pair<Integer, Integer>> fieldsToHighLight;
 
                 if (currentChessmanPossibleCaptures.isEmpty()) {
-                    var otherChessmansThatCanCapture = findPositionsOfOtherChessmansThatCanCapture(currentChessmanImage);
+                    var otherChessmenThatCanCapture = findPositionsOfOtherChessmenThatCanCapture(currentChessmanImage);
 
-                    fieldsToHighLight = decideIfHighlightOtherChessmansOrPossibleMoves(otherChessmansThatCanCapture, currentChessmanImageX,
+                    fieldsToHighLight = decideIfHighlightOtherChessmenOrPossibleMoves(otherChessmenThatCanCapture, currentChessmanImageX,
                             currentChessmanImageY);
-                    higlightFieldsToBlue(fieldsToHighLight);
+                    highlightFieldsToBlue(fieldsToHighLight);
 
                 } else {
                     fieldsToHighLight = currentChessmanPossibleCaptures;
-                    higlightFieldsToRed(fieldsToHighLight);
+                    highlightFieldsToRed(fieldsToHighLight);
                 }
             }
         });
@@ -251,67 +250,67 @@ public class GameBoard extends Application {
         }
     }
 
-    private void higlightFieldsToRed(Set<Pair<Integer, Integer>> fieldsToHighLight) {
+    private void highlightFieldsToRed(Set<Pair<Integer, Integer>> fieldsToHighLight) {
         if (!fieldsToHighLight.isEmpty()) {
             for (int y = 0; y < HEIGHT; y++)
                 for (int x = 0; x < WIDTH; x++)
                     if (fieldsToHighLight.contains(new Pair<>(x, y))) {
-                        chessBoardOfChessmansImages[y][x].highlightRed();
+                        chessBoardOfChessmenImages[y][x].highlightRed();
                     }
         }
     }
 
-    private void higlightFieldsToBlue(Set<Pair<Integer, Integer>> fieldsToHighLight) {
+    private void highlightFieldsToBlue(Set<Pair<Integer, Integer>> fieldsToHighLight) {
         if (!fieldsToHighLight.isEmpty()) {
             for (int y = 0; y < HEIGHT; y++)
                 for (int x = 0; x < WIDTH; x++)
                     if (fieldsToHighLight.contains(new Pair<>(x, y))) {
-                        chessBoardOfChessmansImages[y][x].highlightBlue();
+                        chessBoardOfChessmenImages[y][x].highlightBlue();
                     }
         }
     }
 
-    private Set<Pair<Integer, Integer>> decideIfHighlightOtherChessmansOrPossibleMoves(Set<Pair<Integer, Integer>> otherChessmansThatCanCapture,
-                                                                                       double currentChessmanX, double currentChessmanY) {
+    private Set<Pair<Integer, Integer>> decideIfHighlightOtherChessmenOrPossibleMoves(Set<Pair<Integer, Integer>> otherChessmenThatCanCapture,
+                                                                                      double currentChessmanX, double currentChessmanY) {
         Set<Pair<Integer, Integer>> fieldsToHighLight = new HashSet<>();
-        if (otherChessmansThatCanCapture.size() == 0) {
+        if (otherChessmenThatCanCapture.size() == 0) {
             var possibleMoves = currentChessmanImage.getChessman().getPossibleMoves(chessBoard, new Pair<>(toBoard(currentChessmanY),
                     toBoard(currentChessmanX)));
             if (possibleMoves != null && possibleMoves.size() != 0)
                 fieldsToHighLight = possibleMoves;
         } else {
-            fieldsToHighLight = otherChessmansThatCanCapture;
+            fieldsToHighLight = otherChessmenThatCanCapture;
         }
         return fieldsToHighLight;
     }
 
-    private Set<Pair<Integer, Integer>> findPositionsOfOtherChessmansThatCanCapture(ChessmanImage chessmanImage) {
-        Set<Pair<Integer, Integer>> positionsOfChessmansThatCanCapture = new HashSet<>();
-        var chessmansWithGivenColor = chessBoard.getAllChessmansWithGivenColor(currentChessmanImage.getChessman().getColour());
-        if (chessmansWithGivenColor.size() != 0) {
-            for (Chessman possibleChessman : chessmansWithGivenColor) {
+    private Set<Pair<Integer, Integer>> findPositionsOfOtherChessmenThatCanCapture(ChessmanImage chessmanImage) {
+        Set<Pair<Integer, Integer>> positionsOfChessmenThatCanCapture = new HashSet<>();
+        var chessmenWithGivenColor = chessBoard.getAllChessmansWithGivenColor(currentChessmanImage.getChessman().getColour());
+        if (chessmenWithGivenColor.size() != 0) {
+            for (Chessman possibleChessman : chessmenWithGivenColor) {
                 Pair<Integer, Integer> chessmanPosition = chessBoard.getChessmanPosition(possibleChessman);
                 if (chessmanPosition != null) {
                     var captures = possibleChessman.getPossibleCaptures(chessBoard, chessmanPosition);
                     if (captures != null && captures.size() != 0) {
-                        positionsOfChessmansThatCanCapture.add(chessmanPosition);
+                        positionsOfChessmenThatCanCapture.add(chessmanPosition);
                     }
                 }
             }
         }
-        return positionsOfChessmansThatCanCapture;
+        return positionsOfChessmenThatCanCapture;
     }
 
     private Tile getDrawnTile(int x, int y) {
         Tile tile = new Tile((x + y) % 2 == 0, x, y);
-        chessBoardOfChessmansImages[x][y] = tile;
+        chessBoardOfChessmenImages[x][y] = tile;
         tileGroup.getChildren().add(tile);
         return tile;
     }
 
     private void drawChessman(int x, int y, Tile tile) {
         var chessman = chessBoard.getChessmanAt(y, x);
-        ChessmanImage chessmanImage = createChesmanImageFromChesman(chessman, x, y);
+        ChessmanImage chessmanImage = createChessmanImageFromChessman(chessman, x, y);
         tile.setChessmanImage(chessmanImage);
         chessmanGroup.getChildren().add(chessmanImage);
     }
@@ -320,8 +319,9 @@ public class GameBoard extends Application {
         return new ChessmanImage(chessman, chessmanStyleNumber, x, y);
     }
 
-    private ChessmanImage createChesmanImageFromChesman(Chessman chessman, int x, int y) {
-        ChessmanImage chessmanImage = createChessmanImage(chessman, 1, x, y);
+    private ChessmanImage createChessmanImageFromChessman(Chessman chessman, int x, int y) {
+        int chessmanStyleNumber = Integer.parseInt(localSessionSingleton.getParameter("template_number"));
+        ChessmanImage chessmanImage = createChessmanImage(chessman, chessmanStyleNumber, x, y);
         setChessmanImageMouseFunctions(chessmanImage);
         return chessmanImage;
     }
@@ -336,7 +336,7 @@ public class GameBoard extends Application {
 
         if (canGivenChessmanCaptureOtherChessman(chessmanImage, prevChessmanX, prevChessmanY, newX, newY)) {
             return new MoveResult(MoveType.KILL);
-        } else if (thereAreOtherChessmansThatCanBeat(chessmanImage))
+        } else if (thereAreOtherChessmenThatCanBeat(chessmanImage))
             return new MoveResult(MoveType.NONE);
 
         else if (canGivenChessmanStepIntoNewTile(chessmanImage, prevChessmanX, prevChessmanY, newX, newY)) {
@@ -346,8 +346,8 @@ public class GameBoard extends Application {
         }
     }
 
-    private Boolean thereAreOtherChessmansThatCanBeat(ChessmanImage chessmanImage) {
-        return findPositionsOfOtherChessmansThatCanCapture(chessmanImage).size() != 0;
+    private Boolean thereAreOtherChessmenThatCanBeat(ChessmanImage chessmanImage) {
+        return findPositionsOfOtherChessmenThatCanCapture(chessmanImage).size() != 0;
     }
 
     private Boolean canGivenChessmanCaptureOtherChessman(ChessmanImage givenChessmanImage, double prevChessmanX, double prevChessmanY,
@@ -365,7 +365,7 @@ public class GameBoard extends Application {
     private void unhighlightAllBoard() {
         for (int y = 0; y < HEIGHT; y++)
             for (int x = 0; x < WIDTH; x++) {
-                chessBoardOfChessmansImages[x][y].removeHighlight();
+                chessBoardOfChessmenImages[x][y].removeHighlight();
             }
     }
 
@@ -379,18 +379,16 @@ public class GameBoard extends Application {
                 unhighlightAllBoard();
                 chessmanImage.setMouseX(e.getSceneX());
                 chessmanImage.setMouseY(e.getSceneY());
-                chessmanImage.setPrevMouseX((int) (e.getSceneX() / 100) * 100 + 7);
-                chessmanImage.setPrevMouseY((int) (e.getSceneY() / 100) * 100 + 7);
+                chessmanImage.setPrevMouseX((int) (e.getSceneX() / TILE_SIZE) * TILE_SIZE + 7);
+                chessmanImage.setPrevMouseY((int) (e.getSceneY() / TILE_SIZE) * TILE_SIZE + 7);
                 chessmanImage.setPrevChessmanY(toBoard(e.getSceneY()));
                 chessmanImage.setPrevChessmanX(toBoard(e.getSceneX()));
 
                 currentChessmanXCoordinate = toBoard(chessmanImage.getLayoutX());
                 getCurrentChessmanYCoordinate = toBoard(chessmanImage.getLayoutY());
-                updateCurrentChessmanImage(chessBoardOfChessmansImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].getChessmanImage());
-                chessBoardOfChessmansImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].highlightGreen();
-                new Thread(() -> {
-                    SoundPlayer.playOnChessmanClick();
-                }).start();
+                updateCurrentChessmanImage(chessBoardOfChessmenImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].getChessmanImage());
+                chessBoardOfChessmenImages[currentChessmanXCoordinate][getCurrentChessmanYCoordinate].highlightGreen();
+                new Thread(SoundPlayer::playOnChessmanClick).start();
 
             }
         });
@@ -398,7 +396,7 @@ public class GameBoard extends Application {
         chessmanImage.setOnMouseDragged(e -> {
             if (canPlayerMoveChessman(chessmanImage)) {
                 unhighlightAllBoard();
-                chessmanImage.relocate(e.getSceneX() - 50, e.getScreenY() - 50);
+                chessmanImage.relocate(e.getSceneX() - TILE_SIZE / 2, e.getScreenY() - TILE_SIZE / 2);
             }
         });
 
@@ -412,20 +410,18 @@ public class GameBoard extends Application {
                         completeAbortMove(chessmanImage);
                         return;
                     case NORMAL:
-                        new Thread(() -> {
-                            SoundPlayer.playOnChessmanMove();
-                        }).start();
+                        new Thread(SoundPlayer::playOnChessmanMove).start();
                         completeNormalMove(chessmanImage, newX, newY);
                         break;
                     case KILL:
-                        new Thread(() -> {
-                            SoundPlayer.playOnChessmanMove();
-                        }).start();
-                        completeKilllMove(chessmanImage, newX, newY);
+                        new Thread(SoundPlayer::playOnChessmanMove).start();
+                        completeKillMove(chessmanImage, newX, newY);
                         break;
                 }
-                updateGameState();
-                waitForOpponentsMove();
+                if (!gameFinished) {
+                    updateGameState();
+                    waitForOpponentsMove();
+                }
             }
         });
     }
@@ -444,7 +440,7 @@ public class GameBoard extends Application {
         chessmanImage.abortMove();
     }
 
-    private void completeKilllMove(ChessmanImage chessmanImage, int newX, int newY) {
+    private void completeKillMove(ChessmanImage chessmanImage, int newX, int newY) {
         chessmanImage.move(newX, newY);
         updateBoardOfImagesAfterKillMove(chessmanImage, newX, newY);
         currentChessmanImage = null;
@@ -460,8 +456,8 @@ public class GameBoard extends Application {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("state", stateInterpreter.convertChessBoardToJsonBoard(chessBoard).toString());
         ResponseEntity<Integer> responseEntity = localSessionSingleton.
-                exchange("http://localhost:8080/newState", HttpMethod.POST, map, Integer.class);
-        localSessionSingleton.setParameter("gameStateNumber", responseEntity.getBody().toString());
+                exchange(LoginController.HOST + GameController.NEW_STATE_PATH, HttpMethod.POST, map, Integer.class);
+        localSessionSingleton.setParameter(GameController.GAME_STATE_NUMBER_PARAM, responseEntity.getBody().toString());
     }
 
     private Boolean canPlayerMoveChessman(ChessmanImage chessmanImage) {
@@ -469,66 +465,69 @@ public class GameBoard extends Application {
     }
 
     private void endOfGame() {
-        localSessionSingleton.
+        updateGameState();
+        var responseEntity = localSessionSingleton.
                 exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
                         HttpMethod.GET,
                         null,
                         ResponseEntity.class);
-        localSessionSingleton.exchange(LoginController.HOST + RankingController.UPDATE_USER_RANKING_PATH,
-                HttpMethod.GET,
-                null,
-                ResponseEntity.class);
-        finishGame();
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            localSessionSingleton.exchange(LoginController.HOST + RankingController.UPDATE_USER_RANKING_PATH,
+                    HttpMethod.GET,
+                    null,
+                    ResponseEntity.class);
+            finishGame();
+        }
     }
 
     private Boolean isUsersMove() {
         ResponseEntity<Boolean> responseEntity = localSessionSingleton.
-                exchange("http://localhost:8080/isUsersMove", HttpMethod.GET, null, Boolean.class);
+                exchange(LoginController.HOST + GameController.IS_USERS_MOVE_PATH, HttpMethod.GET, null, Boolean.class);
         return responseEntity.getBody();
     }
 
-    private void updateChessBoardOfChessmans() {
+    private void updateChessBoardOfChessmen() {
         ArrayList<ArrayList<Chessman>> chessboardCurrentState = new ArrayList<>();
         for (int y = 0; y < HEIGHT; y++) {
-            ArrayList<Chessman> currentChessmansRow = new ArrayList<>();
+            ArrayList<Chessman> currentChessmenRow = new ArrayList<>();
             for (int x = 0; x < WIDTH; x++) {
-                currentChessmansRow.add(chessBoardOfChessmansImages[x][y].getChessmanImage().getChessman());
+                currentChessmenRow.add(chessBoardOfChessmenImages[x][y].getChessmanImage().getChessman());
             }
-            chessboardCurrentState.add(currentChessmansRow);
+            chessboardCurrentState.add(currentChessmenRow);
         }
         chessBoard = new ChessBoard(chessboardCurrentState);
     }
 
     private void updateBoardOfImagesAfterNormalMove(ChessmanImage chessmanImage, int newX, int newY) {
-        chessBoardOfChessmansImages[chessmanImage.getPrevChessmanX()][chessmanImage.getPrevChessmanY()].
+        chessBoardOfChessmenImages[chessmanImage.getPrevChessmanX()][chessmanImage.getPrevChessmanY()].
                 setChessmanImage(new ChessmanImage(new EmptyField(chessmanImage.getColour())));
-        chessBoardOfChessmansImages[newX][newY].setChessmanImage(chessmanImage);
-        updateChessBoardOfChessmans();
+        chessBoardOfChessmenImages[newX][newY].setChessmanImage(chessmanImage);
+        updateChessBoardOfChessmen();
     }
 
     private void updateBoardOfImagesAfterKillMove(ChessmanImage chessmanImage, int newX, int newY) {
-        chessBoardOfChessmansImages[chessmanImage.getPrevChessmanX()][chessmanImage.getPrevChessmanY()].
+        chessBoardOfChessmenImages[chessmanImage.getPrevChessmanX()][chessmanImage.getPrevChessmanY()].
                 setChessmanImage(new ChessmanImage(new EmptyField(chessmanImage.getColour())));
 
-        chessBoardOfChessmansImages[newX][newY].getChessmanImage().removeImage();
-        chessBoardOfChessmansImages[newX][newY].setChessmanImage(chessmanImage);
-        updateChessBoardOfChessmans();
+        chessBoardOfChessmenImages[newX][newY].getChessmanImage().removeImage();
+        chessBoardOfChessmenImages[newX][newY].setChessmanImage(chessmanImage);
+        updateChessBoardOfChessmen();
     }
 
     private void getUsersChessmenColor() {
         ResponseEntity<ChessmanColourEnum> responseEntity = localSessionSingleton.
-                exchange("http://localhost:8080/getColor", HttpMethod.GET, null, ChessmanColourEnum.class);
+                exchange(LoginController.HOST + GameController.GET_COLOR_PATH, HttpMethod.GET, null, ChessmanColourEnum.class);
         this.chessmanColour = responseEntity.getBody();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+        this.stage = primaryStage;
         ResponseEntity<String> responseEntity = localSessionSingleton.
                 exchange("http://localhost:8080/gameBoard", HttpMethod.GET, null, String.class);
         Scene scene = new Scene(createContent(responseEntity.getBody()));
         primaryStage.setScene(scene);
         primaryStage.show();
-        this.stage = primaryStage;
         getUsersChessmenColor();
         if (!isUsersMove()) {
             waitForOpponentsMove();
