@@ -2,7 +2,6 @@ package com.killerchess.view.registration;
 
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
-import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.Template;
 import javafx.fxml.FXML;
@@ -18,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
+
+import static com.killerchess.core.config.Constants.HOST;
 
 
 public class RegistrationController {
@@ -80,7 +81,7 @@ public class RegistrationController {
                 registrationParametersMap.add("username", login);
                 registrationParametersMap.add("password", password);
 
-                var responseEntity = localSessionSingleton.exchange(LoginController.HOST + REGISTER_PATH,
+                var responseEntity = localSessionSingleton.exchange(HOST + REGISTER_PATH,
                         HttpMethod.POST, registrationParametersMap, ResponseEntity.class);
 
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {

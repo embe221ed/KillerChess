@@ -20,6 +20,8 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.killerchess.core.config.Constants.USERNAME;
+
 
 @RestController
 public class GameController {
@@ -40,8 +42,6 @@ public class GameController {
     public static final String GAME_ID_PARAM = "gameId";
     public static final String GAME_NAME_PARAM = "gameName";
     public static final String GAME_STATE_NUMBER_PARAM = "gameStateNumber";
-    public static final String USERNAME_PARAM = "username";
-    public static final String USERNAME_ATTRIBUTE = "username";
 
     private final GameService gameService;
     private final UserService userService;
@@ -57,7 +57,7 @@ public class GameController {
                                           @RequestParam(value = GAME_NAME_PARAM, required = false, defaultValue = "game") String gameName,
                                           HttpServletRequest request) {
         HttpSession session = request.getSession();
-        var username = session.getAttribute(USERNAME_PARAM).toString();
+        var username = session.getAttribute(USERNAME).toString();
         if (userService.existsLogin(username)) {
             session.setAttribute(GAME_ID_PARAM, gameId);
             session.setAttribute(GAME_NAME_PARAM, gameName);
@@ -99,7 +99,7 @@ public class GameController {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();
-            String username = session.getAttribute(USERNAME_ATTRIBUTE).toString();
+            String username = session.getAttribute(USERNAME).toString();
             Game game = gameService.findGame(gameId);
             boolean move = username.equals(game.getHost().getLogin());
             GameState gameStateObject = gameService.saveSpecificGameState(gameId, gameState, move);
@@ -116,7 +116,7 @@ public class GameController {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();
-            String username = session.getAttribute(USERNAME_ATTRIBUTE).toString();
+            String username = session.getAttribute(USERNAME).toString();
             Game game = gameService.findGame(gameId);
             return game.getHost().getLogin().equals(username)
                     ? new ResponseEntity<>(ChessmanColourEnum.WHITE, HttpStatus.OK)
@@ -197,7 +197,7 @@ public class GameController {
     public ResponseEntity<Boolean> isUsersMove(HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
-            String username = session.getAttribute(USERNAME_ATTRIBUTE).toString();
+            String username = session.getAttribute(USERNAME).toString();
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();
             Game game = gameService.findGame(gameId);
             if (game.getGameFinished()) {
@@ -216,7 +216,7 @@ public class GameController {
                                             HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
-            String username = session.getAttribute(USERNAME_ATTRIBUTE).toString();
+            String username = session.getAttribute(USERNAME).toString();
             Game game = gameService.findGame(gameId);
             if (game == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
