@@ -40,7 +40,7 @@ public class PawnPromotionController {
         launch(args);
     }
 
-    public static ChessmanTypeEnum showWindowAndGetChessmanSymbol() throws Exception {
+    public static ChessmanTypeEnum showWindow() throws Exception {
         FXMLLoader loader = new FXMLLoader(PawnPromotionController.class.getResource("/pawn_promotion.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 640, 260);

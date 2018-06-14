@@ -8,6 +8,7 @@ import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.loging.LoginController;
+import com.killerchess.view.pawnpromotion.PawnPromotionController;
 import com.killerchess.view.utils.SoundPlayer;
 import javafx.application.Application;
 import javafx.concurrent.Service;
@@ -413,6 +414,12 @@ public class GameBoard extends Application {
                         }).start();
                         completeKilllMove(chessmanImage, newX, newY);
                         break;
+                }
+                try {
+                    ChessmanTypeEnum chessmanTypeEnum = PawnPromotionController.showWindow();
+                    System.out.println(chessmanTypeEnum);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
                 updateGameState();
                 waitForOpponentsMove();
