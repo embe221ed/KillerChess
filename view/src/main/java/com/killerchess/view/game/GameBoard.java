@@ -19,7 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.springframework.core.ParameterizedTypeReference;
@@ -42,12 +42,16 @@ public class GameBoard extends Application {
     static final int TILE_SIZE = 80;
     private static final int WIDTH = 8;
     private static final int HEIGHT = 8;
+    private static final double LOGO_WIDTH_HEIGHT_RATIO = 3.52;
+    private static final int BUTTON_HEIGHT = 100;
+    private static final int BUTTON_WIDTH = 100;
 
     private static GameBoard instance;
     private final int IMPROPER_COORDINATE_VALUE = 100;
 
     private ChessmanImage currentChessmanImage;
     private Tile[][] chessBoardOfChessmenImages = new Tile[WIDTH][HEIGHT];
+    private Image killerChessLogoImage;
     private ImageView killerChessLogoImageView;
     private int currentChessmanXCoordinate = IMPROPER_COORDINATE_VALUE;
     private List<String> gameStates = new ArrayList<>();
@@ -65,7 +69,7 @@ public class GameBoard extends Application {
     private Button movesHistoryButton;
     private Button currentGameStateButton;
     private ChessBoard chessBoard;
-    private AnchorPane root;
+    private HBox root;
 
     private StateInterpreter stateInterpreter = new StateInterpreter();
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
@@ -140,20 +144,15 @@ public class GameBoard extends Application {
         chessmanGroup = new Group();
         groups = new Group();
         groups.getChildren().addAll(tileGroup, chessmanGroup);
-        root = new AnchorPane();
+        root = new HBox();
     }
 
     private void initGameBoard(String gameBoard) {
         this.chessBoard = stateInterpreter.convertJsonBoardToChessBoard(gameBoard);
         initNodes();
         setKillerChessLogoImage();
-        stage.setMinWidth(WIDTH * TILE_SIZE + killerChessLogoImageView.getFitWidth());
-        stage.setMinHeight(HEIGHT * TILE_SIZE + killerChessLogoImageView.getFitHeight());
-        root.setPrefSize((WIDTH) * TILE_SIZE + killerChessLogoImageView.getFitWidth(),
-                HEIGHT * TILE_SIZE + killerChessLogoImageView.getFitHeight());
-        AnchorPane.setLeftAnchor(groups, 0.0);
+        root.setMinWidth(WIDTH * TILE_SIZE + killerChessLogoImage.getWidth());
         initAllButtons();
-        AnchorPane.setRightAnchor(buttonsGroup, 0.0);
         root.getChildren().addAll(groups, buttonsGroup);
         drawTiles();
     }
@@ -172,9 +171,9 @@ public class GameBoard extends Application {
     private Button initButton(double layoutY, String text, boolean disabled) {
         Button button = new Button();
         button.setText(text);
-        button.setLayoutX(900.0);
+        button.setLayoutX(TILE_SIZE * WIDTH + ((killerChessLogoImage.getWidth() - BUTTON_WIDTH) / 2));
         button.setLayoutY(layoutY);
-        button.setPrefSize(100.0, 100.0);
+        button.setPrefSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         button.setDisable(disabled);
         return button;
     }
@@ -186,10 +185,11 @@ public class GameBoard extends Application {
 
     private void setKillerChessLogoImage() {
         File killerChessLogoFile = new File("view/images/killer_chess_logo.jpg");
-        Image killerChessLogoImage = new Image(killerChessLogoFile.toURI().toString());
+        killerChessLogoImage = new Image(killerChessLogoFile.toURI().toString(), TILE_SIZE * HEIGHT / LOGO_WIDTH_HEIGHT_RATIO,
+                TILE_SIZE * HEIGHT, false, false);
         killerChessLogoImageView = new ImageView();
         killerChessLogoImageView.setImage(killerChessLogoImage);
-        killerChessLogoImageView.relocate(810, 0);
+        killerChessLogoImageView.relocate(TILE_SIZE * WIDTH, 0);
     }
 
     private void setCurrentGameStateButtonOnClickFunction() {
