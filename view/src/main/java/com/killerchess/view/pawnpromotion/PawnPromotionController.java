@@ -13,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 import static com.killerchess.view.game.ImagesConstants.IMAGES_LOCAL_PATH;
@@ -33,7 +34,7 @@ public class PawnPromotionController {
     }
 
 
-    public ChessmanTypeEnum getPawnToPromoteFromShownWindow() throws Exception {
+    public ChessmanTypeEnum getPawnToPromoteFromShownWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(PawnPromotionController.class.getResource("/pawn_promotion.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 640, 260);
