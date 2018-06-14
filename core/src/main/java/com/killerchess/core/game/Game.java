@@ -12,6 +12,7 @@ public class Game {
     private String gameName;
     private User host;
     private User guest;
+    private boolean gameFinished = false;
 
     @Id
     @Column(name = "game_id")
@@ -50,6 +51,15 @@ public class Game {
 
     public void setGuest(User guest) {
         this.guest = guest;
+    }
+
+    @Column(name = "game_finished")
+    public boolean getGameFinished() {
+        return gameFinished;
+    }
+
+    public void setGameFinished(boolean gameFinished) {
+        this.gameFinished = gameFinished;
     }
 
     @Override

@@ -77,10 +77,10 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = GET_LOGIN_PATH)
-    public ResponseEntity login(HttpServletRequest request) {
+    public ResponseEntity<HttpHeaders> login(HttpServletRequest request) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("username", request.getSession().getAttribute("username").toString());
-        return new ResponseEntity(headers, HttpStatus.OK);
+        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = LOGIN_PATH)

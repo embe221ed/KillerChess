@@ -2,8 +2,6 @@ package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.ChessBoard;
 import javafx.util.Pair;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Set;
 
@@ -19,12 +17,6 @@ public abstract class Chessman {
 
     public Chessman(ChessmanColourEnum colour) {
         this.colour = colour;
-    }
-
-    public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/Beans.xml");
-//        Chessman chessman = (Chessman)context.getBean("helloWorld");
-//        chessman.getChessman();
     }
 
     public ChessmanColourEnum getColour() {
