@@ -415,12 +415,6 @@ public class GameBoard extends Application {
                         completeKilllMove(chessmanImage, newX, newY);
                         break;
                 }
-                try {
-                    ChessmanTypeEnum chessmanTypeEnum = PawnPromotionController.showWindow();
-                    System.out.println(chessmanTypeEnum);
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
                 updateGameState();
                 waitForOpponentsMove();
             }

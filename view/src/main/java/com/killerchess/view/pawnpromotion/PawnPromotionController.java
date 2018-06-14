@@ -24,17 +24,9 @@ public class PawnPromotionController {
 
     @FXML
     public HBox chessmenHbox;
+
     private ChessmanTypeEnum chosenChessmanToPromote;
     private Stage window;
-//
-//    private static PawnPromotionController instance;
-//
-//    public static PawnPromotionController getInstance() {
-//        if (instance == null) {
-//            instance = new PawnPromotionController();
-//        }
-//        return instance;
-//    }
 
     public void main(String[] args) {
         launch(args);
