@@ -130,11 +130,11 @@ public class GameController {
     public ResponseEntity<String> getLastGameState(HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
-            String gameState = gameService.getLastGameStateForGame(
-                    session
-                            .getAttribute(GAME_ID_PARAM)
-                            .toString())
-                    .getState();
+            String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            String gameState = gameService.getLastGameStateForGame(gameId).getState();
+            Game game = gameService.findGame(gameId);
+            if (game.getGameFinished())
+                return new ResponseEntity<>(gameState, HttpStatus.CREATED);
             return new ResponseEntity<>(gameState, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,9 +167,6 @@ public class GameController {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();
-            Game game = gameService.findGame(gameId);
-            if (game.getGameFinished())
-                return new ResponseEntity<>(false, HttpStatus.CONTINUE);
             GameState gameState = gameService.getLastGameStateForGame(gameId);
             if (!gameStateNumber.equals(gameState.getGameStateNumber())) {
                 return new ResponseEntity<>(true, HttpStatus.OK);

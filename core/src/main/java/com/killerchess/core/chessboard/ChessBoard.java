@@ -56,7 +56,8 @@ public class ChessBoard {
         map.put(ChessmanColourEnum.EMPTY, false);
         for (var row : chessBoard) {
             for (var chessman : row) {
-                if (!map.get(chessman.getColour())) map.put(chessman.getColour(), true);
+                if (!map.get(chessman.getColour()) && !chessman.getSymbol().equals('X'))
+                    map.put(chessman.getColour(), true);
                 else if (map.get(ChessmanColourEnum.BLACK) && map.get(ChessmanColourEnum.WHITE))
                     return map;
             }

@@ -8,6 +8,7 @@ import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.loging.LoginController;
+import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.SoundPlayer;
 import javafx.application.Application;
 import javafx.concurrent.Service;
@@ -15,6 +16,7 @@ import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -85,7 +88,6 @@ public class GameBoard extends Application {
                                             getParameter("gameStateNumber"));
                             responseEntity = localSessionSingleton.
                                     exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
-
                         } while (!responseEntity.getBody());
                         updateGameBoard();
                     } catch (InterruptedException e) {
@@ -130,6 +132,8 @@ public class GameBoard extends Application {
                 .exchange("http://localhost:8080/gameBoard", HttpMethod.GET, null, String.class);
         initGameBoard(responseEntity.getBody());
         stage.getScene().setRoot(root);
+        if (responseEntity.getStatusCode().equals(HttpStatus.CREATED))
+            finishGame();
     }
 
     private void initNodes() {
@@ -171,6 +175,11 @@ public class GameBoard extends Application {
         button.setPrefSize(100.0, 100.0);
         button.setDisable(disabled);
         return button;
+    }
+
+    private void finishGame() {
+        helpButton.setDisable(true);
+        CustomAlert.showAndWait("End of game, you lost :(", Alert.AlertType.INFORMATION);
     }
 
     private void setKillerChessLogoImage() {
@@ -438,7 +447,10 @@ public class GameBoard extends Application {
         chessmanImage.move(newX, newY);
         updateBoardOfImagesAfterKillMove(chessmanImage, newX, newY);
         currentChessmanImage = null;
-        if (!chessBoard.checkGameBoardForChessmen().get(chessmanColour))
+        if (!chessBoard.checkGameBoardForChessmen().get(chessmanColour
+                .equals(ChessmanColourEnum.BLACK) ?
+                ChessmanColourEnum.WHITE :
+                ChessmanColourEnum.BLACK))
             endOfGame();
     }
 
@@ -461,6 +473,7 @@ public class GameBoard extends Application {
                         HttpMethod.GET,
                         null,
                         ResponseEntity.class);
+        finishGame();
     }
 
     private Boolean isUsersMove() {
