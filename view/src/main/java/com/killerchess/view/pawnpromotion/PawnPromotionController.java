@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -22,51 +23,53 @@ import static javafx.application.Application.launch;
 public class PawnPromotionController {
 
     @FXML
-    public static HBox chessmenHbox;
+    public HBox chessmenHbox;
+    private ChessmanTypeEnum chosenChessmanToPromote;
+    private Stage window;
+//
+//    private static PawnPromotionController instance;
+//
+//    public static PawnPromotionController getInstance() {
+//        if (instance == null) {
+//            instance = new PawnPromotionController();
+//        }
+//        return instance;
+//    }
 
-    private static ChessmanTypeEnum chosenChessmanToPromote;
-
-    private static Stage window;
-    private static PawnPromotionController instance;
-
-    public static PawnPromotionController getInstance() {
-        if (instance == null) {
-            instance = new PawnPromotionController();
-        }
-        return instance;
-    }
-
-    public static void main(String[] args) {
+    public void main(String[] args) {
         launch(args);
     }
 
-    public static ChessmanTypeEnum showWindow() throws Exception {
+
+    public ChessmanTypeEnum getPawnToPromoteFromShownWindow() throws Exception {
         FXMLLoader loader = new FXMLLoader(PawnPromotionController.class.getResource("/pawn_promotion.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 640, 260);
 
         window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
-        window.show();
 
         loadNamespaceIntoVariables(loader);
         loadChessmenIconsOnPanel();
 
+        window.showAndWait();
+
         return chosenChessmanToPromote;
     }
 
-    private static void loadChessmenIconsOnPanel() {
+    private void loadChessmenIconsOnPanel() {
         Arrays.stream(ChessmanTypeEnum.values())
-                .filter(PawnPromotionController::isChessmanNotPawnNorEmpty)
-                .forEach(PawnPromotionController::loadChessmanOnPanel);
+                .filter(this::isChessmanNotPawnNorEmpty)
+                .forEach(this::loadChessmanOnPanel);
     }
 
-    private static boolean isChessmanNotPawnNorEmpty(ChessmanTypeEnum chessmanTypeEnum) {
+    private boolean isChessmanNotPawnNorEmpty(ChessmanTypeEnum chessmanTypeEnum) {
         return !chessmanTypeEnum.equals(ChessmanTypeEnum.EMPTY)
                 && !chessmanTypeEnum.equals(ChessmanTypeEnum.PAWN);
     }
 
-    private static void loadChessmanOnPanel(ChessmanTypeEnum chessman) {
+    private void loadChessmanOnPanel(ChessmanTypeEnum chessman) {
         //TODO AK implement choosing type of images
         String type = "1";
         File file = new File(IMAGES_LOCAL_PATH + "type_" + type + "_black_" + chessman.toString().toLowerCase()
@@ -76,14 +79,13 @@ public class PawnPromotionController {
 
         imageView.setOnMouseClicked(event -> {
             chosenChessmanToPromote = chessman;
-//            changeSceneToGameBoard();
             window.close();
         });
 
         chessmenHbox.getChildren().add(imageView);
     }
 
-    private static void loadNamespaceIntoVariables(FXMLLoader loader) {
+    private void loadNamespaceIntoVariables(FXMLLoader loader) {
         ObservableMap<String, Object> namespace = loader.getNamespace();
         chessmenHbox = (HBox) namespace.get("chessmenHbox");
 
