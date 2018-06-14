@@ -159,7 +159,7 @@ public class MainPanelController {
         var responseEntity = localSessionSingleton.exchange(
                 HOST + GET_LOGIN_PATH,
                 HttpMethod.GET, null, ResponseEntity.class);
-        this.username = responseEntity.getHeaders().getFirst("username");
+        this.username = responseEntity.getHeaders().getFirst(USERNAME);
 
         ResponseEntity<RankingRegistryDTO> response = localSessionSingleton.exchange(
                 HOST + GET_USER_RANKING_PATH,

@@ -18,7 +18,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import static com.killerchess.core.config.Constants.HOST;
+import static com.killerchess.core.config.Constants.*;
 
 
 public class RegistrationController {
@@ -43,17 +43,17 @@ public class RegistrationController {
 
     private void addTemplateChoiceHandlers() {
         firstTemplate.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter("template", Template.FIRST.toString());
+            localSessionSingleton.setParameter(TEMPLATE, Template.FIRST.toString());
             changeChosenTemplate(firstTemplate);
             event.consume();
         });
         secondTemplate.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter("template", Template.SECOND.toString());
+            localSessionSingleton.setParameter(TEMPLATE, Template.SECOND.toString());
             changeChosenTemplate(secondTemplate);
             event.consume();
         });
         thirdTemplate.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter("template", Template.THIRD.toString());
+            localSessionSingleton.setParameter(TEMPLATE, Template.THIRD.toString());
             changeChosenTemplate(thirdTemplate);
             event.consume();
         });
@@ -78,7 +78,7 @@ public class RegistrationController {
 
             if (password.equals(repeatPassword)) {
                 MultiValueMap<String, String> registrationParametersMap = new LinkedMultiValueMap<>();
-                registrationParametersMap.add("username", login);
+                registrationParametersMap.add(USERNAME, login);
                 registrationParametersMap.add("password", password);
 
                 var responseEntity = localSessionSingleton.exchange(HOST + REGISTER_PATH,
@@ -105,7 +105,7 @@ public class RegistrationController {
 
     public void handleCancelButtonClicked() {
         try {
-            System.out.println(localSessionSingleton.getParameter("template"));
+            System.out.println(localSessionSingleton.getParameter(TEMPLATE));
             View.getInstance().changeScene("/loging.fxml");
         } catch (Exception e) {
             e.printStackTrace();
