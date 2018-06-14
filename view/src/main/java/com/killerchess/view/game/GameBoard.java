@@ -201,6 +201,7 @@ public class GameBoard extends Application {
         helpButton.setDisable(true);
         gameFinished = true;
         returnButton.setDisable(false);
+        new Thread(SoundPlayer::playOnGameEnd);
     }
 
     private void setKillerChessLogoImage() {
