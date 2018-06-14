@@ -124,7 +124,6 @@ public class GameBoard extends Application {
 
     private Parent createContent(String gameBoardStateString) {
         initGameBoard(gameBoardStateString);
-
         return root;
     }
 
@@ -523,6 +522,7 @@ public class GameBoard extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.stage = primaryStage;
+        stage.setResizable(false);
         ResponseEntity<String> responseEntity = localSessionSingleton.
                 exchange("http://localhost:8080/gameBoard", HttpMethod.GET, null, String.class);
         Scene scene = new Scene(createContent(responseEntity.getBody()));
