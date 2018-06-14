@@ -35,6 +35,7 @@ public class GameController {
     public static final String JOIN_GAME_PATH = "/joinGame";
     public static final String GAME_STATE_CHANGED_PATH = "/gameStateChanged";
     public static final String GET_COLOR_PATH = "/getColor";
+    public static final String FINISH_GAME_PATH = "/finishGame";
     public static final String STATE_PARAM = "state";
     public static final String GAME_ID_PARAM = "gameId";
     public static final String GAME_NAME_PARAM = "gameName";
@@ -129,11 +130,11 @@ public class GameController {
     public ResponseEntity<String> getLastGameState(HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
-            String gameState = gameService.getLastGameStateForGame(
-                    session
-                            .getAttribute(GAME_ID_PARAM)
-                            .toString())
-                    .getState();
+            String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            String gameState = gameService.getLastGameStateForGame(gameId).getState();
+            Game game = gameService.findGame(gameId);
+            if (game.getGameFinished())
+                return new ResponseEntity<>(gameState, HttpStatus.CREATED);
             return new ResponseEntity<>(gameState, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,7 +166,8 @@ public class GameController {
             HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
-            GameState gameState = gameService.getLastGameStateForGame(session.getAttribute(GAME_ID_PARAM).toString());
+            String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            GameState gameState = gameService.getLastGameStateForGame(gameId);
             if (!gameStateNumber.equals(gameState.getGameStateNumber())) {
                 return new ResponseEntity<>(true, HttpStatus.OK);
             }
@@ -176,12 +178,31 @@ public class GameController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = FINISH_GAME_PATH)
+    public ResponseEntity finishGame(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            Game game = gameService.findGame(gameId);
+            game.setGameFinished(true);
+            gameService.updateGame(game);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = IS_USERS_MOVE_PATH)
     public ResponseEntity<Boolean> isUsersMove(HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
             String username = session.getAttribute(USERNAME_ATTRIBUTE).toString();
             String gameId = session.getAttribute(GAME_ID_PARAM).toString();
+            Game game = gameService.findGame(gameId);
+            if (game.getGameFinished()) {
+                return new ResponseEntity<>(false, HttpStatus.CREATED);
+            }
             GameState gameState = gameService.getLastGameStateForGame(gameId);
             boolean isUsersMove = gameState.getMove() ^ username.equals(gameState.getGame().getHost().getLogin());
             return new ResponseEntity<>(isUsersMove, HttpStatus.OK);

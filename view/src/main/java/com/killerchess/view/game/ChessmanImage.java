@@ -2,17 +2,18 @@ package com.killerchess.view.game;
 
 import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
-import javafx.scene.layout.StackPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+
 import java.io.File;
 
 import static com.killerchess.view.game.GameBoard.TILE_SIZE;
-import static com.killerchess.view.game.ImagesConstants.IMAGES_LOCAL_PATH;
-import static com.killerchess.view.game.ImagesConstants.IMAGE_TYPE_PREFIX;
-import static com.killerchess.view.game.ImagesConstants.PNG_FILE_TYPE_EXTENSION;
+import static com.killerchess.view.game.ImagesConstants.*;
 
 class ChessmanImage extends StackPane {
+
+    public static int CHESSMAN_SIZE = (int) (GameBoard.TILE_SIZE * 0.9);
 
     private ChessmanType type;
     private Chessman chessman;
@@ -87,16 +88,16 @@ class ChessmanImage extends StackPane {
         if(this.type != ChessmanType.EMPTY) {
             String chessmanTypeLowerCase = type.name().toLowerCase();
             String chessmanColourLowerCase = chessman.getColour().toString().toLowerCase();
-            File imageFile = getCheesmanImageFile(chessmanStyleNumber, chessmanTypeLowerCase, chessmanColourLowerCase);
+            File imageFile = getChessmanImageFile(chessmanStyleNumber, chessmanTypeLowerCase, chessmanColourLowerCase);
 
-            Image image = new Image(imageFile.toURI().toString());
+            Image image = new Image(imageFile.toURI().toString(), CHESSMAN_SIZE, CHESSMAN_SIZE, false, false);
             imageView = new ImageView();
             imageView.setImage(image);
             getChildren().add(imageView);
         }
     }
 
-    private File getCheesmanImageFile(int chessmanStyleNumber, String chessmanTypeLowerCase, String chessmanColourLowerCase) {
+    private File getChessmanImageFile(int chessmanStyleNumber, String chessmanTypeLowerCase, String chessmanColourLowerCase) {
         String filePath = IMAGES_LOCAL_PATH + IMAGE_TYPE_PREFIX + chessmanStyleNumber
                 + "_" + chessmanColourLowerCase + "_" + chessmanTypeLowerCase + PNG_FILE_TYPE_EXTENSION;
         return new File(filePath);

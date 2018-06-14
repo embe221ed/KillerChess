@@ -4,9 +4,7 @@ import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChessBoard {
@@ -40,7 +38,7 @@ public class ChessBoard {
     }
 
 
-    public Set<Chessman> getAllChessmansWithGivenColor(ChessmanColourEnum color) {
+    public Set<Chessman> getAllChessmenWithGivenColor(ChessmanColourEnum color) {
         var chessmenWithGivenColor = new HashSet<Chessman>();
 
         chessBoard.forEach(chessmen -> chessmenWithGivenColor.addAll(chessmen.stream()
@@ -49,6 +47,40 @@ public class ChessBoard {
         );
 
         return chessmenWithGivenColor;
+    }
+
+    public Map<ChessmanColourEnum, Boolean> checkIfBothUsersHaveChessmen() {
+        Map<ChessmanColourEnum, Boolean> map = new HashMap<>();
+        map.put(ChessmanColourEnum.WHITE, false);
+        map.put(ChessmanColourEnum.BLACK, false);
+        map.put(ChessmanColourEnum.EMPTY, false);
+        for (int i = 0; i < getChessBoardRowsSize(); ++i) {
+            for (int j = 0; j < getChessBoardColumnsSize(); ++j) {
+                Chessman chessman = getChessmanAt(i, j);
+                if (!(map.get(chessman.getColour()) || chessman.getSymbol().equals('X'))) {
+                    map.put(chessman.getColour(), true);
+                } else if (map.get(ChessmanColourEnum.BLACK) && map.get(ChessmanColourEnum.WHITE)) {
+                    return map;
+                }
+            }
+        }
+        return map;
+    }
+
+    public boolean isStalemate(ChessmanColourEnum chessmanColourEnum) {
+        for (int i = 0; i < getChessBoardRowsSize(); ++i) {
+            for (int j = 0; j < getChessBoardColumnsSize(); ++j) {
+                Chessman chessman = getChessmanAt(i, j);
+                if (chessman.getColour().equals(chessmanColourEnum) && !chessman.getSymbol().equals('X'))
+                    if (isChessmanPossibleToMove(chessman, i, j))
+                        return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isChessmanPossibleToMove(Chessman chessman, int row, int col) {
+        return !chessman.getPossibleMoves(this, new Pair<>(row, col)).isEmpty();
     }
 
     public Pair<Integer, Integer> getChessmanPosition(Chessman chessmanToSearch) {
