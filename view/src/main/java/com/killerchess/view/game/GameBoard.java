@@ -8,6 +8,7 @@ import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.controllers.app.RankingController;
 import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.view.View;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.SoundPlayer;
 import javafx.application.Application;
@@ -68,6 +69,7 @@ public class GameBoard extends Application {
     private Button helpButton;
     private Button movesHistoryButton;
     private Button currentGameStateButton;
+    private Button returnButton;
     private ChessBoard chessBoard;
     private HBox root;
 
@@ -164,11 +166,25 @@ public class GameBoard extends Application {
         helpButton = initButton(40.0, "POMOC", false);
         currentGameStateButton = initButton(280.0, "AKTUALNA", !historyModeActive);
         movesHistoryButton = initButton(160.0, "HISTORIA", historyModeActive && gameStates.isEmpty());
+        returnButton = initButton(400.0, "POWRÓT", true);
         setCurrentGameStateButtonOnClickFunction();
         setMovesHistoryButtonOnClickFunction();
         setHelpButtonMouseOnClickFunction();
+        setReturnButtonMouseOnClickFunction();
         buttonsGroup = new Group();
-        buttonsGroup.getChildren().addAll(killerChessLogoImageView, helpButton, movesHistoryButton, currentGameStateButton);
+        buttonsGroup.getChildren().addAll(killerChessLogoImageView, helpButton, movesHistoryButton, currentGameStateButton, returnButton);
+    }
+
+    private void setReturnButtonMouseOnClickFunction() {
+        returnButton.setOnMouseClicked(e -> {
+            try {
+                View view = View.getInstance();
+                View.setInitFxmlFilePath("/main_screen.fxml");
+                view.start(stage);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
     }
 
     private Button initButton(double layoutY, String text, boolean disabled) {
@@ -184,6 +200,7 @@ public class GameBoard extends Application {
     private void finishGame() {
         helpButton.setDisable(true);
         gameFinished = true;
+        returnButton.setDisable(false);
     }
 
     private void setKillerChessLogoImage() {
