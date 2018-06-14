@@ -1,12 +1,12 @@
 package com.killerchess.view.mainpanel;
 
-import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.dto.GameDTO;
 import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
 import com.killerchess.view.game.ImagesConstants;
+import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.Template;
 import javafx.collections.ObservableList;
@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static com.killerchess.core.config.Constants.*;
 import static com.killerchess.core.controllers.app.RankingController.GET_USER_RANKING_PATH;
 import static com.killerchess.core.controllers.app.RankingController.RANKING_PATH;
 import static com.killerchess.core.controllers.game.GameController.*;
@@ -157,20 +156,20 @@ public class MainPanelController {
 
     private void setUserParameters() {
         var responseEntity = localSessionSingleton.exchange(
-                HOST + GET_LOGIN_PATH,
+                LoginController.HOST + GET_LOGIN_PATH,
                 HttpMethod.GET, null, ResponseEntity.class);
-        this.username = responseEntity.getHeaders().getFirst(USERNAME);
+        this.username = responseEntity.getHeaders().getFirst("username");
 
         ResponseEntity<RankingRegistryDTO> response = localSessionSingleton.exchange(
-                HOST + GET_USER_RANKING_PATH,
+                LoginController.HOST + GET_USER_RANKING_PATH,
                 HttpMethod.GET, null, RankingRegistryDTO.class);
         this.userPoints = String.valueOf(response.getBody().getPoints());
     }
 
     private void setRanking() {
         ResponseEntity<List<RankingRegistryDTO>> rankingResponse = localSessionSingleton.exchange(
-                HOST + RANKING_PATH, HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {
+                LoginController.HOST + RANKING_PATH, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<RankingRegistryDTO>>() {
                 });
         List<RankingRegistryDTO> rankingList = rankingResponse.getBody();
 
@@ -203,7 +202,7 @@ public class MainPanelController {
     }
 
     private void setActualPawnTemplateImage() {
-        String actualPawn = localSessionSingleton.getParameter(TEMPLATE);
+        String actualPawn = localSessionSingleton.getParameter("template");
         if (actualPawn == null) {
             actualPawn = Template.FIRST.getTemplateFileName();
         }
@@ -212,18 +211,18 @@ public class MainPanelController {
 
     private Image generateActualImageForPawnTemplate(String actualPawn) {
         if (actualPawn.equals(Template.FIRST.getTemplateFileName())) {
-            localSessionSingleton.setParameter(TEMPLATE, Template.FIRST.getTemplateFileName());
-            localSessionSingleton.setParameter(TEMPLATE_NUMBER, Integer.toString(Template.FIRST.getChessmanStyleNumber()));
+            localSessionSingleton.setParameter("template", Template.FIRST.getTemplateFileName());
+            localSessionSingleton.setParameter("template_number", Integer.toString(Template.FIRST.getChessmanStyleNumber()));
             return generateImageForPawnTemplates(Template.FIRST.getChessmanStyleNumber());
         }
         if (actualPawn.equals(Template.SECOND.getTemplateFileName())) {
-            localSessionSingleton.setParameter(TEMPLATE, Template.SECOND.getTemplateFileName());
-            localSessionSingleton.setParameter(TEMPLATE_NUMBER, Integer.toString(Template.SECOND.getChessmanStyleNumber()));
+            localSessionSingleton.setParameter("template", Template.SECOND.getTemplateFileName());
+            localSessionSingleton.setParameter("template_number", Integer.toString(Template.SECOND.getChessmanStyleNumber()));
             return generateImageForPawnTemplates(Template.SECOND.getChessmanStyleNumber());
         }
         if (actualPawn.equals(Template.THIRD.getTemplateFileName())) {
-            localSessionSingleton.setParameter(TEMPLATE, Template.THIRD.getTemplateFileName());
-            localSessionSingleton.setParameter(TEMPLATE_NUMBER, Integer.toString(Template.THIRD.getChessmanStyleNumber()));
+            localSessionSingleton.setParameter("template", Template.THIRD.getTemplateFileName());
+            localSessionSingleton.setParameter("template_number", Integer.toString(Template.THIRD.getChessmanStyleNumber()));
             return generateImageForPawnTemplates(Template.THIRD.getChessmanStyleNumber());
         }
         return null;
@@ -246,19 +245,19 @@ public class MainPanelController {
 
     private void accountListeners() {
         firstPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter(TEMPLATE, Template.FIRST.toString());
+            localSessionSingleton.setParameter("template", Template.FIRST.toString());
             actualPawnChoice.setImage(generateActualImageForPawnTemplate(Template.FIRST.toString()));
             event.consume();
         });
 
         secondPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter(TEMPLATE, Template.SECOND.toString());
+            localSessionSingleton.setParameter("template", Template.SECOND.toString());
             actualPawnChoice.setImage(generateActualImageForPawnTemplate(Template.SECOND.toString()));
             event.consume();
         });
 
         thirdPawnChoice.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter(TEMPLATE, Template.THIRD.toString());
+            localSessionSingleton.setParameter("template", Template.THIRD.toString());
             actualPawnChoice.setImage(generateActualImageForPawnTemplate(Template.THIRD.toString()));
             event.consume();
         });
@@ -307,8 +306,8 @@ public class MainPanelController {
         getRoomsVBoxChildren().add(title);
 
         ResponseEntity<List<GameDTO>> roomsResponse = localSessionSingleton.exchange(
-                HOST + AVAILABLE_GAMES_PATH, HttpMethod.GET, null,
-                new ParameterizedTypeReference<>() {
+                LoginController.HOST + AVAILABLE_GAMES_PATH, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<GameDTO>>() {
                 });
 
         List<GameDTO> gamesList = roomsResponse.getBody();
@@ -354,7 +353,7 @@ public class MainPanelController {
             if (event.getClickCount() == 2 && isGameForClickedRoomPresent) {
                 MultiValueMap<String, String> joinGameParametersMap = new LinkedMultiValueMap<>();
                 joinGameParametersMap.add(GAME_ID_PARAM, game.getGameId());
-                var responseEntity = localSessionSingleton.exchange(HOST + JOIN_GAME_PATH,
+                var responseEntity = localSessionSingleton.exchange(LoginController.HOST + JOIN_GAME_PATH,
                         HttpMethod.POST, joinGameParametersMap, Integer.class);
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
                     Stage stage = View.getInstance().getStage();
@@ -364,8 +363,7 @@ public class MainPanelController {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    localSessionSingleton.setParameter(GameController.GAME_STATE_NUMBER_PARAM
-                            , responseEntity.getBody().toString());
+                    localSessionSingleton.setParameter("gameStateNumber", responseEntity.getBody().toString());
                 }
             }
         });

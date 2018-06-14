@@ -2,6 +2,7 @@ package com.killerchess.view.registration;
 
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
+import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.Template;
 import javafx.fxml.FXML;
@@ -17,8 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
-
-import static com.killerchess.core.config.Constants.*;
 
 
 public class RegistrationController {
@@ -43,17 +42,17 @@ public class RegistrationController {
 
     private void addTemplateChoiceHandlers() {
         firstTemplate.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter(TEMPLATE, Template.FIRST.toString());
+            localSessionSingleton.setParameter("template", Template.FIRST.toString());
             changeChosenTemplate(firstTemplate);
             event.consume();
         });
         secondTemplate.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter(TEMPLATE, Template.SECOND.toString());
+            localSessionSingleton.setParameter("template", Template.SECOND.toString());
             changeChosenTemplate(secondTemplate);
             event.consume();
         });
         thirdTemplate.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            localSessionSingleton.setParameter(TEMPLATE, Template.THIRD.toString());
+            localSessionSingleton.setParameter("template", Template.THIRD.toString());
             changeChosenTemplate(thirdTemplate);
             event.consume();
         });
@@ -78,10 +77,10 @@ public class RegistrationController {
 
             if (password.equals(repeatPassword)) {
                 MultiValueMap<String, String> registrationParametersMap = new LinkedMultiValueMap<>();
-                registrationParametersMap.add(USERNAME, login);
+                registrationParametersMap.add("username", login);
                 registrationParametersMap.add("password", password);
 
-                var responseEntity = localSessionSingleton.exchange(HOST + REGISTER_PATH,
+                var responseEntity = localSessionSingleton.exchange(LoginController.HOST + REGISTER_PATH,
                         HttpMethod.POST, registrationParametersMap, ResponseEntity.class);
 
                 if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -105,7 +104,7 @@ public class RegistrationController {
 
     public void handleCancelButtonClicked() {
         try {
-            System.out.println(localSessionSingleton.getParameter(TEMPLATE));
+            System.out.println(localSessionSingleton.getParameter("template"));
             View.getInstance().changeScene("/loging.fxml");
         } catch (Exception e) {
             e.printStackTrace();

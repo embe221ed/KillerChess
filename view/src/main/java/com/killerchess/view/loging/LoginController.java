@@ -12,15 +12,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import static com.killerchess.core.config.Constants.HOST;
-import static com.killerchess.core.config.Constants.USERNAME;
-
 public class LoginController {
     public Button loginButton;
     public Button registerButton;
     public TextField loginField;
     public TextField passwordField;
 
+    public static final String HOST = "http://localhost:8080";
     private static final String LOGIN_PATH = "/login";
 
     public void handleLoginButtonClicked() {
@@ -28,7 +26,7 @@ public class LoginController {
             String login = loginField.getText();
             String password = passwordField.getText();
             MultiValueMap<String, String> loginParametersMap = new LinkedMultiValueMap<>();
-            loginParametersMap.add(USERNAME, login);
+            loginParametersMap.add("username", login);
             loginParametersMap.add("password", password);
             LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
             var responseEntity = localSessionSingleton.exchange(HOST + LOGIN_PATH, HttpMethod.POST,

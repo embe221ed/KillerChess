@@ -4,6 +4,7 @@ import com.killerchess.core.chessboard.scenarios.GameScenariosEnum;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
+import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.SoundPlayer;
 import javafx.collections.ObservableList;
@@ -23,7 +24,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.killerchess.core.config.Constants.HOST;
 import static com.killerchess.core.controllers.game.GameController.*;
 import static com.killerchess.view.game.GameBoard.SLEEP_TIME;
 
@@ -46,7 +46,7 @@ public class RoomCreatorController {
                     try {
                         do {
                             Thread.sleep(SLEEP_TIME);
-                            builder = UriComponentsBuilder.fromHttpUrl(HOST + CHECK_GUEST_PATH);
+                            builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + CHECK_GUEST_PATH);
                             responseEntity = localSessionSingleton
                                     .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
 
@@ -97,7 +97,7 @@ public class RoomCreatorController {
 
         var session = LocalSessionSingleton.getInstance();
         var responseEntity = session.exchange(
-                HOST + NEW_GAME_PATH, HttpMethod.POST,
+                LoginController.HOST + NEW_GAME_PATH, HttpMethod.POST,
                 roomCreationParametersMap,
                 ResponseEntity.class);
 
@@ -120,7 +120,7 @@ public class RoomCreatorController {
             gameStateCreationParametersMap.add(GAME_ID_PARAM, roomDatabaseId);
 
             var session = LocalSessionSingleton.getInstance();
-            var responseEntity = session.exchange(HOST + FIRST_GAME_STATE_PATH,
+            var responseEntity = session.exchange(LoginController.HOST + FIRST_GAME_STATE_PATH,
                     HttpMethod.POST, gameStateCreationParametersMap, Integer.class);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 session.setParameter(GAME_STATE_NUMBER_PARAM, responseEntity.getBody().toString());

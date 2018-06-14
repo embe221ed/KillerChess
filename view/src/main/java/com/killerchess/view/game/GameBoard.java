@@ -8,6 +8,7 @@ import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.controllers.app.RankingController;
 import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.SoundPlayer;
 import javafx.application.Application;
 import javafx.concurrent.Service;
@@ -34,9 +35,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static com.killerchess.core.config.Constants.HOST;
-import static com.killerchess.core.config.Constants.TEMPLATE_NUMBER;
 
 public class GameBoard extends Application {
 
@@ -88,7 +86,7 @@ public class GameBoard extends Application {
                     try {
                         do {
                             Thread.sleep(SLEEP_TIME);
-                            builder = UriComponentsBuilder.fromHttpUrl(HOST + GameController.GAME_STATE_CHANGED_PATH)
+                            builder = UriComponentsBuilder.fromHttpUrl(LoginController.HOST + GameController.GAME_STATE_CHANGED_PATH)
                                     .queryParam(GameController.GAME_STATE_NUMBER_PARAM, localSessionSingleton.
                                             getParameter(GameController.GAME_STATE_NUMBER_PARAM));
                             responseEntity = localSessionSingleton.
@@ -133,7 +131,7 @@ public class GameBoard extends Application {
         historyModeActive = false;
         gameStates.clear();
         ResponseEntity<String> responseEntity = localSessionSingleton
-                .exchange(HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
+                .exchange(LoginController.HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         initGameBoard(responseEntity.getBody());
         stage.getScene().setRoot(root);
         if (!gameFinished) {
@@ -246,7 +244,7 @@ public class GameBoard extends Application {
             var parameterizedTypeReference = new ParameterizedTypeReference<List<String>>() {
             };
             ResponseEntity<List<String>> responseEntity = localSessionSingleton
-                    .exchange(HOST + GameController.GAME_BOARD_LIST_PATH,
+                    .exchange(LoginController.HOST + GameController.GAME_BOARD_LIST_PATH,
                             HttpMethod.GET,
                             null,
                             parameterizedTypeReference);
@@ -325,7 +323,7 @@ public class GameBoard extends Application {
     }
 
     private ChessmanImage createChessmanImageFromChessman(Chessman chessman, int x, int y) {
-        int chessmanStyleNumber = Integer.parseInt(localSessionSingleton.getParameter(TEMPLATE_NUMBER));
+        int chessmanStyleNumber = Integer.parseInt(localSessionSingleton.getParameter("template_number"));
         ChessmanImage chessmanImage = createChessmanImage(chessman, chessmanStyleNumber, x, y);
         setChessmanImageMouseFunctions(chessmanImage);
         return chessmanImage;
@@ -464,7 +462,7 @@ public class GameBoard extends Application {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("state", stateInterpreter.convertChessBoardToJsonBoard(chessBoard).toString());
         ResponseEntity<Integer> responseEntity = localSessionSingleton.
-                exchange(HOST + GameController.NEW_STATE_PATH, HttpMethod.POST, map, Integer.class);
+                exchange(LoginController.HOST + GameController.NEW_STATE_PATH, HttpMethod.POST, map, Integer.class);
         localSessionSingleton.setParameter(GameController.GAME_STATE_NUMBER_PARAM, responseEntity.getBody().toString());
     }
 
@@ -475,12 +473,12 @@ public class GameBoard extends Application {
     private void endOfGame() {
         updateGameState();
         var responseEntity = localSessionSingleton.
-                exchange(HOST + GameController.FINISH_GAME_PATH,
+                exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
                         HttpMethod.GET,
                         null,
                         ResponseEntity.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            localSessionSingleton.exchange(HOST + RankingController.UPDATE_USER_RANKING_PATH,
+            localSessionSingleton.exchange(LoginController.HOST + RankingController.UPDATE_USER_RANKING_PATH,
                     HttpMethod.GET,
                     null,
                     ResponseEntity.class);
@@ -490,12 +488,12 @@ public class GameBoard extends Application {
 
     private void endOfGameStalemate() {
         var responseEntity = localSessionSingleton.
-                exchange(HOST + GameController.FINISH_GAME_PATH,
+                exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
                         HttpMethod.GET,
                         null,
                         ResponseEntity.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
-            localSessionSingleton.exchange(HOST + RankingController.UPDATE_USER_RANKING_STALEMATE_PATH,
+            localSessionSingleton.exchange(LoginController.HOST + RankingController.UPDATE_USER_RANKING_STALEMATE_PATH,
                     HttpMethod.GET,
                     null,
                     ResponseEntity.class);
@@ -505,7 +503,7 @@ public class GameBoard extends Application {
 
     private Boolean isUsersMove() {
         ResponseEntity<Boolean> responseEntity = localSessionSingleton.
-                exchange(HOST + GameController.IS_USERS_MOVE_PATH, HttpMethod.GET, null, Boolean.class);
+                exchange(LoginController.HOST + GameController.IS_USERS_MOVE_PATH, HttpMethod.GET, null, Boolean.class);
         if (responseEntity.getStatusCode().equals(HttpStatus.OK))
             return responseEntity.getBody();
         finishGame();
@@ -542,7 +540,7 @@ public class GameBoard extends Application {
 
     private void getUsersChessmenColor() {
         ResponseEntity<ChessmanColourEnum> responseEntity = localSessionSingleton.
-                exchange(HOST + GameController.GET_COLOR_PATH, HttpMethod.GET, null, ChessmanColourEnum.class);
+                exchange(LoginController.HOST + GameController.GET_COLOR_PATH, HttpMethod.GET, null, ChessmanColourEnum.class);
         this.chessmanColour = responseEntity.getBody();
     }
 
@@ -552,7 +550,7 @@ public class GameBoard extends Application {
         this.stage = primaryStage;
         stage.setResizable(false);
         ResponseEntity<String> responseEntity = localSessionSingleton.
-                exchange(HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
+                exchange(LoginController.HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         Scene scene = new Scene(createContent(responseEntity.getBody()));
         primaryStage.setScene(scene);
         primaryStage.show();
