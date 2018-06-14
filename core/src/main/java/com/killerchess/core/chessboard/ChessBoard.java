@@ -57,19 +57,30 @@ public class ChessBoard {
         for (int i = 0; i < getChessBoardRowsSize(); ++i) {
             for (int j = 0; j < getChessBoardColumnsSize(); ++j) {
                 Chessman chessman = getChessmanAt(i, j);
-                if (!map.get(chessman.getColour()) && isChessmanPossibleToMove(chessman, i, j))
+                if (!(map.get(chessman.getColour()) || chessman.getSymbol().equals('X'))) {
                     map.put(chessman.getColour(), true);
-                else if (map.get(ChessmanColourEnum.BLACK) && map.get(ChessmanColourEnum.WHITE))
+                } else if (map.get(ChessmanColourEnum.BLACK) && map.get(ChessmanColourEnum.WHITE)) {
                     return map;
+                }
             }
         }
         return map;
     }
 
+    public boolean isStalemate(ChessmanColourEnum chessmanColourEnum) {
+        for (int i = 0; i < getChessBoardRowsSize(); ++i) {
+            for (int j = 0; j < getChessBoardColumnsSize(); ++j) {
+                Chessman chessman = getChessmanAt(i, j);
+                if (chessman.getColour().equals(chessmanColourEnum))
+                    if (isChessmanPossibleToMove(chessman, i, j))
+                        return false;
+            }
+        }
+        return true;
+    }
+
     private boolean isChessmanPossibleToMove(Chessman chessman, int row, int col) {
-        Pair<Integer, Integer> chessmanCoords = new Pair<>(row, col);
-        return !(chessman.getSymbol().equals('X') ||
-                chessman.getPossibleMoves(this, chessmanCoords).isEmpty());
+        return !chessman.getPossibleMoves(this, new Pair<>(row, col)).isEmpty();
     }
 
     public Pair<Integer, Integer> getChessmanPosition(Chessman chessmanToSearch) {

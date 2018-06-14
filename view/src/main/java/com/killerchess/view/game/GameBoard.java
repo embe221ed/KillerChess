@@ -154,6 +154,8 @@ public class GameBoard extends Application {
         initAllButtons();
         root.getChildren().addAll(groups, buttonsGroup);
         drawTiles();
+        if (chessBoard.isStalemate(chessmanColour))
+            endOfGameStalemate();
     }
 
     private void initAllButtons() {
@@ -428,8 +430,9 @@ public class GameBoard extends Application {
 
     private void checkIfGameEnded() {
         var areMovesPossibleMap = chessBoard.checkGameBoardForChessmen();
-        if (!(areMovesPossibleMap.get(ChessmanColourEnum.BLACK) && areMovesPossibleMap.get(ChessmanColourEnum.WHITE)))
+        if (!(areMovesPossibleMap.get(ChessmanColourEnum.BLACK) && areMovesPossibleMap.get(ChessmanColourEnum.WHITE))) {
             endOfGame();
+        }
     }
 
     private void updateCurrentChessmanImage(ChessmanImage chessmanImage) {
@@ -474,6 +477,22 @@ public class GameBoard extends Application {
                         ResponseEntity.class);
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             localSessionSingleton.exchange(LoginController.HOST + RankingController.UPDATE_USER_RANKING_PATH,
+                    HttpMethod.GET,
+                    null,
+                    ResponseEntity.class);
+            finishGame();
+        }
+    }
+
+    private void endOfGameStalemate() {
+        updateGameState();
+        var responseEntity = localSessionSingleton.
+                exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
+                        HttpMethod.GET,
+                        null,
+                        ResponseEntity.class);
+        if (responseEntity.getStatusCode().is2xxSuccessful()) {
+            localSessionSingleton.exchange(LoginController.HOST + RankingController.UPDATE_USER_RANKING_STALEMATE_PATH,
                     HttpMethod.GET,
                     null,
                     ResponseEntity.class);
@@ -526,6 +545,7 @@ public class GameBoard extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        getUsersChessmenColor();
         this.stage = primaryStage;
         stage.setResizable(false);
         ResponseEntity<String> responseEntity = localSessionSingleton.
@@ -533,7 +553,6 @@ public class GameBoard extends Application {
         Scene scene = new Scene(createContent(responseEntity.getBody()));
         primaryStage.setScene(scene);
         primaryStage.show();
-        getUsersChessmenColor();
         if (!isUsersMove()) {
             waitForOpponentsMove();
         }

@@ -25,6 +25,7 @@ public class RankingController {
     public static final String RANKING_PATH = "/ranking";
     public static final String GET_USER_RANKING_PATH = "/getUserRanking";
     public static final String UPDATE_USER_RANKING_PATH = "/updateRanking";
+    public static final String UPDATE_USER_RANKING_STALEMATE_PATH = "/updateRankingStalemate";
 
     private final RankingService rankingService;
     private final GameService gameService;
@@ -74,16 +75,39 @@ public class RankingController {
             var gameStates = gameService.getListOfGameStatesForGame(gameId);
             String firstGameState = gameStates.get(gameStates.size() - 1);
             String lastGameState = gameStates.get(0);
-            RankingRegistry rankingRegistry = rankingService.findByUsername(winnersLogin);
-            int userPoints = rankingRegistry.getPoints();
-            userPoints += (game.getHost().getLogin().equals(winnersLogin)) ?
-                    pointsCounter.countWhitePlayerPoints(firstGameState, lastGameState) :
-                    pointsCounter.countBlackPlayerPoints(firstGameState, lastGameState);
-            rankingRegistry.setPoints(userPoints);
-            rankingService.save(rankingRegistry);
+            countPoints(winnersLogin, firstGameState, lastGameState, winnersLogin.equals(game.getHost().getLogin()));
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = UPDATE_USER_RANKING_STALEMATE_PATH)
+    public ResponseEntity updateUsersRankingPointsStalemate(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession();
+            String gameId = session.getAttribute(GameController.GAME_ID_PARAM).toString();
+            Game game = gameService.findGame(gameId);
+            String hostUsername = game.getHost().getLogin();
+            String guestUsername = game.getGuest().getLogin();
+            var gameStates = gameService.getListOfGameStatesForGame(gameId);
+            String firstGameState = gameStates.get(gameStates.size() - 1);
+            String lastGameState = gameStates.get(0);
+            countPoints(hostUsername, firstGameState, lastGameState, true);
+            countPoints(guestUsername, firstGameState, lastGameState, false);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private void countPoints(String username, String firstGameState, String lastGameState, boolean isHost) {
+        RankingRegistry rankingRegistry = rankingService.findByUsername(username);
+        int userPoints = rankingRegistry.getPoints();
+        userPoints += (isHost) ?
+                pointsCounter.countWhitePlayerPoints(firstGameState, lastGameState) :
+                pointsCounter.countBlackPlayerPoints(firstGameState, lastGameState);
+        rankingRegistry.setPoints(userPoints);
+        rankingService.save(rankingRegistry);
     }
 }
