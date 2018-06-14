@@ -70,9 +70,11 @@ public class RankingController {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GameController.GAME_ID_PARAM).toString();
-            String winnersLogin = session.getAttribute("username").toString();
-            Game game = gameService.findGame(gameId);
+            String losersLogin = session.getAttribute("username").toString();
             var gameStates = gameService.getListOfGameStatesForGame(gameId);
+            Game game = gameService.findGame(gameId);
+            String winnersLogin = game.getHost().getLogin().equals(losersLogin) ?
+                    game.getGuest().getLogin() : game.getHost().getLogin();
             String firstGameState = gameStates.get(gameStates.size() - 1);
             String lastGameState = gameStates.get(0);
             updateUsersRankingPoints(winnersLogin, firstGameState, lastGameState, winnersLogin.equals(game.getHost().getLogin()));

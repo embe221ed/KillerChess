@@ -135,12 +135,12 @@ public class GameBoard extends Application {
 
     private void updateGameBoard() {
         historyModeActive = false;
-        messages.setText("TWÓJ RUCH");
         gameStates.clear();
         ResponseEntity<String> responseEntity = localSessionSingleton
                 .exchange(LoginController.HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         initGameBoard(responseEntity.getBody());
         stage.getScene().setRoot(root);
+        messages.setText("TWÓJ RUCH");
         if (!gameFinished) {
             if (responseEntity.getStatusCode().equals(HttpStatus.CREATED)) {
                 messages.setText("WYGRALES");
