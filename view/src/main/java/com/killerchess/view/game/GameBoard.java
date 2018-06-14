@@ -5,6 +5,7 @@ import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
 import com.killerchess.core.chessmans.EmptyField;
+import com.killerchess.core.controllers.app.RankingController;
 import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.loging.LoginController;
@@ -468,11 +469,15 @@ public class GameBoard extends Application {
     }
 
     private void endOfGame() {
-        var responseEntity = localSessionSingleton.
+        localSessionSingleton.
                 exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
                         HttpMethod.GET,
                         null,
                         ResponseEntity.class);
+        localSessionSingleton.exchange(LoginController.HOST + RankingController.UPDATE_USER_RANKING_PATH,
+                HttpMethod.GET,
+                null,
+                ResponseEntity.class);
         finishGame();
     }
 
