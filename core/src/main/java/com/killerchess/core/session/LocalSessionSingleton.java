@@ -9,6 +9,8 @@ import java.io.*;
 import java.net.HttpCookie;
 import java.util.*;
 
+import static com.killerchess.core.config.Constants.CONFIG_FILE;
+
 public class LocalSessionSingleton {
 
     private volatile static LocalSessionSingleton instance;
@@ -54,7 +56,7 @@ public class LocalSessionSingleton {
     public void saveToConfigFile() {
         OutputStream outputStream = null;
         try {
-            outputStream = new FileOutputStream("config.properties");
+            outputStream = new FileOutputStream(CONFIG_FILE);
             parameters.forEach((key, value) -> properties.setProperty(key, value));
             properties.store(outputStream, null);
         } catch (IOException e) {
@@ -73,7 +75,7 @@ public class LocalSessionSingleton {
     private void readConfigFile() {
         InputStream inputStream;
         try {
-            inputStream = new FileInputStream("config.properties");
+            inputStream = new FileInputStream(CONFIG_FILE);
 
             properties.load(inputStream);
             properties.keys().asIterator().forEachRemaining(property ->
