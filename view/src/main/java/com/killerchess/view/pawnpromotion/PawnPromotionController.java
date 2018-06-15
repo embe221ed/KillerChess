@@ -1,5 +1,6 @@
 package com.killerchess.view.pawnpromotion;
 
+import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.game.ChessmanTypeEnum;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.stage.StageStyle;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static com.killerchess.view.game.ImagesConstants.IMAGES_LOCAL_PATH;
 import static com.killerchess.view.game.ImagesConstants.PNG_FILE_TYPE_EXTENSION;
@@ -43,7 +45,7 @@ public class PawnPromotionController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Scene scene = new Scene(root, 640, 260);
+        Scene scene = new Scene(Objects.requireNonNull(root), 640, 260);
 
         window = new Stage();
         window.initStyle(StageStyle.UNDECORATED);
@@ -70,11 +72,10 @@ public class PawnPromotionController {
     }
 
     private void loadChessmanOnPanel(ChessmanTypeEnum chessman) {
-        //TODO AK implement choosing type of images
-        String type = "1";
+        String type = LocalSessionSingleton.getInstance().getParameter("template_number");
         File file = new File(IMAGES_LOCAL_PATH + "type_" + type + "_black_" + chessman.toString().toLowerCase()
                 + PNG_FILE_TYPE_EXTENSION);
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(file.toURI().toString(), 100.0, 100.0, true, true);
         ImageView imageView = new ImageView(image);
 
         imageView.setOnMouseClicked(event -> {
