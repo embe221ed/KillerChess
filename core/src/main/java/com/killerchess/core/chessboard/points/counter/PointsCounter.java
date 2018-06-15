@@ -17,13 +17,13 @@ public class PointsCounter {
         this.stateInterpreter = stateInterpreter;
     }
 
-    public Integer countWhitePlayerPoints(String jsonInputBoard, String jsonOutputBoard) {
+    public Integer countBlackPlayerPoints(String jsonInputBoard, String jsonOutputBoard) {
         var defaultPoints = countPointsOnBoardForColour(jsonInputBoard, ChessmanColourEnum.BLACK);
         var finalPoints = countPointsOnBoardForColour(jsonOutputBoard, ChessmanColourEnum.BLACK);
         return defaultPoints - finalPoints;
     }
 
-    public Integer countBlackPlayerPoints(String jsonInputBoard, String jsonOutputBoard) {
+    public Integer countWhitePlayerPoints(String jsonInputBoard, String jsonOutputBoard) {
         int defaultPoints = countPointsOnBoardForColour(jsonInputBoard, ChessmanColourEnum.WHITE);
         int finalPoints = countPointsOnBoardForColour(jsonOutputBoard, ChessmanColourEnum.WHITE);
         return defaultPoints - finalPoints;
