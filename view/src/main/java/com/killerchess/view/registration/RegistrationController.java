@@ -104,7 +104,6 @@ public class RegistrationController {
 
     public void handleCancelButtonClicked() {
         try {
-            System.out.println(localSessionSingleton.getParameter("template"));
             View.getInstance().changeScene("/loging.fxml");
         } catch (Exception e) {
             e.printStackTrace();

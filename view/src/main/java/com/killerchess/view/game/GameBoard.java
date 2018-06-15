@@ -37,7 +37,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -459,7 +458,7 @@ public class GameBoard extends Application {
                         completeKillMove(chessmanImage, newX, newY);
                         break;
                 }
-//                checkIfOneOfPawnsShouldBePromoted();
+                checkIfOneOfPawnsShouldBePromoted();
                 checkIfGameEnded();
                 if (!gameFinished) {
                     updateGameState();
@@ -478,12 +477,12 @@ public class GameBoard extends Application {
 
     private void checkIfOneOfPawnsShouldBePromoted() {
         for (int x = 0; x < WIDTH; x++) {
-            checkIfWhitePawnShouldBePromoted(chessBoardOfChessmenImages[x][HEIGHT - 1]);
-            checkIfBlackPawnShouldBePromoted(chessBoardOfChessmenImages[x][0]);
+            checkIfWhitePawnShouldBePromoted(chessBoardOfChessmenImages[x][HEIGHT - 1], x);
+            checkIfBlackPawnShouldBePromoted(chessBoardOfChessmenImages[x][0], x);
         }
     }
 
-    private void checkIfWhitePawnShouldBePromoted(Tile chessmanTile) {
+    private void checkIfWhitePawnShouldBePromoted(Tile chessmanTile, int col) {
         Chessman chessman = chessmanTile.getChessmanImage().getChessman();
         ChessmanColourEnum whiteColour = ChessmanColourEnum.WHITE;
         if (chessman.getSymbol().equals('P') && chessman.getColour().equals(whiteColour)) {
@@ -493,18 +492,41 @@ public class GameBoard extends Application {
                 var chessmanStringValueToSubstitutePawn = chessmanSymbolToSubstitutePawn.toString()
                         + whiteColour.getSymbol();
                 var chessmanToSubstitutePawn = Chessman.createChessman(chessmanStringValueToSubstitutePawn);
+                chessBoard.setChessmanAt(HEIGHT - 1, col, chessmanToSubstitutePawn);
                 var chessmanImageToSubstitutePawn = new ChessmanImage(chessmanToSubstitutePawn);
+                chessmanTile.getChessmanImage().removeImage();
                 chessmanTile.setChessmanImage(chessmanImageToSubstitutePawn);
+                updateGameStatesList();
+                updateGameState();
+                updateChessBoardOfChessmen();
+                drawTiles();
             } catch (ColourNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void checkIfBlackPawnShouldBePromoted(Tile chessmanTile) {
+    private void checkIfBlackPawnShouldBePromoted(Tile chessmanTile, int col) {
         Chessman chessman = chessmanTile.getChessmanImage().getChessman();
-        if (chessman.getSymbol().equals('P') && chessman.getColour().equals(ChessmanColourEnum.BLACK)) {
-
+        ChessmanColourEnum blackColour = ChessmanColourEnum.BLACK;
+        if (chessman.getSymbol().equals('P') && chessman.getColour().equals(blackColour)) {
+            try {
+                var chessmanSymbolToSubstitutePawn =
+                        new PawnPromotionController().getChessmanSymbolToPromoteFromShownWindow();
+                var chessmanStringValueToSubstitutePawn = chessmanSymbolToSubstitutePawn.toString()
+                        + blackColour.getSymbol();
+                var chessmanToSubstitutePawn = Chessman.createChessman(chessmanStringValueToSubstitutePawn);
+                chessBoard.setChessmanAt(0, col, chessmanToSubstitutePawn);
+                var chessmanImageToSubstitutePawn = new ChessmanImage(chessmanToSubstitutePawn);
+                chessmanTile.getChessmanImage().removeImage();
+                chessmanTile.setChessmanImage(chessmanImageToSubstitutePawn);
+                updateGameStatesList();
+                updateGameState();
+                updateChessBoardOfChessmen();
+                drawTiles();
+            } catch (ColourNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 

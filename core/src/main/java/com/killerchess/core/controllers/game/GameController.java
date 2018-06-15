@@ -105,7 +105,7 @@ public class GameController {
             GameState gameStateObject = gameService.saveSpecificGameState(gameId, gameState, move);
             return new ResponseEntity<>(gameStateObject.getGameStateNumber(), HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
