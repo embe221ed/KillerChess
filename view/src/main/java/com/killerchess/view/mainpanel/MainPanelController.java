@@ -68,7 +68,6 @@ public class MainPanelController {
     public ImageView secondPawnChoice;
     public ImageView thirdPawnChoice;
     public ImageView actualPawnChoice;
-    public Button logoutButton;
     public Text actualPawnChoiceText;
     public Text choosePawnText;
     public VBox roomsVBox;
@@ -123,11 +122,6 @@ public class MainPanelController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void handleLogoutButton() {
-        //TODO MM
-        System.out.println("Logout button clicked!");
     }
 
     public void handleAccountAvatarChange() {
@@ -265,8 +259,6 @@ public class MainPanelController {
 
     private void enableAccountFunctions(boolean bool) {
         selectedAccountTab = bool;
-        logoutButton.setVisible(bool);
-        logoutButton.setDisable(!bool);
         firstPawnChoice.setVisible(bool);
         secondPawnChoice.setVisible(bool);
         thirdPawnChoice.setVisible(bool);

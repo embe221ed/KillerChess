@@ -6,33 +6,12 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.1"
             fx:controller="com.killerchess.view.registration.RegistrationController">
-    <top>
-        <MenuBar BorderPane.alignment="CENTER">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Close"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-    </top>
     <left>
         <VBox spacing="20.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Login"/>
-                <Label text="Hasło"/>
-                <Label text="Powtórz hasło"/>
+                <Label text="Password"/>
+                <Label text="Repeat password"/>
             </children>
             <BorderPane.margin>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="50.0"/>
@@ -51,9 +30,9 @@
                 <ButtonBar>
                     <buttons>
                         <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegisterButtonClicked"
-                                text="Rejestracja"/>
+                                text="Register"/>
                         <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancelButtonClicked"
-                                text="Anuluj"/>
+                                text="Cancel"/>
                     </buttons>
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="100.0" top="20.0"/>
