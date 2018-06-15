@@ -85,6 +85,7 @@ public class MainPanelController {
     @FXML
     public void initialize() {
         getPanelSize();
+        String text = usernameText.getText();
         setUserParameters();
         setRanking();
         initializeComponents();

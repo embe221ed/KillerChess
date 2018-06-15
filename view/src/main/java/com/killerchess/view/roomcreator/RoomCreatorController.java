@@ -135,6 +135,7 @@ public class RoomCreatorController {
 
     private void changeSceneToGameBoard() {
         Stage stage = View.getInstance().getStage();
+        stage.setResizable(true);
         GameBoard gameBoard = GameBoard.getInstance();
         try {
             gameBoard.start(stage);

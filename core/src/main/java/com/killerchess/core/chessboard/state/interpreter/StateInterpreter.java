@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.killerchess.core.chessmans.Chessman.createChessman;
+
 @Component
 public class StateInterpreter {
 
@@ -73,46 +75,6 @@ public class StateInterpreter {
             // TODO AK how to catch?
         }
         return chessman;
-    }
-
-    private Chessman createChessman(String chessmanStringValue) throws NullPointerException, ColourNotFoundException {
-        var colour = tryGetColour(chessmanStringValue);
-        var chessmanChar = tryGetChessmanChar(chessmanStringValue);
-        switch (chessmanChar) {
-            case 'B':
-                return new Bishop(colour);
-            case 'K':
-                return new King(colour);
-            case 'H':
-                return new Horse(colour);
-            case 'P':
-                return new Pawn(colour);
-            case 'R':
-                return new Rook(colour);
-            case 'Q':
-                return new Queen(colour);
-            case 'X':
-                return new EmptyField(colour);
-        }
-        return null;
-    }
-
-    private char tryGetChessmanChar(String chessmanStringValue) throws NullPointerException {
-        return chessmanStringValue.charAt(0);
-    }
-
-    private ChessmanColourEnum tryGetColour(String chessmanStringValue)
-            throws NullPointerException, ColourNotFoundException {
-
-        var colourChar = chessmanStringValue.charAt(1);
-        if (colourChar == 'W') {
-            return ChessmanColourEnum.WHITE;
-        } else if (colourChar == 'B') {
-            return ChessmanColourEnum.BLACK;
-        } else if (colourChar == 'X') {
-            return ChessmanColourEnum.EMPTY;
-        }
-        throw new ColourNotFoundException("Unexpected colour found", colourChar);
     }
 
 }

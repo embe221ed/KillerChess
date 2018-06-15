@@ -19,6 +19,11 @@ public class ChessBoard {
         return chessBoard.get(row).get(col);
     }
 
+    public void setChessmanAt(int row, int col, Chessman chessman) {
+        chessBoard.get(row).remove(col);
+        chessBoard.get(row).add(col, chessman);
+    }
+
     public Chessman getChessmanAt(Pair<Integer, Integer> position) {
         int row = position.getKey();
         int col = position.getValue();

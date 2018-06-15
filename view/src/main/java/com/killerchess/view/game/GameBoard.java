@@ -1,6 +1,7 @@
 package com.killerchess.view.game;
 
 import com.killerchess.core.chessboard.ChessBoard;
+import com.killerchess.core.chessboard.state.interpreter.ColourNotFoundException;
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
 import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
@@ -10,6 +11,7 @@ import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.loging.LoginController;
+import com.killerchess.view.pawnpromotion.PawnPromotionController;
 import com.killerchess.view.utils.SoundPlayer;
 import javafx.application.Application;
 import javafx.concurrent.Service;
@@ -456,6 +458,7 @@ public class GameBoard extends Application {
                         completeKillMove(chessmanImage, newX, newY);
                         break;
                 }
+                checkIfOneOfPawnsShouldBePromoted();
                 checkIfGameEnded();
                 if (!gameFinished) {
                     updateGameState();
@@ -469,6 +472,48 @@ public class GameBoard extends Application {
         var areMovesPossibleMap = chessBoard.checkIfBothUsersHaveChessmen();
         if (!(areMovesPossibleMap.get(ChessmanColourEnum.BLACK) && areMovesPossibleMap.get(ChessmanColourEnum.WHITE))) {
             endOfGame();
+        }
+    }
+
+    private void checkIfOneOfPawnsShouldBePromoted() {
+        for (int x = 0; x < WIDTH; x++) {
+            checkIfWhitePawnShouldBePromoted(chessBoardOfChessmenImages[x][HEIGHT - 1], x);
+            checkIfBlackPawnShouldBePromoted(chessBoardOfChessmenImages[x][0], x);
+        }
+    }
+
+    private void checkIfWhitePawnShouldBePromoted(Tile chessmanTile, int col) {
+        Chessman chessman = chessmanTile.getChessmanImage().getChessman();
+        ChessmanColourEnum whiteColour = ChessmanColourEnum.WHITE;
+        int whitePawnsRowForPromotion = HEIGHT - 1;
+        checkIfPawnShouldBePromoted(chessman, whiteColour, chessmanTile, col, whitePawnsRowForPromotion);
+    }
+
+    private void checkIfBlackPawnShouldBePromoted(Tile chessmanTile, int col) {
+        Chessman chessman = chessmanTile.getChessmanImage().getChessman();
+        ChessmanColourEnum blackColour = ChessmanColourEnum.BLACK;
+        int blackPawnsRowForPromotion = 0;
+        checkIfPawnShouldBePromoted(chessman, blackColour, chessmanTile, col, blackPawnsRowForPromotion);
+    }
+
+    private void checkIfPawnShouldBePromoted(Chessman chessman, ChessmanColourEnum colour, Tile chessmanTile, int col,
+                                             int pawnsRowForPromotion) {
+        if (chessman.getSymbol().equals('P') && chessman.getColour().equals(colour)) {
+            try {
+                var chessmanSymbolToSubstitutePawn =
+                        new PawnPromotionController().getChessmanSymbolToPromoteFromShownWindow();
+                var chessmanStringValueToSubstitutePawn = chessmanSymbolToSubstitutePawn.toString()
+                        + colour.getSymbol();
+                var chessmanToSubstitutePawn = Chessman.createChessman(chessmanStringValueToSubstitutePawn);
+                chessBoard.setChessmanAt(pawnsRowForPromotion, col, chessmanToSubstitutePawn);
+                var chessmanImageToSubstitutePawn = new ChessmanImage(chessmanToSubstitutePawn);
+                chessmanTile.getChessmanImage().removeImage();
+                chessmanTile.setChessmanImage(chessmanImageToSubstitutePawn);
+                updateChessBoardOfChessmen();
+                drawTiles();
+            } catch (ColourNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -9,9 +9,8 @@ public enum ChessmanColourEnum {
                 return 'B';
             case WHITE:
                 return 'W';
-            case EMPTY:
+            default:
                 return 'X';
         }
-        return null;
     }
 }

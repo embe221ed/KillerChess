@@ -13,9 +13,9 @@ import static com.killerchess.view.game.ImagesConstants.*;
 
 class ChessmanImage extends StackPane {
 
+    private ChessmanTypeEnum type;
     public static int CHESSMAN_SIZE = (int) (GameBoard.TILE_SIZE * 0.9);
 
-    private ChessmanType type;
     private Chessman chessman;
     private ImageView imageView;
     private ChessmanColourEnum colour;
@@ -79,13 +79,13 @@ class ChessmanImage extends StackPane {
     ChessmanImage(Chessman chessman, int chessmanStyleNumber, int x, int y){
         this.colour = chessman.getColour();
         this.chessman = chessman;
-        this.type = ChessmanType.getTypeFromSymbol(chessman.getSymbol());
+        this.type = ChessmanTypeEnum.getTypeFromSymbol(chessman.getSymbol());
         relocate(x * GameBoard.TILE_SIZE + 7, y * GameBoard.TILE_SIZE + 7);
         setChessmanImage(chessman, chessmanStyleNumber);
     }
 
     private void setChessmanImage(Chessman chessman, int chessmanStyleNumber) {
-        if(this.type != ChessmanType.EMPTY) {
+        if(this.type != ChessmanTypeEnum.EMPTY) {
             String chessmanTypeLowerCase = type.name().toLowerCase();
             String chessmanColourLowerCase = chessman.getColour().toString().toLowerCase();
             File imageFile = getChessmanImageFile(chessmanStyleNumber, chessmanTypeLowerCase, chessmanColourLowerCase);
