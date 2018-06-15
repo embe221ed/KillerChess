@@ -485,43 +485,30 @@ public class GameBoard extends Application {
     private void checkIfWhitePawnShouldBePromoted(Tile chessmanTile, int col) {
         Chessman chessman = chessmanTile.getChessmanImage().getChessman();
         ChessmanColourEnum whiteColour = ChessmanColourEnum.WHITE;
-        if (chessman.getSymbol().equals('P') && chessman.getColour().equals(whiteColour)) {
-            try {
-                var chessmanSymbolToSubstitutePawn =
-                        new PawnPromotionController().getChessmanSymbolToPromoteFromShownWindow();
-                var chessmanStringValueToSubstitutePawn = chessmanSymbolToSubstitutePawn.toString()
-                        + whiteColour.getSymbol();
-                var chessmanToSubstitutePawn = Chessman.createChessman(chessmanStringValueToSubstitutePawn);
-                chessBoard.setChessmanAt(HEIGHT - 1, col, chessmanToSubstitutePawn);
-                var chessmanImageToSubstitutePawn = new ChessmanImage(chessmanToSubstitutePawn);
-                chessmanTile.getChessmanImage().removeImage();
-                chessmanTile.setChessmanImage(chessmanImageToSubstitutePawn);
-                updateGameStatesList();
-                updateGameState();
-                updateChessBoardOfChessmen();
-                drawTiles();
-            } catch (ColourNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+        int whitePawnsRowForPromotion = HEIGHT - 1;
+        checkIfPawnShouldBePromoted(chessman, whiteColour, chessmanTile, col, whitePawnsRowForPromotion);
     }
 
     private void checkIfBlackPawnShouldBePromoted(Tile chessmanTile, int col) {
         Chessman chessman = chessmanTile.getChessmanImage().getChessman();
         ChessmanColourEnum blackColour = ChessmanColourEnum.BLACK;
-        if (chessman.getSymbol().equals('P') && chessman.getColour().equals(blackColour)) {
+        int blackPawnsRowForPromotion = 0;
+        checkIfPawnShouldBePromoted(chessman, blackColour, chessmanTile, col, blackPawnsRowForPromotion);
+    }
+
+    private void checkIfPawnShouldBePromoted(Chessman chessman, ChessmanColourEnum colour, Tile chessmanTile, int col,
+                                             int pawnsRowForPromotion) {
+        if (chessman.getSymbol().equals('P') && chessman.getColour().equals(colour)) {
             try {
                 var chessmanSymbolToSubstitutePawn =
                         new PawnPromotionController().getChessmanSymbolToPromoteFromShownWindow();
                 var chessmanStringValueToSubstitutePawn = chessmanSymbolToSubstitutePawn.toString()
-                        + blackColour.getSymbol();
+                        + colour.getSymbol();
                 var chessmanToSubstitutePawn = Chessman.createChessman(chessmanStringValueToSubstitutePawn);
-                chessBoard.setChessmanAt(0, col, chessmanToSubstitutePawn);
+                chessBoard.setChessmanAt(pawnsRowForPromotion, col, chessmanToSubstitutePawn);
                 var chessmanImageToSubstitutePawn = new ChessmanImage(chessmanToSubstitutePawn);
                 chessmanTile.getChessmanImage().removeImage();
                 chessmanTile.setChessmanImage(chessmanImageToSubstitutePawn);
-                updateGameStatesList();
-                updateGameState();
                 updateChessBoardOfChessmen();
                 drawTiles();
             } catch (ColourNotFoundException e) {
