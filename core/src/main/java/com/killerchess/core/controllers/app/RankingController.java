@@ -106,9 +106,10 @@ public class RankingController {
     private void updateUsersRankingPoints(String username, String firstGameState, String lastGameState, boolean isHost) {
         RankingRegistry rankingRegistry = rankingService.findByUsername(username);
         int userPoints = rankingRegistry.getPoints();
-        userPoints += (isHost) ?
-                pointsCounter.countWhitePlayerPoints(firstGameState, lastGameState) :
-                pointsCounter.countBlackPlayerPoints(firstGameState, lastGameState);
+        userPoints +=
+                (isHost)
+                        ? pointsCounter.countWhitePlayerPoints(firstGameState, lastGameState)
+                        : pointsCounter.countBlackPlayerPoints(firstGameState, lastGameState);
         rankingRegistry.setPoints(userPoints);
         rankingService.save(rankingRegistry);
     }

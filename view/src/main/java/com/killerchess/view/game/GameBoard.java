@@ -140,10 +140,10 @@ public class GameBoard extends Application {
                 .exchange(LoginController.HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         initGameBoard(responseEntity.getBody());
         stage.getScene().setRoot(root);
-        messages.setText("TWÓJ RUCH");
+        messages.setText("YOUR MOVE");
         if (!gameFinished) {
             if (responseEntity.getStatusCode().equals(HttpStatus.CREATED)) {
-                messages.setText("WYGRALES");
+                messages.setText("YOU WON!");
                 finishGame();
             } else if (chessBoard.isStalemate(chessmanColour)) {
                 endOfGameStalemate();
@@ -171,10 +171,10 @@ public class GameBoard extends Application {
     }
 
     private void initAllButtons() {
-        helpButton = initButton(60.0, "POMOC", gameFinished);
-        currentGameStateButton = initButton((BUTTON_HEIGHT + 20) * 2 + 60, "AKTUALNA", !historyModeActive);
-        movesHistoryButton = initButton((BUTTON_HEIGHT + 20) + 60, "HISTORIA", historyModeActive && gameStates.isEmpty());
-        returnButton = initButton((BUTTON_HEIGHT + 20) * 3 + 60, "POWRÓT", !gameFinished);
+        helpButton = initButton(60.0, "HELP", gameFinished);
+        currentGameStateButton = initButton((BUTTON_HEIGHT + 20) * 2 + 60, "CURRENT", !historyModeActive);
+        movesHistoryButton = initButton((BUTTON_HEIGHT + 20) + 60, "PREVIOUS", historyModeActive && gameStates.isEmpty());
+        returnButton = initButton((BUTTON_HEIGHT + 20) * 3 + 60, "RETURN", !gameFinished);
         setCurrentGameStateButtonOnClickFunction();
         setMovesHistoryButtonOnClickFunction();
         setHelpButtonMouseOnClickFunction();
@@ -407,7 +407,7 @@ public class GameBoard extends Application {
     }
 
     private void waitForOpponentsMove() {
-        messages.setText("CZEKAJ");
+        messages.setText("WAIT");
         listenerService.start();
     }
 
@@ -507,7 +507,7 @@ public class GameBoard extends Application {
 
     private void endOfGame() {
         updateGameState();
-        messages.setText("PRZEGRALES");
+        messages.setText("YOU LOST");
         var responseEntity = localSessionSingleton.
                 exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
                         HttpMethod.GET,
@@ -523,7 +523,7 @@ public class GameBoard extends Application {
     }
 
     private void endOfGameStalemate() {
-        messages.setText("PAT");
+        messages.setText("STALEMATE");
         var responseEntity = localSessionSingleton.
                 exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
                         HttpMethod.GET,
