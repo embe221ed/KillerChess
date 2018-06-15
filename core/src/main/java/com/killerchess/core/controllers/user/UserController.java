@@ -54,18 +54,18 @@ public class UserController {
                                    @RequestParam(value = "password") String password,
                                    HttpServletRequest request) {
         try {
-            if (!registerService.isPasswordValid(password)) {
-                return new ResponseEntity<>("Wrong password. Password requirements: one big and small character, " +
-                        "one digit, one special sign, 8 up to 25 characters.",
-                        HttpStatus.NOT_ACCEPTABLE);
-            }
-            if (!registerService.isValidUser(name, password)) {
-                return new ResponseEntity<>("Wrong user or password. Please provide password different from your login",
-                        HttpStatus.NOT_ACCEPTABLE);
-            }
-            if (userService.existsLogin(name)) {
-                return new ResponseEntity<>("User with that login already exists.", HttpStatus.NOT_ACCEPTABLE);
-            }
+//            if (!registerService.isPasswordValid(password)) {
+//                return new ResponseEntity<>("Wrong password. Password requirements: one big and small character, " +
+//                        "one digit, one special sign, 8 up to 25 characters.",
+//                        HttpStatus.NOT_ACCEPTABLE);
+//            }
+//            if (!registerService.isValidUser(name, password)) {
+//                return new ResponseEntity<>("Wrong user or password. Please provide password different from your login",
+//                        HttpStatus.NOT_ACCEPTABLE);
+//            }
+//            if (userService.existsLogin(name)) {
+//                return new ResponseEntity<>("User with that login already exists.", HttpStatus.NOT_ACCEPTABLE);
+//            }
             request.getSession();
             User user = new User(name);
             user.setHashedPassword(password);

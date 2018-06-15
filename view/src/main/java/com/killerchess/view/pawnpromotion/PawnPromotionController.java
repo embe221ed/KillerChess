@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,12 +35,18 @@ public class PawnPromotionController {
     }
 
 
-    public ChessmanTypeEnum getPawnToPromoteFromShownWindow() throws IOException {
+    public Character getChessmanSymbolToPromoteFromShownWindow() {
         FXMLLoader loader = new FXMLLoader(PawnPromotionController.class.getResource("/pawn_promotion.fxml"));
-        Parent root = loader.load();
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Scene scene = new Scene(root, 640, 260);
 
         window = new Stage();
+        window.initStyle(StageStyle.UNDECORATED);
         window.initModality(Modality.APPLICATION_MODAL);
         window.setScene(scene);
 
@@ -48,7 +55,7 @@ public class PawnPromotionController {
 
         window.showAndWait();
 
-        return chosenChessmanToPromote;
+        return chosenChessmanToPromote.getSymbolFromType();
     }
 
     private void loadChessmenIconsOnPanel() {

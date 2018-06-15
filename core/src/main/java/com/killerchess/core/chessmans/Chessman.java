@@ -1,6 +1,7 @@
 package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.ChessBoard;
+import com.killerchess.core.chessboard.state.interpreter.ColourNotFoundException;
 import javafx.util.Pair;
 
 import java.util.Set;
@@ -41,6 +42,44 @@ public abstract class Chessman {
 
     public void setChessman(String chessman) {
         this.chessman = chessman;
+    }
+
+    public static Chessman createChessman(String chessmanStringValue) throws ColourNotFoundException {
+        var colour = tryGetColour(chessmanStringValue);
+        var chessmanChar = tryGetChessmanChar(chessmanStringValue);
+        switch (chessmanChar) {
+            case 'B':
+                return new Bishop(colour);
+            case 'K':
+                return new King(colour);
+            case 'H':
+                return new Horse(colour);
+            case 'P':
+                return new Pawn(colour);
+            case 'R':
+                return new Rook(colour);
+            case 'Q':
+                return new Queen(colour);
+            default:
+                return new EmptyField(colour);
+        }
+    }
+
+    private static char tryGetChessmanChar(String chessmanStringValue) {
+        return chessmanStringValue.charAt(0);
+    }
+
+    private static ChessmanColourEnum tryGetColour(String chessmanStringValue) throws ColourNotFoundException {
+
+        var colourChar = chessmanStringValue.charAt(1);
+        if (colourChar == 'W') {
+            return ChessmanColourEnum.WHITE;
+        } else if (colourChar == 'B') {
+            return ChessmanColourEnum.BLACK;
+        } else if (colourChar == 'X') {
+            return ChessmanColourEnum.EMPTY;
+        }
+        throw new ColourNotFoundException("Unexpected colour found", colourChar);
     }
 
     public abstract Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard,

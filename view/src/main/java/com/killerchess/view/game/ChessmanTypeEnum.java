@@ -23,6 +23,25 @@ public enum ChessmanTypeEnum {
                 return EMPTY;
         }
     }
+
+    public Character getSymbolFromType(){
+        switch(this) {
+            case BISHOP:
+                return 'B';
+            case PAWN:
+                return 'P';
+            case HORSE:
+                return 'H';
+            case ROOK:
+                return 'R';
+            case QUEEN:
+                return 'Q';
+            case KING:
+                return 'K';
+            default:
+                return 'X';
+        }
+    }
     ChessmanTypeEnum(int moveDir){
         this.moveDir = moveDir;
     }
