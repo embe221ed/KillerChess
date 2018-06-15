@@ -8,6 +8,7 @@ import com.killerchess.core.chessmans.EmptyField;
 import com.killerchess.core.controllers.app.RankingController;
 import com.killerchess.core.controllers.game.GameController;
 import com.killerchess.core.session.LocalSessionSingleton;
+import com.killerchess.view.View;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.SoundPlayer;
 import javafx.application.Application;
@@ -20,6 +21,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.springframework.core.ParameterizedTypeReference;
@@ -43,7 +47,7 @@ public class GameBoard extends Application {
     private static final int WIDTH = 8;
     private static final int HEIGHT = 8;
     private static final double LOGO_WIDTH_HEIGHT_RATIO = 3.52;
-    private static final int BUTTON_HEIGHT = 100;
+    private static final int BUTTON_HEIGHT = 60;
     private static final int BUTTON_WIDTH = 100;
 
     private static GameBoard instance;
@@ -68,6 +72,8 @@ public class GameBoard extends Application {
     private Button helpButton;
     private Button movesHistoryButton;
     private Button currentGameStateButton;
+    private Button returnButton;
+    private Text messages;
     private ChessBoard chessBoard;
     private HBox root;
 
@@ -134,11 +140,14 @@ public class GameBoard extends Application {
                 .exchange(LoginController.HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         initGameBoard(responseEntity.getBody());
         stage.getScene().setRoot(root);
+        messages.setText("YOUR MOVE");
         if (!gameFinished) {
-            if (responseEntity.getStatusCode().equals(HttpStatus.CREATED))
+            if (responseEntity.getStatusCode().equals(HttpStatus.CREATED)) {
+                messages.setText("YOU WON!");
                 finishGame();
-            else if (chessBoard.isStalemate(chessmanColour))
+            } else if (chessBoard.isStalemate(chessmanColour)) {
                 endOfGameStalemate();
+            }
         }
     }
 
@@ -155,20 +164,43 @@ public class GameBoard extends Application {
         initNodes();
         setKillerChessLogoImage();
         root.setMinWidth(WIDTH * TILE_SIZE + killerChessLogoImage.getWidth());
+        initMessagesText();
         initAllButtons();
         root.getChildren().addAll(groups, buttonsGroup);
         drawTiles();
     }
 
     private void initAllButtons() {
-        helpButton = initButton(40.0, "POMOC", false);
-        currentGameStateButton = initButton(280.0, "AKTUALNA", !historyModeActive);
-        movesHistoryButton = initButton(160.0, "HISTORIA", historyModeActive && gameStates.isEmpty());
+        helpButton = initButton(60.0, "HELP", gameFinished);
+        currentGameStateButton = initButton((BUTTON_HEIGHT + 20) * 2 + 60, "CURRENT", !historyModeActive);
+        movesHistoryButton = initButton((BUTTON_HEIGHT + 20) + 60, "PREVIOUS", historyModeActive && gameStates.isEmpty());
+        returnButton = initButton((BUTTON_HEIGHT + 20) * 3 + 60, "RETURN", !gameFinished);
         setCurrentGameStateButtonOnClickFunction();
         setMovesHistoryButtonOnClickFunction();
         setHelpButtonMouseOnClickFunction();
+        setReturnButtonMouseOnClickFunction();
         buttonsGroup = new Group();
-        buttonsGroup.getChildren().addAll(killerChessLogoImageView, helpButton, movesHistoryButton, currentGameStateButton);
+        buttonsGroup.getChildren().addAll(killerChessLogoImageView, messages, helpButton, movesHistoryButton, currentGameStateButton, returnButton);
+    }
+
+    private void initMessagesText() {
+        messages = new Text();
+        messages.setLayoutX(TILE_SIZE * WIDTH + 20.0);
+        messages.setLayoutY(560.0);
+        messages.setFont(Font.font("Arial", 20));
+        messages.setFill(Color.WHITE);
+    }
+
+    private void setReturnButtonMouseOnClickFunction() {
+        returnButton.setOnMouseClicked(e -> {
+            try {
+                View view = View.getInstance();
+                View.setInitFxmlFilePath("/main_screen.fxml");
+                view.start(stage);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
     }
 
     private Button initButton(double layoutY, String text, boolean disabled) {
@@ -184,6 +216,8 @@ public class GameBoard extends Application {
     private void finishGame() {
         helpButton.setDisable(true);
         gameFinished = true;
+        returnButton.setDisable(false);
+        new Thread(SoundPlayer::playOnGameEnd).start();
     }
 
     private void setKillerChessLogoImage() {
@@ -373,6 +407,7 @@ public class GameBoard extends Application {
     }
 
     private void waitForOpponentsMove() {
+        messages.setText("WAIT");
         listenerService.start();
     }
 
@@ -472,6 +507,7 @@ public class GameBoard extends Application {
 
     private void endOfGame() {
         updateGameState();
+        messages.setText("YOU LOST");
         var responseEntity = localSessionSingleton.
                 exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
                         HttpMethod.GET,
@@ -487,6 +523,7 @@ public class GameBoard extends Application {
     }
 
     private void endOfGameStalemate() {
+        messages.setText("STALEMATE");
         var responseEntity = localSessionSingleton.
                 exchange(LoginController.HOST + GameController.FINISH_GAME_PATH,
                         HttpMethod.GET,

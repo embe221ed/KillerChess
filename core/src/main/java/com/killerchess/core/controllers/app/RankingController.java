@@ -70,9 +70,13 @@ public class RankingController {
         try {
             HttpSession session = request.getSession();
             String gameId = session.getAttribute(GameController.GAME_ID_PARAM).toString();
-            String winnersLogin = session.getAttribute("username").toString();
-            Game game = gameService.findGame(gameId);
+            String losersLogin = session.getAttribute("username").toString();
             var gameStates = gameService.getListOfGameStatesForGame(gameId);
+            Game game = gameService.findGame(gameId);
+            String winnersLogin =
+                    game.getHost().getLogin().equals(losersLogin)
+                            ? game.getGuest().getLogin()
+                            : game.getHost().getLogin();
             String firstGameState = gameStates.get(gameStates.size() - 1);
             String lastGameState = gameStates.get(0);
             updateUsersRankingPoints(winnersLogin, firstGameState, lastGameState, winnersLogin.equals(game.getHost().getLogin()));
@@ -104,9 +108,10 @@ public class RankingController {
     private void updateUsersRankingPoints(String username, String firstGameState, String lastGameState, boolean isHost) {
         RankingRegistry rankingRegistry = rankingService.findByUsername(username);
         int userPoints = rankingRegistry.getPoints();
-        userPoints += (isHost) ?
-                pointsCounter.countWhitePlayerPoints(firstGameState, lastGameState) :
-                pointsCounter.countBlackPlayerPoints(firstGameState, lastGameState);
+        userPoints +=
+                (isHost)
+                        ? pointsCounter.countWhitePlayerPoints(firstGameState, lastGameState)
+                        : pointsCounter.countBlackPlayerPoints(firstGameState, lastGameState);
         rankingRegistry.setPoints(userPoints);
         rankingService.save(rankingRegistry);
     }

@@ -11,6 +11,7 @@ public class View extends Application {
 
     private static View instance;
     private Stage stage;
+    private static String initFxmlFilePath;
 
     public View() {
         instance = this;
@@ -21,14 +22,19 @@ public class View extends Application {
     }
 
     public static void main(String[] args) {
+        setInitFxmlFilePath("/loging.fxml");
         launch(args);
+    }
+
+    public static void setInitFxmlFilePath(String initFxmlFilePath) {
+        View.initFxmlFilePath = initFxmlFilePath;
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
         setPrimaryStageProperties(primaryStage);
-        this.changeScene("/loging.fxml");
+        this.changeScene(initFxmlFilePath);
     }
 
     private void setPrimaryStageProperties(Stage primaryStage) {
