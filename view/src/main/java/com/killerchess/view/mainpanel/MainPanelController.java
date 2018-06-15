@@ -74,13 +74,13 @@ public class MainPanelController {
     public TextArea roomInfo;
     public Button changeAvatarButton;
     public Text usernameText;
+    public Button refreshRooms;
     private String userPoints;
     private boolean selectedAccountTab = true;
     private String username;
     private double panelWidth;
     private double panelHeight;
     private LocalSessionSingleton localSessionSingleton = LocalSessionSingleton.getInstance();
-    public Button refreshRooms;
 
     @FXML
     public void initialize() {

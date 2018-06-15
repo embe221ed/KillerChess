@@ -35,7 +35,7 @@ class PointsCounterTest {
     }
 
     @Test
-    void whenInputBoardIsSameAsOutpuBoardThenFinalScoreOfBothPlayerIsZero() {
+    void whenInputBoardIsSameAsOutputBoardThenFinalScoreOfBothPlayerIsZero() {
         var whitePlayerPoints =
                 pointsCounter.countWhitePlayerPoints(DEFAULT_ARRANGEMENT_JSON, DEFAULT_ARRANGEMENT_JSON);
         assertEquals(Integer.valueOf(0), whitePlayerPoints);

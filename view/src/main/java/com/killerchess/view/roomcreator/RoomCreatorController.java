@@ -51,9 +51,7 @@ public class RoomCreatorController {
                                     .exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
 
                         } while (!responseEntity.getBody());
-                        new Thread(() -> {
-                            SoundPlayer.playOnGameStart();
-                        }).start();
+                        new Thread(SoundPlayer::playOnGameStart).start();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

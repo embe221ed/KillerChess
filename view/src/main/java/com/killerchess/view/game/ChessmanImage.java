@@ -14,7 +14,7 @@ import static com.killerchess.view.game.ImagesConstants.*;
 class ChessmanImage extends StackPane {
 
     private ChessmanTypeEnum type;
-    public static int CHESSMAN_SIZE = (int) (GameBoard.TILE_SIZE * 0.9);
+    private static int CHESSMAN_SIZE = (int) (GameBoard.TILE_SIZE * 0.9);
 
     private Chessman chessman;
     private ImageView imageView;
