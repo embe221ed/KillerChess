@@ -1,7 +1,7 @@
 package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -31,7 +31,7 @@ class KingTest {
         var whiteKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteKing instanceof King);
         assertEquals(whiteKing.getColour(), ChessmanColourEnum.WHITE);
-        var possibleMoves = whiteKing.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = whiteKing.getPossibleMoves(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(0, possibleMoves.size());
     }
 
@@ -45,13 +45,13 @@ class KingTest {
         var whiteKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteKing instanceof King);
         assertEquals(whiteKing.getColour(), ChessmanColourEnum.WHITE);
-        var possibleMoves = whiteKing.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = whiteKing.getPossibleMoves(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(3, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(2, 2));
-        expectedMoves.add(new Pair<>(2, 4));
-        expectedMoves.add(new Pair<>(4, 2));
+        expectedMoves.add(Pair.of(2, 2));
+        expectedMoves.add(Pair.of(2, 4));
+        expectedMoves.add(Pair.of(4, 2));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -65,18 +65,18 @@ class KingTest {
         var whiteKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteKing instanceof King);
         assertEquals(whiteKing.getColour(), ChessmanColourEnum.WHITE);
-        var possibleMoves = whiteKing.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = whiteKing.getPossibleMoves(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(8, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(2, 2));
-        expectedMoves.add(new Pair<>(2, 3));
-        expectedMoves.add(new Pair<>(2, 4));
-        expectedMoves.add(new Pair<>(3, 2));
-        expectedMoves.add(new Pair<>(3, 4));
-        expectedMoves.add(new Pair<>(4, 2));
-        expectedMoves.add(new Pair<>(4, 3));
-        expectedMoves.add(new Pair<>(4, 4));
+        expectedMoves.add(Pair.of(2, 2));
+        expectedMoves.add(Pair.of(2, 3));
+        expectedMoves.add(Pair.of(2, 4));
+        expectedMoves.add(Pair.of(3, 2));
+        expectedMoves.add(Pair.of(3, 4));
+        expectedMoves.add(Pair.of(4, 2));
+        expectedMoves.add(Pair.of(4, 3));
+        expectedMoves.add(Pair.of(4, 4));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -90,7 +90,7 @@ class KingTest {
         var blackKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackKing instanceof King);
         assertEquals(blackKing.getColour(), ChessmanColourEnum.BLACK);
-        var possibleMoves = blackKing.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = blackKing.getPossibleMoves(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(0, possibleMoves.size());
 
     }
@@ -105,13 +105,13 @@ class KingTest {
         var blackKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackKing instanceof King);
         assertEquals(blackKing.getColour(), ChessmanColourEnum.BLACK);
-        var possibleMoves = blackKing.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = blackKing.getPossibleMoves(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(3, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(2, 2));
-        expectedMoves.add(new Pair<>(2, 4));
-        expectedMoves.add(new Pair<>(4, 2));
+        expectedMoves.add(Pair.of(2, 2));
+        expectedMoves.add(Pair.of(2, 4));
+        expectedMoves.add(Pair.of(4, 2));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -125,18 +125,18 @@ class KingTest {
         var blackKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackKing instanceof King);
         assertEquals(blackKing.getColour(), ChessmanColourEnum.BLACK);
-        var possibleMoves = blackKing.getPossibleMoves(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleMoves = blackKing.getPossibleMoves(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(8, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(2, 2));
-        expectedMoves.add(new Pair<>(2, 3));
-        expectedMoves.add(new Pair<>(2, 4));
-        expectedMoves.add(new Pair<>(3, 2));
-        expectedMoves.add(new Pair<>(3, 4));
-        expectedMoves.add(new Pair<>(4, 2));
-        expectedMoves.add(new Pair<>(4, 3));
-        expectedMoves.add(new Pair<>(4, 4));
+        expectedMoves.add(Pair.of(2, 2));
+        expectedMoves.add(Pair.of(2, 3));
+        expectedMoves.add(Pair.of(2, 4));
+        expectedMoves.add(Pair.of(3, 2));
+        expectedMoves.add(Pair.of(3, 4));
+        expectedMoves.add(Pair.of(4, 2));
+        expectedMoves.add(Pair.of(4, 3));
+        expectedMoves.add(Pair.of(4, 4));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -150,7 +150,7 @@ class KingTest {
         var whiteKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteKing instanceof King);
         assertEquals(whiteKing.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whiteKing.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = whiteKing.getPossibleCaptures(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(0, possibleCaptures.size());
     }
 
@@ -164,13 +164,13 @@ class KingTest {
         var whiteKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteKing instanceof King);
         assertEquals(whiteKing.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whiteKing.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = whiteKing.getPossibleCaptures(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(3, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(3, 4));
-        expectedCaptures.add(new Pair<>(4, 3));
-        expectedCaptures.add(new Pair<>(4, 4));
+        expectedCaptures.add(Pair.of(3, 4));
+        expectedCaptures.add(Pair.of(4, 3));
+        expectedCaptures.add(Pair.of(4, 4));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -184,18 +184,18 @@ class KingTest {
         var whiteKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(whiteKing instanceof King);
         assertEquals(whiteKing.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whiteKing.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = whiteKing.getPossibleCaptures(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(8, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(2, 2));
-        expectedCaptures.add(new Pair<>(2, 3));
-        expectedCaptures.add(new Pair<>(2, 4));
-        expectedCaptures.add(new Pair<>(3, 2));
-        expectedCaptures.add(new Pair<>(3, 4));
-        expectedCaptures.add(new Pair<>(4, 2));
-        expectedCaptures.add(new Pair<>(4, 3));
-        expectedCaptures.add(new Pair<>(4, 4));
+        expectedCaptures.add(Pair.of(2, 2));
+        expectedCaptures.add(Pair.of(2, 3));
+        expectedCaptures.add(Pair.of(2, 4));
+        expectedCaptures.add(Pair.of(3, 2));
+        expectedCaptures.add(Pair.of(3, 4));
+        expectedCaptures.add(Pair.of(4, 2));
+        expectedCaptures.add(Pair.of(4, 3));
+        expectedCaptures.add(Pair.of(4, 4));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -209,7 +209,7 @@ class KingTest {
         var blackKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackKing instanceof King);
         assertEquals(blackKing.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackKing.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = blackKing.getPossibleCaptures(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(0, possibleCaptures.size());
     }
 
@@ -223,13 +223,13 @@ class KingTest {
         var blackKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackKing instanceof King);
         assertEquals(blackKing.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackKing.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = blackKing.getPossibleCaptures(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(3, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(3, 4));
-        expectedCaptures.add(new Pair<>(4, 3));
-        expectedCaptures.add(new Pair<>(4, 4));
+        expectedCaptures.add(Pair.of(3, 4));
+        expectedCaptures.add(Pair.of(4, 3));
+        expectedCaptures.add(Pair.of(4, 4));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -243,18 +243,18 @@ class KingTest {
         var blackKing = chessBoard.getChessmanAt(kingRow, kingCol);
         assertTrue(blackKing instanceof King);
         assertEquals(blackKing.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackKing.getPossibleCaptures(chessBoard, new Pair<>(kingRow, kingCol));
+        var possibleCaptures = blackKing.getPossibleCaptures(chessBoard, Pair.of(kingRow, kingCol));
         assertEquals(8, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(2, 2));
-        expectedCaptures.add(new Pair<>(2, 3));
-        expectedCaptures.add(new Pair<>(2, 4));
-        expectedCaptures.add(new Pair<>(3, 2));
-        expectedCaptures.add(new Pair<>(3, 4));
-        expectedCaptures.add(new Pair<>(4, 2));
-        expectedCaptures.add(new Pair<>(4, 3));
-        expectedCaptures.add(new Pair<>(4, 4));
+        expectedCaptures.add(Pair.of(2, 2));
+        expectedCaptures.add(Pair.of(2, 3));
+        expectedCaptures.add(Pair.of(2, 4));
+        expectedCaptures.add(Pair.of(3, 2));
+        expectedCaptures.add(Pair.of(3, 4));
+        expectedCaptures.add(Pair.of(4, 2));
+        expectedCaptures.add(Pair.of(4, 3));
+        expectedCaptures.add(Pair.of(4, 4));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 

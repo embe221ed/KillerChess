@@ -2,7 +2,7 @@ package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.ChessBoard;
 import com.killerchess.core.chessboard.state.interpreter.ColourNotFoundException;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 
 import java.util.Set;
 
@@ -89,8 +89,8 @@ public abstract class Chessman {
                                                                     Pair<Integer, Integer> position);
 
     boolean isFieldWithinBoard(Pair<Integer, Integer> field) {
-        var fieldRow = field.getKey();
-        var fieldCol = field.getValue();
+        var fieldRow = field.getFirst();
+        var fieldCol = field.getSecond();
         return fieldRow >= 0 && fieldRow <= 7
                 && fieldCol >= 0 && fieldCol <= 7;
     }
@@ -111,7 +111,7 @@ public abstract class Chessman {
                                                                          ChessmanColourEnum color,
                                                                          Set<Pair<Integer, Integer>> fieldSet,
                                                                          Integer col, int row) {
-        var field = new Pair<>(row, col);
+        var field = Pair.of(row, col);
         if (!isFieldEmpty(chessBoard, field)) {
             if (chessBoard.getChessmanAt(field).getColour().equals(color))
                 fieldSet.add(field);

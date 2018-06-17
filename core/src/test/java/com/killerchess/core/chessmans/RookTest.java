@@ -1,7 +1,7 @@
 package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -32,7 +32,7 @@ class RookTest {
         var whiteRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(whiteRook instanceof Rook);
         assertEquals(whiteRook.getColour(), ChessmanColourEnum.WHITE);
-        Set possibleMoves = whiteRook.getPossibleMoves(chessBoard, new Pair<>(rookRow, rookCol));
+        Set possibleMoves = whiteRook.getPossibleMoves(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(0, possibleMoves.size());
     }
 
@@ -46,12 +46,12 @@ class RookTest {
         var whiteRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(whiteRook instanceof Rook);
         assertEquals(whiteRook.getColour(), ChessmanColourEnum.WHITE);
-        Set possibleMoves = whiteRook.getPossibleMoves(chessBoard, new Pair<>(rookRow, rookCol));
+        Set possibleMoves = whiteRook.getPossibleMoves(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(2, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(3, 4));
-        expectedMoves.add(new Pair<>(2, 3));
+        expectedMoves.add(Pair.of(3, 4));
+        expectedMoves.add(Pair.of(2, 3));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -65,24 +65,24 @@ class RookTest {
         var whiteRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(whiteRook instanceof Rook);
         assertEquals(whiteRook.getColour(), ChessmanColourEnum.WHITE);
-        Set possibleMoves = whiteRook.getPossibleMoves(chessBoard, new Pair<>(rookRow, rookCol));
+        Set possibleMoves = whiteRook.getPossibleMoves(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(14, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(3, 0));
-        expectedMoves.add(new Pair<>(3, 1));
-        expectedMoves.add(new Pair<>(3, 2));
-        expectedMoves.add(new Pair<>(3, 4));
-        expectedMoves.add(new Pair<>(3, 5));
-        expectedMoves.add(new Pair<>(3, 6));
-        expectedMoves.add(new Pair<>(3, 7));
-        expectedMoves.add(new Pair<>(0, 3));
-        expectedMoves.add(new Pair<>(1, 3));
-        expectedMoves.add(new Pair<>(2, 3));
-        expectedMoves.add(new Pair<>(4, 3));
-        expectedMoves.add(new Pair<>(5, 3));
-        expectedMoves.add(new Pair<>(6, 3));
-        expectedMoves.add(new Pair<>(7, 3));
+        expectedMoves.add(Pair.of(3, 0));
+        expectedMoves.add(Pair.of(3, 1));
+        expectedMoves.add(Pair.of(3, 2));
+        expectedMoves.add(Pair.of(3, 4));
+        expectedMoves.add(Pair.of(3, 5));
+        expectedMoves.add(Pair.of(3, 6));
+        expectedMoves.add(Pair.of(3, 7));
+        expectedMoves.add(Pair.of(0, 3));
+        expectedMoves.add(Pair.of(1, 3));
+        expectedMoves.add(Pair.of(2, 3));
+        expectedMoves.add(Pair.of(4, 3));
+        expectedMoves.add(Pair.of(5, 3));
+        expectedMoves.add(Pair.of(6, 3));
+        expectedMoves.add(Pair.of(7, 3));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -96,7 +96,7 @@ class RookTest {
         var blackRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(blackRook instanceof Rook);
         assertEquals(blackRook.getColour(), ChessmanColourEnum.BLACK);
-        Set possibleMoves = blackRook.getPossibleMoves(chessBoard, new Pair<>(rookRow, rookCol));
+        Set possibleMoves = blackRook.getPossibleMoves(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(0, possibleMoves.size());
 
     }
@@ -111,13 +111,13 @@ class RookTest {
         var blackRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(blackRook instanceof Rook);
         assertEquals(blackRook.getColour(), ChessmanColourEnum.BLACK);
-        Set possibleMoves = blackRook.getPossibleMoves(chessBoard, new Pair<>(rookRow, rookCol));
+        Set possibleMoves = blackRook.getPossibleMoves(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(3, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(3, 2));
-        expectedMoves.add(new Pair<>(4, 3));
-        expectedMoves.add(new Pair<>(5, 3));
+        expectedMoves.add(Pair.of(3, 2));
+        expectedMoves.add(Pair.of(4, 3));
+        expectedMoves.add(Pair.of(5, 3));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -131,24 +131,24 @@ class RookTest {
         var blackRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(blackRook instanceof Rook);
         assertEquals(blackRook.getColour(), ChessmanColourEnum.BLACK);
-        Set possibleMoves = blackRook.getPossibleMoves(chessBoard, new Pair<>(rookRow, rookCol));
+        Set possibleMoves = blackRook.getPossibleMoves(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(14, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(3, 0));
-        expectedMoves.add(new Pair<>(3, 1));
-        expectedMoves.add(new Pair<>(3, 2));
-        expectedMoves.add(new Pair<>(3, 4));
-        expectedMoves.add(new Pair<>(3, 5));
-        expectedMoves.add(new Pair<>(3, 6));
-        expectedMoves.add(new Pair<>(3, 7));
-        expectedMoves.add(new Pair<>(0, 3));
-        expectedMoves.add(new Pair<>(1, 3));
-        expectedMoves.add(new Pair<>(2, 3));
-        expectedMoves.add(new Pair<>(4, 3));
-        expectedMoves.add(new Pair<>(5, 3));
-        expectedMoves.add(new Pair<>(6, 3));
-        expectedMoves.add(new Pair<>(7, 3));
+        expectedMoves.add(Pair.of(3, 0));
+        expectedMoves.add(Pair.of(3, 1));
+        expectedMoves.add(Pair.of(3, 2));
+        expectedMoves.add(Pair.of(3, 4));
+        expectedMoves.add(Pair.of(3, 5));
+        expectedMoves.add(Pair.of(3, 6));
+        expectedMoves.add(Pair.of(3, 7));
+        expectedMoves.add(Pair.of(0, 3));
+        expectedMoves.add(Pair.of(1, 3));
+        expectedMoves.add(Pair.of(2, 3));
+        expectedMoves.add(Pair.of(4, 3));
+        expectedMoves.add(Pair.of(5, 3));
+        expectedMoves.add(Pair.of(6, 3));
+        expectedMoves.add(Pair.of(7, 3));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -162,7 +162,7 @@ class RookTest {
         var whiteRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(whiteRook instanceof Rook);
         assertEquals(whiteRook.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whiteRook.getPossibleCaptures(chessBoard, new Pair<>(rookRow, rookCol));
+        var possibleCaptures = whiteRook.getPossibleCaptures(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(0, possibleCaptures.size());
     }
 
@@ -176,12 +176,12 @@ class RookTest {
         var whiteRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(whiteRook instanceof Rook);
         assertEquals(whiteRook.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whiteRook.getPossibleCaptures(chessBoard, new Pair<>(rookRow, rookCol));
+        var possibleCaptures = whiteRook.getPossibleCaptures(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(2, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(0, 3));
-        expectedCaptures.add(new Pair<>(3, 2));
+        expectedCaptures.add(Pair.of(0, 3));
+        expectedCaptures.add(Pair.of(3, 2));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -195,14 +195,14 @@ class RookTest {
         var whiteRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(whiteRook instanceof Rook);
         assertEquals(whiteRook.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whiteRook.getPossibleCaptures(chessBoard, new Pair<>(rookRow, rookCol));
+        var possibleCaptures = whiteRook.getPossibleCaptures(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(4, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(0, 3));
-        expectedCaptures.add(new Pair<>(3, 2));
-        expectedCaptures.add(new Pair<>(3, 5));
-        expectedCaptures.add(new Pair<>(4, 3));
+        expectedCaptures.add(Pair.of(0, 3));
+        expectedCaptures.add(Pair.of(3, 2));
+        expectedCaptures.add(Pair.of(3, 5));
+        expectedCaptures.add(Pair.of(4, 3));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -216,7 +216,7 @@ class RookTest {
         var blackRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(blackRook instanceof Rook);
         assertEquals(blackRook.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackRook.getPossibleCaptures(chessBoard, new Pair<>(rookRow, rookCol));
+        var possibleCaptures = blackRook.getPossibleCaptures(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(0, possibleCaptures.size());
     }
 
@@ -230,12 +230,12 @@ class RookTest {
         var blackRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(blackRook instanceof Rook);
         assertEquals(blackRook.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackRook.getPossibleCaptures(chessBoard, new Pair<>(rookRow, rookCol));
+        var possibleCaptures = blackRook.getPossibleCaptures(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(2, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(0, 3));
-        expectedCaptures.add(new Pair<>(3, 1));
+        expectedCaptures.add(Pair.of(0, 3));
+        expectedCaptures.add(Pair.of(3, 1));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -249,14 +249,14 @@ class RookTest {
         var blackRook = chessBoard.getChessmanAt(rookRow, rookCol);
         assertTrue(blackRook instanceof Rook);
         assertEquals(blackRook.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackRook.getPossibleCaptures(chessBoard, new Pair<>(rookRow, rookCol));
+        var possibleCaptures = blackRook.getPossibleCaptures(chessBoard, Pair.of(rookRow, rookCol));
         assertEquals(4, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(0, 3));
-        expectedCaptures.add(new Pair<>(3, 1));
-        expectedCaptures.add(new Pair<>(3, 4));
-        expectedCaptures.add(new Pair<>(5, 3));
+        expectedCaptures.add(Pair.of(0, 3));
+        expectedCaptures.add(Pair.of(3, 1));
+        expectedCaptures.add(Pair.of(3, 4));
+        expectedCaptures.add(Pair.of(5, 3));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 

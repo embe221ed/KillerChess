@@ -1,7 +1,7 @@
 package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.ChessBoard;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,16 +28,16 @@ public class Pawn extends Chessman {
     @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         var possibleMoves = new HashSet<Pair<Integer, Integer>>();
-        var pawnsRow = position.getKey();
-        var pawnsCol = position.getValue();
+        var pawnsRow = position.getFirst();
+        var pawnsCol = position.getSecond();
 
         Pair<Integer, Integer> possibleFieldToMove = null;
         ChessmanColourEnum colour = getColour();
         
         if (colour.equals(ChessmanColourEnum.BLACK)) {
-            possibleFieldToMove = new Pair<>(pawnsRow - 1, pawnsCol);
+            possibleFieldToMove = Pair.of(pawnsRow - 1, pawnsCol);
         } else if (colour.equals(ChessmanColourEnum.WHITE)) {
-            possibleFieldToMove = new Pair<>(pawnsRow + 1, pawnsCol);
+            possibleFieldToMove = Pair.of(pawnsRow + 1, pawnsCol);
         }
 
         if (isFieldWithinBoard(possibleFieldToMove)) {
@@ -51,13 +51,13 @@ public class Pawn extends Chessman {
         }
 
         if (colour.equals(ChessmanColourEnum.BLACK) && pawnsRow.equals(6)) {
-            possibleFieldToMove = new Pair<>(pawnsRow - 2, pawnsCol);
+            possibleFieldToMove = Pair.of(pawnsRow - 2, pawnsCol);
             if (isFieldWithinBoard(possibleFieldToMove) && isFieldEmpty(chessBoard, possibleFieldToMove)) {
                 possibleMoves.add(possibleFieldToMove);
             }
 
         } else if (colour.equals(ChessmanColourEnum.WHITE) && pawnsRow.equals(1)) {
-            possibleFieldToMove = new Pair<>(pawnsRow + 2, pawnsCol);
+            possibleFieldToMove = Pair.of(pawnsRow + 2, pawnsCol);
             if (isFieldWithinBoard(possibleFieldToMove) && isFieldEmpty(chessBoard, possibleFieldToMove)) {
                 possibleMoves.add(possibleFieldToMove);
             }
@@ -72,15 +72,15 @@ public class Pawn extends Chessman {
                 : ChessmanColourEnum.BLACK;
 
         var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
-        var pawnsRow = position.getKey();
-        var pawnsCol = position.getValue();
+        var pawnsRow = position.getFirst();
+        var pawnsCol = position.getSecond();
 
         var searchRow = (colorToCapture.equals(ChessmanColourEnum.WHITE)) ? (pawnsRow - 1) : (pawnsRow + 1);
 
-        var possibleFieldToCapture = new Pair<>(searchRow, pawnsCol - 1);
+        var possibleFieldToCapture = Pair.of(searchRow, pawnsCol - 1);
         addFieldIfIsWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture, colorToCapture);
 
-        possibleFieldToCapture = new Pair<>(searchRow, pawnsCol + 1);
+        possibleFieldToCapture = Pair.of(searchRow, pawnsCol + 1);
         addFieldIfIsWithinBoardAndMatchesColour(chessBoard, possibleCaptures, possibleFieldToCapture, colorToCapture);
 
 
@@ -88,7 +88,7 @@ public class Pawn extends Chessman {
     }
 
     boolean isPromotionAvailable(Pair<Integer, Integer> position) {
-        var pawnsRow = position.getKey();
+        var pawnsRow = position.getFirst();
         if (getColour().equals(ChessmanColourEnum.BLACK)) {
             return pawnsRow.equals(0);
         } else if (getColour().equals(ChessmanColourEnum.WHITE)) {

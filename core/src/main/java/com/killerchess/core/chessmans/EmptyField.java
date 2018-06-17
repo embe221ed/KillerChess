@@ -1,7 +1,7 @@
 package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.ChessBoard;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 
 import java.util.Set;
 

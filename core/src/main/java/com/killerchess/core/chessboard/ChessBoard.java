@@ -2,7 +2,7 @@ package com.killerchess.core.chessboard;
 
 import com.killerchess.core.chessmans.Chessman;
 import com.killerchess.core.chessmans.ChessmanColourEnum;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,8 +25,8 @@ public class ChessBoard {
     }
 
     public Chessman getChessmanAt(Pair<Integer, Integer> position) {
-        int row = position.getKey();
-        int col = position.getValue();
+        int row = position.getFirst();
+        int col = position.getSecond();
         return getChessmanAt(row, col);
     }
 
@@ -85,14 +85,14 @@ public class ChessBoard {
     }
 
     private boolean isChessmanPossibleToMove(Chessman chessman, int row, int col) {
-        return !chessman.getPossibleMoves(this, new Pair<>(row, col)).isEmpty();
+        return !chessman.getPossibleMoves(this, Pair.of(row, col)).isEmpty();
     }
 
     public Pair<Integer, Integer> getChessmanPosition(Chessman chessmanToSearch) {
         for (ArrayList<Chessman> chessmen : chessBoard) {
             for (Chessman chessman : chessmen) {
                 if (chessman.equals(chessmanToSearch)) {
-                    return new Pair<>(chessBoard.indexOf(chessmen), chessmen.indexOf(chessman));
+                    return Pair.of(chessBoard.indexOf(chessmen), chessmen.indexOf(chessman));
                 }
             }
         }

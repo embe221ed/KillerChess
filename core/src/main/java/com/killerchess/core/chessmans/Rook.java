@@ -1,7 +1,7 @@
 package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.ChessBoard;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,13 +28,13 @@ public class Rook extends Chessman {
     @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         var possibleMoves = new HashSet<Pair<Integer, Integer>>();
-        var rookRow = position.getKey();
-        var rookCol = position.getValue();
+        var rookRow = position.getFirst();
+        var rookCol = position.getSecond();
 
         Pair<Integer, Integer> possibleFieldToMove;
 
         for (int row = rookRow + 1; row < 8; row++) {
-            possibleFieldToMove = new Pair<>(row, rookCol);
+            possibleFieldToMove = Pair.of(row, rookCol);
             if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
                 possibleMoves.add(possibleFieldToMove);
             } else {
@@ -42,7 +42,7 @@ public class Rook extends Chessman {
             }
         }
         for (int row = rookRow - 1; row >= 0; row--) {
-            possibleFieldToMove = new Pair<>(row, rookCol);
+            possibleFieldToMove = Pair.of(row, rookCol);
             if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
                 possibleMoves.add(possibleFieldToMove);
             } else {
@@ -50,7 +50,7 @@ public class Rook extends Chessman {
             }
         }
         for (int col = rookCol + 1; col < 8; col++) {
-            possibleFieldToMove = new Pair<>(rookRow, col);
+            possibleFieldToMove = Pair.of(rookRow, col);
             if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
                 possibleMoves.add(possibleFieldToMove);
             } else {
@@ -58,7 +58,7 @@ public class Rook extends Chessman {
             }
         }
         for (int col = rookCol - 1; col >= 0; col--) {
-            possibleFieldToMove = new Pair<>(rookRow, col);
+            possibleFieldToMove = Pair.of(rookRow, col);
             if (isFieldEmpty(chessBoard, possibleFieldToMove)) {
                 possibleMoves.add(possibleFieldToMove);
             } else {
@@ -76,8 +76,8 @@ public class Rook extends Chessman {
                 : ChessmanColourEnum.BLACK;
 
         var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
-        var rookRow = position.getKey();
-        var rookCol = position.getValue();
+        var rookRow = position.getFirst();
+        var rookCol = position.getSecond();
 
         for (int row = rookRow + 1; row < 8; row++) {
             if (addNonEmptyChessmanFromGivenColorToFieldSetAndUpdateBlockade(chessBoard, colorToCapture, possibleCaptures, rookCol, row))

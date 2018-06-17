@@ -1,7 +1,7 @@
 package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -31,7 +31,7 @@ class BishopTest {
         var whiteBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(whiteBishop instanceof Bishop);
         assertEquals(whiteBishop.getColour(), ChessmanColourEnum.WHITE);
-        var possibleMoves = whiteBishop.getPossibleMoves(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleMoves = whiteBishop.getPossibleMoves(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(0, possibleMoves.size());
     }
 
@@ -45,13 +45,13 @@ class BishopTest {
         var whiteBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(whiteBishop instanceof Bishop);
         assertEquals(whiteBishop.getColour(), ChessmanColourEnum.WHITE);
-        var possibleMoves = whiteBishop.getPossibleMoves(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleMoves = whiteBishop.getPossibleMoves(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(3, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(2, 2));
-        expectedMoves.add(new Pair<>(4, 4));
-        expectedMoves.add(new Pair<>(5, 5));
+        expectedMoves.add(Pair.of(2, 2));
+        expectedMoves.add(Pair.of(4, 4));
+        expectedMoves.add(Pair.of(5, 5));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -65,23 +65,23 @@ class BishopTest {
         var whiteBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(whiteBishop instanceof Bishop);
         assertEquals(whiteBishop.getColour(), ChessmanColourEnum.WHITE);
-        var possibleMoves = whiteBishop.getPossibleMoves(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleMoves = whiteBishop.getPossibleMoves(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(13, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(0, 0));
-        expectedMoves.add(new Pair<>(1, 1));
-        expectedMoves.add(new Pair<>(2, 2));
-        expectedMoves.add(new Pair<>(4, 4));
-        expectedMoves.add(new Pair<>(5, 5));
-        expectedMoves.add(new Pair<>(6, 6));
-        expectedMoves.add(new Pair<>(7, 7));
-        expectedMoves.add(new Pair<>(0, 6));
-        expectedMoves.add(new Pair<>(1, 5));
-        expectedMoves.add(new Pair<>(2, 4));
-        expectedMoves.add(new Pair<>(4, 2));
-        expectedMoves.add(new Pair<>(5, 1));
-        expectedMoves.add(new Pair<>(6, 0));
+        expectedMoves.add(Pair.of(0, 0));
+        expectedMoves.add(Pair.of(1, 1));
+        expectedMoves.add(Pair.of(2, 2));
+        expectedMoves.add(Pair.of(4, 4));
+        expectedMoves.add(Pair.of(5, 5));
+        expectedMoves.add(Pair.of(6, 6));
+        expectedMoves.add(Pair.of(7, 7));
+        expectedMoves.add(Pair.of(0, 6));
+        expectedMoves.add(Pair.of(1, 5));
+        expectedMoves.add(Pair.of(2, 4));
+        expectedMoves.add(Pair.of(4, 2));
+        expectedMoves.add(Pair.of(5, 1));
+        expectedMoves.add(Pair.of(6, 0));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -95,7 +95,7 @@ class BishopTest {
         var blackBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(blackBishop instanceof Bishop);
         assertEquals(blackBishop.getColour(), ChessmanColourEnum.BLACK);
-        var possibleMoves = blackBishop.getPossibleMoves(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleMoves = blackBishop.getPossibleMoves(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(0, possibleMoves.size());
 
     }
@@ -110,13 +110,13 @@ class BishopTest {
         var blackBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(blackBishop instanceof Bishop);
         assertEquals(blackBishop.getColour(), ChessmanColourEnum.BLACK);
-        var possibleMoves = blackBishop.getPossibleMoves(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleMoves = blackBishop.getPossibleMoves(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(3, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(2, 2));
-        expectedMoves.add(new Pair<>(4, 4));
-        expectedMoves.add(new Pair<>(5, 5));
+        expectedMoves.add(Pair.of(2, 2));
+        expectedMoves.add(Pair.of(4, 4));
+        expectedMoves.add(Pair.of(5, 5));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -130,23 +130,23 @@ class BishopTest {
         var blackBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(blackBishop instanceof Bishop);
         assertEquals(blackBishop.getColour(), ChessmanColourEnum.BLACK);
-        var possibleMoves = blackBishop.getPossibleMoves(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleMoves = blackBishop.getPossibleMoves(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(13, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(0, 0));
-        expectedMoves.add(new Pair<>(1, 1));
-        expectedMoves.add(new Pair<>(2, 2));
-        expectedMoves.add(new Pair<>(4, 4));
-        expectedMoves.add(new Pair<>(5, 5));
-        expectedMoves.add(new Pair<>(6, 6));
-        expectedMoves.add(new Pair<>(7, 7));
-        expectedMoves.add(new Pair<>(0, 6));
-        expectedMoves.add(new Pair<>(1, 5));
-        expectedMoves.add(new Pair<>(2, 4));
-        expectedMoves.add(new Pair<>(4, 2));
-        expectedMoves.add(new Pair<>(5, 1));
-        expectedMoves.add(new Pair<>(6, 0));
+        expectedMoves.add(Pair.of(0, 0));
+        expectedMoves.add(Pair.of(1, 1));
+        expectedMoves.add(Pair.of(2, 2));
+        expectedMoves.add(Pair.of(4, 4));
+        expectedMoves.add(Pair.of(5, 5));
+        expectedMoves.add(Pair.of(6, 6));
+        expectedMoves.add(Pair.of(7, 7));
+        expectedMoves.add(Pair.of(0, 6));
+        expectedMoves.add(Pair.of(1, 5));
+        expectedMoves.add(Pair.of(2, 4));
+        expectedMoves.add(Pair.of(4, 2));
+        expectedMoves.add(Pair.of(5, 1));
+        expectedMoves.add(Pair.of(6, 0));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -160,7 +160,7 @@ class BishopTest {
         var whiteBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(whiteBishop instanceof Bishop);
         assertEquals(whiteBishop.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whiteBishop.getPossibleCaptures(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleCaptures = whiteBishop.getPossibleCaptures(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(0, possibleCaptures.size());
     }
 
@@ -174,13 +174,13 @@ class BishopTest {
         var whiteBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(whiteBishop instanceof Bishop);
         assertEquals(whiteBishop.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whiteBishop.getPossibleCaptures(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleCaptures = whiteBishop.getPossibleCaptures(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(3, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(2, 2));
-        expectedCaptures.add(new Pair<>(2, 4));
-        expectedCaptures.add(new Pair<>(7, 7));
+        expectedCaptures.add(Pair.of(2, 2));
+        expectedCaptures.add(Pair.of(2, 4));
+        expectedCaptures.add(Pair.of(7, 7));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -194,14 +194,14 @@ class BishopTest {
         var whiteBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(whiteBishop instanceof Bishop);
         assertEquals(whiteBishop.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whiteBishop.getPossibleCaptures(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleCaptures = whiteBishop.getPossibleCaptures(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(4, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(2, 2));
-        expectedCaptures.add(new Pair<>(2, 4));
-        expectedCaptures.add(new Pair<>(6, 0));
-        expectedCaptures.add(new Pair<>(6, 6));
+        expectedCaptures.add(Pair.of(2, 2));
+        expectedCaptures.add(Pair.of(2, 4));
+        expectedCaptures.add(Pair.of(6, 0));
+        expectedCaptures.add(Pair.of(6, 6));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -215,7 +215,7 @@ class BishopTest {
         var blackBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(blackBishop instanceof Bishop);
         assertEquals(blackBishop.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackBishop.getPossibleCaptures(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleCaptures = blackBishop.getPossibleCaptures(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(0, possibleCaptures.size());
     }
 
@@ -229,11 +229,11 @@ class BishopTest {
         var blackBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(blackBishop instanceof Bishop);
         assertEquals(blackBishop.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackBishop.getPossibleCaptures(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleCaptures = blackBishop.getPossibleCaptures(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(1, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(1, 1));
+        expectedCaptures.add(Pair.of(1, 1));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -247,14 +247,14 @@ class BishopTest {
         var blackBishop = chessBoard.getChessmanAt(bishopRow, bishopCol);
         assertTrue(blackBishop instanceof Bishop);
         assertEquals(blackBishop.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackBishop.getPossibleCaptures(chessBoard, new Pair<>(bishopRow, bishopCol));
+        var possibleCaptures = blackBishop.getPossibleCaptures(chessBoard, Pair.of(bishopRow, bishopCol));
         assertEquals(4, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(1, 1));
-        expectedCaptures.add(new Pair<>(2, 4));
-        expectedCaptures.add(new Pair<>(5, 5));
-        expectedCaptures.add(new Pair<>(6, 0));
+        expectedCaptures.add(Pair.of(1, 1));
+        expectedCaptures.add(Pair.of(2, 4));
+        expectedCaptures.add(Pair.of(5, 5));
+        expectedCaptures.add(Pair.of(6, 0));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 

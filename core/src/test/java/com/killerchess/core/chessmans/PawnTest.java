@@ -1,7 +1,7 @@
 package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.state.interpreter.StateInterpreter;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -26,25 +26,25 @@ class PawnTest {
 
     @Test
     void whenWhitePawnIsOnTheEndOfBoardThenItsPromoted() {
-        var position = new Pair<>(7, 5);
+        var position = Pair.of(7, 5);
         assertTrue(whitePawn.isPromotionAvailable(position));
     }
 
     @Test
     void whenWhitePawnIsNotOnTheEndOfBoardThenItsNotPromoted() {
-        var position = new Pair<>(5, 5);
+        var position = Pair.of(5, 5);
         assertFalse(whitePawn.isPromotionAvailable(position));
     }
 
     @Test
     void whenBlackPawnIsOnTheEndOfBoardThenItsPromoted() {
-        var position = new Pair<>(0, 5);
+        var position = Pair.of(0, 5);
         assertTrue(blackPawn.isPromotionAvailable(position));
     }
 
     @Test
     void whenBlackPawnIsNotOnTheEndOfBoardThenItsNotPromoted() {
-        var position = new Pair<>(5, 5);
+        var position = Pair.of(5, 5);
         assertFalse(blackPawn.isPromotionAvailable(position));
     }
 
@@ -58,7 +58,7 @@ class PawnTest {
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(whitePawn instanceof Pawn);
         assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
-        var possibleMoves = whitePawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleMoves = whitePawn.getPossibleMoves(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(0, possibleMoves.size());
     }
 
@@ -72,11 +72,11 @@ class PawnTest {
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(whitePawn instanceof Pawn);
         assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
-        var possibleMoves = whitePawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleMoves = whitePawn.getPossibleMoves(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(1, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(5, 0));
+        expectedMoves.add(Pair.of(5, 0));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -90,12 +90,12 @@ class PawnTest {
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(whitePawn instanceof Pawn);
         assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
-        var possibleMoves = whitePawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleMoves = whitePawn.getPossibleMoves(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(2, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(2, 0));
-        expectedMoves.add(new Pair<>(3, 0));
+        expectedMoves.add(Pair.of(2, 0));
+        expectedMoves.add(Pair.of(3, 0));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -109,7 +109,7 @@ class PawnTest {
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(blackPawn instanceof Pawn);
         assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
-        var possibleMoves = blackPawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleMoves = blackPawn.getPossibleMoves(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(0, possibleMoves.size());
     }
 
@@ -123,11 +123,11 @@ class PawnTest {
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(blackPawn instanceof Pawn);
         assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
-        var possibleMoves = blackPawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleMoves = blackPawn.getPossibleMoves(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(1, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(3, 0));
+        expectedMoves.add(Pair.of(3, 0));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -141,12 +141,12 @@ class PawnTest {
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(blackPawn instanceof Pawn);
         assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
-        var possibleMoves = blackPawn.getPossibleMoves(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleMoves = blackPawn.getPossibleMoves(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(2, possibleMoves.size());
 
         var expectedMoves = new HashSet<Pair<Integer, Integer>>();
-        expectedMoves.add(new Pair<>(5, 0));
-        expectedMoves.add(new Pair<>(4, 0));
+        expectedMoves.add(Pair.of(5, 0));
+        expectedMoves.add(Pair.of(4, 0));
         assertEquals(expectedMoves, possibleMoves);
     }
 
@@ -160,7 +160,7 @@ class PawnTest {
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(whitePawn instanceof Pawn);
         assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(0, possibleCaptures.size());
     }
 
@@ -174,11 +174,11 @@ class PawnTest {
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(whitePawn instanceof Pawn);
         assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(5, 1));
+        expectedCaptures.add(Pair.of(5, 1));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -192,11 +192,11 @@ class PawnTest {
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(whitePawn instanceof Pawn);
         assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(5, 0));
+        expectedCaptures.add(Pair.of(5, 0));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -210,12 +210,12 @@ class PawnTest {
         var whitePawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(whitePawn instanceof Pawn);
         assertEquals(whitePawn.getColour(), ChessmanColourEnum.WHITE);
-        var possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleCaptures = whitePawn.getPossibleCaptures(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(2, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(5, 0));
-        expectedCaptures.add(new Pair<>(5, 2));
+        expectedCaptures.add(Pair.of(5, 0));
+        expectedCaptures.add(Pair.of(5, 2));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -229,7 +229,7 @@ class PawnTest {
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(blackPawn instanceof Pawn);
         assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(0, possibleCaptures.size());
     }
 
@@ -243,11 +243,11 @@ class PawnTest {
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(blackPawn instanceof Pawn);
         assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(3, 2));
+        expectedCaptures.add(Pair.of(3, 2));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -261,11 +261,11 @@ class PawnTest {
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(blackPawn instanceof Pawn);
         assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(1, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(3, 0));
+        expectedCaptures.add(Pair.of(3, 0));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 
@@ -279,12 +279,12 @@ class PawnTest {
         var blackPawn = chessBoard.getChessmanAt(pawnRow, pawnCol);
         assertTrue(blackPawn instanceof Pawn);
         assertEquals(blackPawn.getColour(), ChessmanColourEnum.BLACK);
-        var possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, new Pair<>(pawnRow, pawnCol));
+        var possibleCaptures = blackPawn.getPossibleCaptures(chessBoard, Pair.of(pawnRow, pawnCol));
         assertEquals(2, possibleCaptures.size());
 
         var expectedCaptures = new HashSet<Pair<Integer, Integer>>();
-        expectedCaptures.add(new Pair<>(3, 0));
-        expectedCaptures.add(new Pair<>(3, 2));
+        expectedCaptures.add(Pair.of(3, 0));
+        expectedCaptures.add(Pair.of(3, 2));
         assertEquals(expectedCaptures, possibleCaptures);
     }
 }

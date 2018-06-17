@@ -1,7 +1,7 @@
 package com.killerchess.core.chessmans;
 
 import com.killerchess.core.chessboard.ChessBoard;
-import javafx.util.Pair;
+import org.springframework.data.util.Pair;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,15 +28,15 @@ public class King extends Chessman {
     @Override
     public Set<Pair<Integer, Integer>> getPossibleMoves(ChessBoard chessBoard, Pair<Integer, Integer> position) {
         var possibleMoves = new HashSet<Pair<Integer, Integer>>();
-        var rookRow = position.getKey();
-        var rookCol = position.getValue();
+        var rookRow = position.getFirst();
+        var rookCol = position.getSecond();
 
         Pair<Integer, Integer> possibleFieldToMove;
 
         for (int row = rookRow - 1; row <= rookRow + 1; row++) {
             for (int col = rookCol - 1; col <= rookCol + 1; col++) {
                 if (!(row == rookRow && col == rookCol)) {
-                    possibleFieldToMove = new Pair<>(row, col);
+                    possibleFieldToMove = Pair.of(row, col);
                     if (isFieldWithinBoardAndEmpty(chessBoard, possibleFieldToMove))
                         possibleMoves.add(possibleFieldToMove);
                 }
@@ -53,15 +53,15 @@ public class King extends Chessman {
                 : ChessmanColourEnum.BLACK;
 
         var possibleCaptures = new HashSet<Pair<Integer, Integer>>();
-        var rookRow = position.getKey();
-        var rookCol = position.getValue();
+        var rookRow = position.getFirst();
+        var rookCol = position.getSecond();
 
         Pair<Integer, Integer> possibleFieldToCapture;
 
         for (int row = rookRow - 1; row <= rookRow + 1; row++) {
             for (int col = rookCol - 1; col <= rookCol + 1; col++) {
                 if (!(row == rookRow && col == rookCol)) {
-                    possibleFieldToCapture = new Pair<>(row, col);
+                    possibleFieldToCapture = Pair.of(row, col);
                     if (isFieldWithinBoardAndNotEmpty(chessBoard, possibleFieldToCapture)
                             && chessBoard.getChessmanAt(possibleFieldToCapture).getColour().equals(colorToCapture))
                         possibleCaptures.add(possibleFieldToCapture);
