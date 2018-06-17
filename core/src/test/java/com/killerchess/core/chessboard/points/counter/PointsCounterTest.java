@@ -25,13 +25,13 @@ class PointsCounterTest {
     @Test
     void whenWhitePlayerCapturesBlackChessmenOf14PointsThenHisFinalScoreIs14Points() {
         var whitePlayerPoints = pointsCounter.countWhitePlayerPoints(DEFAULT_ARRANGEMENT_JSON, OUTPUT_ARRANGEMENT_JSON);
-        assertEquals(Integer.valueOf(14), whitePlayerPoints);
+        assertEquals(Integer.valueOf(15), whitePlayerPoints);
     }
 
     @Test
     void whenBlackPlayerCapturesWhiteChessmenOf15PointsThenHisFinalScoreIs15Points() {
         var blackPlayerPoints = pointsCounter.countBlackPlayerPoints(DEFAULT_ARRANGEMENT_JSON, OUTPUT_ARRANGEMENT_JSON);
-        assertEquals(Integer.valueOf(15), blackPlayerPoints);
+        assertEquals(Integer.valueOf(14), blackPlayerPoints);
     }
 
     @Test
