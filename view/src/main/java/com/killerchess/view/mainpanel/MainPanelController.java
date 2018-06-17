@@ -40,6 +40,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -124,8 +125,7 @@ public class MainPanelController {
                 String mimeType = Files.probeContentType(file.toPath());
                 if (mimeType != null && mimeType.equals(IMAGE_JPEG_MIME_TYPE)) {
                     ClassPathResource resource = new ClassPathResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX +
-                            username +
-                            JPG_FILE_TYPE_EXTENSION);
+                            username + JPG_FILE_TYPE_EXTENSION);
                     Files.copy(file.toPath(), Paths.get(ClassLoader.getSystemResource(resource.getPath()).toURI()),
                             StandardCopyOption.REPLACE_EXISTING);
                     Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username +
@@ -178,21 +178,22 @@ public class MainPanelController {
     private void initializeComponents() {
         setNameAndPointsForUser();
 
+        //TODO MM
         File file;
-        // try {
-        ClassPathResource resource = new ClassPathResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username +
-                JPG_FILE_TYPE_EXTENSION);
-        //file = resource.getFile();
-        file = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username +
-                JPG_FILE_TYPE_EXTENSION);
-        /*} catch (IOException e) {
+        try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            file = new File(Objects.requireNonNull(classLoader.getResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX
+                    + username +
+                    JPG_FILE_TYPE_EXTENSION)).getFile());
+        } catch (NullPointerException e) {
             file = null;
-        }*/
+        }
         if (file != null) {
             Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username +
                     JPG_FILE_TYPE_EXTENSION, panelWidth / 3, panelHeight / 2, false, false);
             userAvatar.setImage(image);
         }
+
 
         setActualPawnTemplateImage();
     }
