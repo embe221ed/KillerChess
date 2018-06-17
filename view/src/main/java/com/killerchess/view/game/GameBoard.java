@@ -36,7 +36,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -226,10 +225,7 @@ public class GameBoard extends Application {
     }
 
     private void setKillerChessLogoImage() {
-        File killerChessLogoFile = new File("view/src/main/resources" + ImagesConstants.IMAGES_LOCAL_PATH
-                                            + ImagesConstants.KILLER_CHESS_LOGO_FILENAME);
-
-        killerChessLogoImage = new Image(killerChessLogoFile.toURI().toString(), TILE_SIZE * HEIGHT / LOGO_WIDTH_HEIGHT_RATIO,
+        killerChessLogoImage = new Image("images/" + ImagesConstants.KILLER_CHESS_LOGO_FILENAME, TILE_SIZE * HEIGHT / LOGO_WIDTH_HEIGHT_RATIO,
                 TILE_SIZE * HEIGHT, false, false);
         killerChessLogoImageView = new ImageView();
         killerChessLogoImageView.setImage(killerChessLogoImage);
