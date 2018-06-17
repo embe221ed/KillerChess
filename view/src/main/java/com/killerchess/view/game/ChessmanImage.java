@@ -6,8 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
-import java.io.File;
-
 import static com.killerchess.view.game.GameBoard.TILE_SIZE;
 import static com.killerchess.view.game.ImagesConstants.*;
 
@@ -88,19 +86,19 @@ class ChessmanImage extends StackPane {
         if(this.type != ChessmanTypeEnum.EMPTY) {
             String chessmanTypeLowerCase = type.name().toLowerCase();
             String chessmanColourLowerCase = chessman.getColour().toString().toLowerCase();
-            File imageFile = getChessmanImageFile(chessmanStyleNumber, chessmanTypeLowerCase, chessmanColourLowerCase);
-
-            Image image = new Image(imageFile.toURI().toString(), CHESSMAN_SIZE, CHESSMAN_SIZE, false, false);
+            String imagePath = getChessmanImageFilePath(chessmanStyleNumber, chessmanTypeLowerCase,
+                    chessmanColourLowerCase);
+            Image image = new Image(imagePath, CHESSMAN_SIZE, CHESSMAN_SIZE, false, false);
             imageView = new ImageView();
             imageView.setImage(image);
             getChildren().add(imageView);
         }
     }
 
-    private File getChessmanImageFile(int chessmanStyleNumber, String chessmanTypeLowerCase, String chessmanColourLowerCase) {
-        String filePath = IMAGES_LOCAL_PATH + IMAGE_TYPE_PREFIX + chessmanStyleNumber
+    private String getChessmanImageFilePath(int chessmanStyleNumber, String chessmanTypeLowerCase, String
+            chessmanColourLowerCase) {
+        return IMAGES_LOCAL_PATH + IMAGE_TYPE_PREFIX + chessmanStyleNumber
                 + "_" + chessmanColourLowerCase + "_" + chessmanTypeLowerCase + PNG_FILE_TYPE_EXTENSION;
-        return new File(filePath);
     }
 
     void move(int x, int y){

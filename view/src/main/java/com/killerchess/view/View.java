@@ -32,13 +32,13 @@ public class View extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.stage = primaryStage;
         setPrimaryStageProperties(primaryStage);
+        this.stage = primaryStage;
         this.changeScene(initFxmlFilePath);
     }
 
     private void setPrimaryStageProperties(Stage primaryStage) {
-        primaryStage.setResizable(true);
+        primaryStage.setResizable(false);
     }
 
     public void changeScene(String fxml) throws Exception {

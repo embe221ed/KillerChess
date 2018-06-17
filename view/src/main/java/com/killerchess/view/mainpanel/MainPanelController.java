@@ -5,12 +5,10 @@ import com.killerchess.core.dto.RankingRegistryDTO;
 import com.killerchess.core.session.LocalSessionSingleton;
 import com.killerchess.view.View;
 import com.killerchess.view.game.GameBoard;
-import com.killerchess.view.game.ImagesConstants;
 import com.killerchess.view.loging.LoginController;
 import com.killerchess.view.utils.CustomAlert;
 import com.killerchess.view.utils.Template;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -29,21 +27,20 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -85,7 +82,6 @@ public class MainPanelController {
     @FXML
     public void initialize() {
         getPanelSize();
-        String text = usernameText.getText();
         setUserParameters();
         setRanking();
         initializeComponents();
@@ -101,16 +97,12 @@ public class MainPanelController {
     }
 
     private void addImageToRefreshButton() {
-        try {
-            BufferedImage bufferedImage = ImageIO.read(new File(ImagesConstants.IMAGES_LOCAL_PATH
-                    + ImagesConstants.REFRESH_BUTTON_FILEPATH));
-            ImageView imageView = new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
-            imageView.setFitHeight(50);
-            imageView.setFitWidth(50);
-            refreshRooms.setGraphic(imageView);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Image image = new Image(IMAGES_LOCAL_PATH + REFRESH_BUTTON_FILEPATH);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
+        refreshRooms.setGraphic(imageView);
+
     }
 
     public void handleNewRoomButtonClicked() {
@@ -132,9 +124,13 @@ public class MainPanelController {
             try {
                 String mimeType = Files.probeContentType(file.toPath());
                 if (mimeType != null && mimeType.equals(IMAGE_JPEG_MIME_TYPE)) {
-                    File f = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILE_TYPE_EXTENSION);
-                    Files.copy(file.toPath(), Paths.get(f.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
-                    Image image = new Image("file:" + f.getPath(), panelWidth / 3, panelHeight / 2, false, false);
+                    ClassPathResource resource = new ClassPathResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX +
+                            username + JPG_FILE_TYPE_EXTENSION);
+                    Files.copy(file.toPath(), Paths.get(ClassLoader.getSystemResource(resource.getPath()).toURI()),
+                            StandardCopyOption.REPLACE_EXISTING);
+                    Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username +
+                            JPG_FILE_TYPE_EXTENSION, panelWidth / 3, panelHeight / 2, false,
+                            false);
                     userAvatar.setImage(image);
                 }
             } catch (Exception e) {
@@ -182,11 +178,22 @@ public class MainPanelController {
     private void initializeComponents() {
         setNameAndPointsForUser();
 
-        File file = new File(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username + JPG_FILE_TYPE_EXTENSION);
-        if (file.exists() && !file.isDirectory()) {
-            Image image = new Image("file:" + file.getPath(), panelWidth / 3, panelHeight / 2, false, false);
+        //TODO MM
+        File file;
+        try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            file = new File(Objects.requireNonNull(classLoader.getResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX
+                    + username +
+                    JPG_FILE_TYPE_EXTENSION)).getFile());
+        } catch (NullPointerException e) {
+            file = null;
+        }
+        if (file != null) {
+            Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username +
+                    JPG_FILE_TYPE_EXTENSION, panelWidth / 3, panelHeight / 2, false, false);
             userAvatar.setImage(image);
         }
+
 
         setActualPawnTemplateImage();
     }
@@ -207,26 +214,27 @@ public class MainPanelController {
     private Image generateActualImageForPawnTemplate(String actualPawn) {
         if (actualPawn.equals(Template.FIRST.getTemplateFileName())) {
             localSessionSingleton.setParameter("template", Template.FIRST.getTemplateFileName());
-            localSessionSingleton.setParameter("template_number", Integer.toString(Template.FIRST.getChessmanStyleNumber()));
+            localSessionSingleton.setParameter("template_number", Integer.toString(Template.FIRST
+                    .getChessmanStyleNumber()));
             return generateImageForPawnTemplates(Template.FIRST.getChessmanStyleNumber());
         }
         if (actualPawn.equals(Template.SECOND.getTemplateFileName())) {
             localSessionSingleton.setParameter("template", Template.SECOND.getTemplateFileName());
-            localSessionSingleton.setParameter("template_number", Integer.toString(Template.SECOND.getChessmanStyleNumber()));
+            localSessionSingleton.setParameter("template_number", Integer.toString(Template.SECOND
+                    .getChessmanStyleNumber()));
             return generateImageForPawnTemplates(Template.SECOND.getChessmanStyleNumber());
         }
         if (actualPawn.equals(Template.THIRD.getTemplateFileName())) {
             localSessionSingleton.setParameter("template", Template.THIRD.getTemplateFileName());
-            localSessionSingleton.setParameter("template_number", Integer.toString(Template.THIRD.getChessmanStyleNumber()));
+            localSessionSingleton.setParameter("template_number", Integer.toString(Template.THIRD
+                    .getChessmanStyleNumber()));
             return generateImageForPawnTemplates(Template.THIRD.getChessmanStyleNumber());
         }
         return null;
     }
 
     private Image generateImageForPawnTemplates(int index) {
-        String path = IMAGES_LOCAL_PATH + PAWN_FILENAME_PREFIX + index + BLACK_BISHOP_SUFFIX;
-        File file = new File(path);
-        return new Image(file.toURI().toString());
+        return new Image(IMAGES_LOCAL_PATH + PAWN_FILENAME_PREFIX + index + BLACK_BISHOP_SUFFIX);
     }
 
     private void accountImageListener() {
