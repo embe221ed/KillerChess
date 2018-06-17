@@ -142,7 +142,10 @@ public class GameBoard extends Application {
                 .exchange(LoginController.HOST + GameController.GAME_BOARD_PATH, HttpMethod.GET, null, String.class);
         initGameBoard(responseEntity.getBody());
         stage.getScene().setRoot(root);
-        messages.setText("YOUR MOVE");
+        if (listenerService.isRunning())
+            messages.setText("WAIT");
+        else
+            messages.setText("YOUR MOVE");
         if (!gameFinished) {
             if (responseEntity.getStatusCode().equals(HttpStatus.CREATED)) {
                 messages.setText("YOU WON!");
