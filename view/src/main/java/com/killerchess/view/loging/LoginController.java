@@ -18,7 +18,7 @@ public class LoginController {
     public TextField loginField;
     public TextField passwordField;
 
-    public static final String HOST = "http://localhost:8080";
+    public static final String HOST = "https://killerchess.herokuapp.com";
     private static final String LOGIN_PATH = "/login";
 
     public void handleLoginButtonClicked() {
