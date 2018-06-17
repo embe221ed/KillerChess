@@ -226,7 +226,9 @@ public class GameBoard extends Application {
     }
 
     private void setKillerChessLogoImage() {
-        File killerChessLogoFile = new File("view/images/killer_chess_logo.jpg");
+        File killerChessLogoFile = new File("view/src/main/resources" + ImagesConstants.IMAGES_LOCAL_PATH
+                                            + ImagesConstants.KILLER_CHESS_LOGO_FILENAME);
+
         killerChessLogoImage = new Image(killerChessLogoFile.toURI().toString(), TILE_SIZE * HEIGHT / LOGO_WIDTH_HEIGHT_RATIO,
                 TILE_SIZE * HEIGHT, false, false);
         killerChessLogoImageView = new ImageView();
