@@ -73,9 +73,8 @@ public class PawnPromotionController {
 
     private void loadChessmanOnPanel(ChessmanTypeEnum chessman) {
         String type = LocalSessionSingleton.getInstance().getParameter("template_number");
-        File file = new File(IMAGES_LOCAL_PATH + "type_" + type + "_black_" + chessman.toString().toLowerCase()
-                + PNG_FILE_TYPE_EXTENSION);
-        Image image = new Image(file.toURI().toString(), 100.0, 100.0, true, true);
+        Image image = new Image(IMAGES_LOCAL_PATH + "type_" + type + "_black_" + chessman.toString().toLowerCase()
+                + PNG_FILE_TYPE_EXTENSION, 100.0, 100.0, true, true);
         ImageView imageView = new ImageView(image);
 
         imageView.setOnMouseClicked(event -> {
