@@ -122,15 +122,15 @@ public class MainPanelController {
             try {
                 String mimeType = Files.probeContentType(file.toPath());
                 if (mimeType != null && mimeType.equals(IMAGE_JPEG_MIME_TYPE)) {
-                    boolean isDirectoryExists;
+                    boolean directoryExists;
                     File dir = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()
                             + IMAGES_FOLDER_FOR_AVATAR);
                     if (!dir.exists() || dir.exists() && !dir.isDirectory()) {
-                        isDirectoryExists = dir.mkdirs();
+                        directoryExists = dir.mkdirs();
                     } else {
-                        isDirectoryExists = true;
+                        directoryExists = true;
                     }
-                    if (isDirectoryExists) {
+                    if (directoryExists) {
                         File f = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()
                                 + IMAGES_FOLDER_FOR_AVATAR + AVATAR_FILENAME_PREFIX + username +
                                 JPG_FILE_TYPE_EXTENSION);
