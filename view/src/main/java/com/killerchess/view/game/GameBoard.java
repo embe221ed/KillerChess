@@ -99,11 +99,16 @@ public class GameBoard extends Application {
                             responseEntity = localSessionSingleton.
                                     exchange(builder.toUriString(), HttpMethod.GET, null, Boolean.class);
                         } while (!responseEntity.getBody());
-                        updateGameBoard();
+//                        updateGameBoard();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     return null;
+                }
+
+                @Override
+                protected void succeeded() {
+                    updateGameBoard();
                 }
             };
         }
