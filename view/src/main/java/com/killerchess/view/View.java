@@ -47,16 +47,6 @@ public class View extends Application {
     }
 
     public void changeScene(String fxml) throws Exception {
-        /*Parent page = FXMLLoader.load(getClass().getResource(fxml));
-        Scene scene = stage.getScene();
-        if (scene == null) {
-            scene = new Scene(page);
-            stage.setScene(scene);
-        } else {
-            stage.getScene().setRoot(page);
-        }
-        stage.sizeToScene();
-        stage.show();*/
         Parent root = FXMLLoader.load(getClass().getResource(fxml));
         root.getStylesheets().add(getClass().getResource("/style/JMetroLightTheme.css").toExternalForm());
         Scene scene = new Scene(root);
