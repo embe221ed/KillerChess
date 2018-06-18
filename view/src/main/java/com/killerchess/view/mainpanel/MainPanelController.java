@@ -27,20 +27,18 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import javax.swing.*;
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -124,14 +122,23 @@ public class MainPanelController {
             try {
                 String mimeType = Files.probeContentType(file.toPath());
                 if (mimeType != null && mimeType.equals(IMAGE_JPEG_MIME_TYPE)) {
-                    ClassPathResource resource = new ClassPathResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX +
-                            username + JPG_FILE_TYPE_EXTENSION);
-                    Files.copy(file.toPath(), Paths.get(ClassLoader.getSystemResource(resource.getPath()).toURI()),
-                            StandardCopyOption.REPLACE_EXISTING);
-                    Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username +
-                            JPG_FILE_TYPE_EXTENSION, panelWidth / 3, panelHeight / 2, false,
-                            false);
-                    userAvatar.setImage(image);
+                    boolean isDirectoryExists;
+                    File dir = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()
+                            + IMAGES_FOLDER_FOR_AVATAR);
+                    if (!dir.exists() || dir.exists() && !dir.isDirectory()) {
+                        isDirectoryExists = dir.mkdirs();
+                    } else {
+                        isDirectoryExists = true;
+                    }
+                    if (isDirectoryExists) {
+                        File f = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()
+                                + IMAGES_FOLDER_FOR_AVATAR + AVATAR_FILENAME_PREFIX + username +
+                                JPG_FILE_TYPE_EXTENSION);
+                        Files.copy(file.toPath(), f.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        Image image = new Image("file:" + f.toPath(), panelWidth / 3, panelHeight / 2, false,
+                                false);
+                        userAvatar.setImage(image);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -178,23 +185,19 @@ public class MainPanelController {
     private void initializeComponents() {
         setNameAndPointsForUser();
 
-        //TODO MM
         File file;
+        String path;
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            file = new File(Objects.requireNonNull(classLoader.getResource(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX
-                    + username +
-                    JPG_FILE_TYPE_EXTENSION)).getFile());
+            file = new File(new JFileChooser().getFileSystemView().getDefaultDirectory().toString()
+                    + IMAGES_FOLDER_FOR_AVATAR + AVATAR_FILENAME_PREFIX + username + JPG_FILE_TYPE_EXTENSION);
+            path = file.getPath();
+            if (file.exists() && !file.isDirectory()) {
+                Image image = new Image("file:" + path, panelWidth / 3, panelHeight / 2, false, false);
+                userAvatar.setImage(image);
+            }
         } catch (NullPointerException e) {
-            file = null;
+            e.printStackTrace();
         }
-        if (file != null) {
-            Image image = new Image(IMAGES_LOCAL_PATH + AVATAR_FILENAME_PREFIX + username +
-                    JPG_FILE_TYPE_EXTENSION, panelWidth / 3, panelHeight / 2, false, false);
-            userAvatar.setImage(image);
-        }
-
-
         setActualPawnTemplateImage();
     }
 

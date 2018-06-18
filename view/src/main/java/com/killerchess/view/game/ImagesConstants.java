@@ -3,6 +3,7 @@ package com.killerchess.view.game;
 public final class ImagesConstants {
 
     public static final String IMAGES_LOCAL_PATH = "/images/";
+    public static final String IMAGES_FOLDER_FOR_AVATAR = "/killerchess/";
     public static final String JPG_FILE_TYPE_EXTENSION = ".jpg";
     public static final String PNG_FILE_TYPE_EXTENSION = ".png";
 
