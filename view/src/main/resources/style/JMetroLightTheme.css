@@ -2,6 +2,19 @@
     -fx-background-color: white;
 }
 
+.background-main-panel-1 {
+    -fx-background-color: #d8d8d8;
+}
+
+.background-main-panel-2 {
+    -fx-background-color: #aaaaaa;
+}
+
+.background-main-panel-3 {
+    -fx-background-color: #848484;
+}
+
+
 .header {
     -fx-font-size: 3.5em;
     -fx-font-family: "Segoe UI Semilight";
@@ -60,6 +73,11 @@
 
 .button-default {
     -fx-background-color: #008287;
+    -fx-text-fill: #ffffff;
+}
+
+.button-default-main-panel-refresh {
+    -fx-background-color: #aaaaaa;
     -fx-text-fill: #ffffff;
 }
 

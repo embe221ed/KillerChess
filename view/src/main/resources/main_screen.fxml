@@ -4,106 +4,84 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.killerchess.view.mainpanel.MainPanelController">
-    <bottom>
-        <AnchorPane prefHeight="31.0" prefWidth="600.0" style="-fx-background-color: #BC6D63;" BorderPane.alignment="CENTER" />
-    </bottom>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" stylesheets="style/JMetroLightTheme.css"
+            xmlns="http://javafx.com/javafx/8.0.121" fx:controller="com.killerchess.view.mainpanel.MainPanelController">
+
     <left>
-        <AnchorPane prefHeight="518.0" prefWidth="219.0" style="-fx-background-color: #50a682;" BorderPane.alignment="CENTER">
-            <children>
-                <Button fx:id="createRoom" layoutX="10.0" layoutY="437.0" mnemonicParsing="false"
-                        onAction="#handleNewRoomButtonClicked" prefHeight="58.0" prefWidth="130.0"
-                        style="-fx-background-color: #0099ff;" text="Create room" textFill="WHITE"/>
-                <Button fx:id="refreshRooms" layoutX="145.0" layoutY="437.0" mnemonicParsing="false"
-                        onAction="#handleRefreshRoomsButtonClicked" prefHeight="58.0" prefWidth="58.0"
-                        style="-fx-background-color: #0099ff;"/>
-                <ScrollPane layoutX="10.0" layoutY="14.0" prefHeight="396.0" prefWidth="198.0">
-                    <content>
-                        <VBox fx:id="roomsVBox" prefHeight="396.0" prefWidth="195.0"
-                              style="-fx-background-color: #E0E0C8;"/>
-                    </content>
-                </ScrollPane>
-            </children>
+        <AnchorPane prefHeight="518.0" prefWidth="210.0" styleClass="background-main-panel-2"
+                    BorderPane.alignment="CENTER">
+            <Button fx:id="createRoom" layoutX="10.0" layoutY="437.0" mnemonicParsing="false"
+                    onAction="#handleNewRoomButtonClicked" prefHeight="58.0" prefWidth="130.0"
+                    styleClass="button-default" text="Create room"/>
+            <Button fx:id="refreshRooms" layoutX="145.0" layoutY="437.0" maxHeight="58.0" maxWidth="58.0"
+                    mnemonicParsing="false" onAction="#handleRefreshRoomsButtonClicked"
+                    styleClass="button-default-main-panel-refresh"/>
+            <ScrollPane layoutX="10.0" layoutY="14.0" prefHeight="396.0" prefWidth="210.0" styleClass="slider">
+                <VBox fx:id="roomsVBox" prefHeight="396.0" prefWidth="192"/>
+            </ScrollPane>
         </AnchorPane>
     </left>
     <center>
-        <AnchorPane prefHeight="446.0" prefWidth="438.0" style="-fx-background-color: #E0E0C8;" BorderPane.alignment="CENTER">
-            <children>
-                <TextArea fx:id="roomInfo" editable="false" layoutX="29.0" layoutY="294.0" prefHeight="190.0" prefWidth="382.0"
-                          style="-fx-background-color: #FBF9E7;"
-                          text="Choose room.&#10;Click once to see more information about the room.&#10;Double-click to start the game.&#10;&#10;&#10;"/>
-                <Text fx:id="usernameText" layoutX="29.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Username:" wrappingWidth="368.9921875"/>
-                <ImageView fx:id="userAvatar" fitHeight="150.0" fitWidth="200.0" layoutX="140.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@images/no_avatar.jpg" />
-                    </image>
-                </ImageView>
-                <Text fx:id="rankingPointsForActualUser" layoutX="29.0" layoutY="237.0" strokeType="OUTSIDE"
-                      strokeWidth="0.0" text="Ranking Points: " wrappingWidth="138.29180908203125"/>
-            </children>
+        <AnchorPane prefHeight="446.0" styleClass="background-main-panel-1" BorderPane.alignment="CENTER">
+            <TextArea fx:id="roomInfo" editable="false" layoutX="7.0" layoutY="294.0" prefHeight="190.0"
+                      prefWidth="382.0" styleClass="text"
+                      text="Choose room.&#10;Click once to see more information about the room.&#10;Double-click to start the game.&#10;&#10;&#10;"/>
+            <Text fx:id="usernameText" layoutX="29.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                  styleClass="item-title" text="Username:" wrappingWidth="368.9921875"/>
+            <ImageView fx:id="userAvatar" fitHeight="150.0" fitWidth="200.0" layoutX="130.0" layoutY="22.0"
+                       pickOnBounds="true" preserveRatio="true">
+                <Image url="@images/no_avatar.jpg"/>
+            </ImageView>
+            <Text fx:id="rankingPointsForActualUser" layoutX="29.0" layoutY="237.0" strokeType="OUTSIDE"
+                  strokeWidth="0.0" styleClass="item-title" text="Ranking Points: " wrappingWidth="138.29180908203125"/>
         </AnchorPane>
     </center>
     <right>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #50a682;" BorderPane.alignment="CENTER">
-            <children>
-                <AnchorPane layoutY="-2.0" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #213432;">
-                    <children>
-                        <ImageView fx:id="helpImage" fitHeight="36.0" fitWidth="33.0" layoutX="127.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/baseline_help_white_18dp.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="accountImage" fitHeight="36.0" fitWidth="33.0" layoutX="39.0" layoutY="7.0"
-                                   pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/baseline_face_white_18dp.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="rankingImage" fitHeight="36.0" fitWidth="33.0" layoutX="84.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/baseline_people_white_18dp.png" />
-                            </image>
-                        </ImageView>
-                    </children>
-                </AnchorPane>
-                <TextArea fx:id="rankingText" editable="false" layoutX="9.0" layoutY="56.0" prefHeight="443.0"
-                          prefWidth="182.0" text="Player's ranking:"/>
-                <TextArea fx:id="helpText" editable="false" layoutX="6.0" layoutY="56.0" prefHeight="439.0"
-                          prefWidth="175.0"
-                          text="----------------------------&#10;Welcome to KillerChess!&#10;----------------------------&#10;&#10;Rules:&#10; - capturing is compulsory,&#10; - the king has no royal power,&#10; - a player wins by losing &#10;   all his pieces.&#10;&#10;To play create a room&#10;and wait for the opponent&#10;or choose a room, that&#10;already exists.&#10;&#10;Good luck!"/>
-                <Text fx:id="choosePawnText" layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Choose the look of pawns:" wrappingWidth="181.9830722808838"/>
-            </children>
+        <AnchorPane prefHeight="200.0" prefWidth="210.0" styleClass="background-main-panel-2"
+                    BorderPane.alignment="CENTER">
             <ImageView fx:id="firstPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="14.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@images/type_1_black_bishop.png"/>
-                </image>
+                <Image url="@images/type_1_black_bishop.png"/>
             </ImageView>
             <ImageView fx:id="secondPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="75.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@images/type_2_black_bishop.png"/>
-                </image>
+                <Image url="@images/type_2_black_bishop.png"/>
             </ImageView>
             <ImageView fx:id="thirdPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="136.0" layoutY="86.0"
                        pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@images/type_3_black_bishop.png"/>
-                </image>
+                <Image url="@images/type_3_black_bishop.png"/>
             </ImageView>
             <ImageView fx:id="actualPawnChoice" fitHeight="52.0" fitWidth="50.0" layoutX="143.0" layoutY="170.0"
                        pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@images/type_1_black_bishop.png"/>
-                </image>
+                <Image url="@images/type_1_black_bishop.png"/>
             </ImageView>
             <Text fx:id="actualPawnChoiceText" layoutX="14.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                  text="Actual Pawn Choice:" wrappingWidth="122.98307228088379"/>
-            <Button fx:id="changeAvatarButton" layoutX="32.0" layoutY="259.0" mnemonicParsing="false"
+                  styleClass="item-title" text="Actual Pawn Choice:" wrappingWidth="122.98307228088379"/>
+            <Button fx:id="changeAvatarButton" layoutX="15.0" layoutY="259.0" minWidth="180" mnemonicParsing="false"
                     onAction="#handleAccountAvatarChange" prefHeight="58.0" prefWidth="136.0"
-                    style="-fx-background-color: #0099ff;" text="Change avatar" textFill="WHITE"/>
+                    styleClass="button-default" text="Change avatar"/>
+            <AnchorPane layoutY="-2.0" prefHeight="46.0" prefWidth="210.0" styleClass="background-main-panel-3">
+                <ImageView fx:id="helpImage" fitHeight="36.0" fitWidth="33.0" layoutX="127.0" layoutY="7.0"
+                           pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/baseline_help_white_18dp.png"/>
+                </ImageView>
+                <ImageView fx:id="accountImage" fitHeight="36.0" fitWidth="33.0" layoutX="39.0" layoutY="7.0"
+                           pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/baseline_face_white_18dp.png"/>
+                </ImageView>
+                <ImageView fx:id="rankingImage" fitHeight="36.0" fitWidth="33.0" layoutX="84.0" layoutY="7.0"
+                           pickOnBounds="true" preserveRatio="true">
+                    <Image url="@images/baseline_people_white_18dp.png"/>
+                </ImageView>
+            </AnchorPane>
+            <TextArea fx:id="rankingText" editable="false" layoutX="5.0" layoutY="56.0" prefHeight="443.0"
+                      prefWidth="200.0" styleClass="text" text="Player's ranking:"/>
+            <TextArea fx:id="helpText" styleClass="text" editable="false" layoutX="5.0" layoutY="56.0"
+                      prefHeight="439.0"
+                      prefWidth="200.0"
+                      text="----------------------------&#10;Welcome to KillerChess!&#10;----------------------------&#10;&#10;Rules:&#10; - capturing is compulsory,&#10; - the king has no royal power,&#10; - a player wins by losing &#10;   all his pieces.&#10;&#10;To play create a room&#10;and wait for the opponent&#10;or choose a room, that&#10;already exists.&#10;&#10;Good luck!"/>
+            <Text fx:id="choosePawnText" layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                  styleClass="item-title" text="Choose the look of pawns:" wrappingWidth="181.9830722808838"/>
         </AnchorPane>
     </right>
 </BorderPane>
