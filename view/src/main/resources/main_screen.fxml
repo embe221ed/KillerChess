@@ -28,7 +28,7 @@
                       text="Choose room.&#10;Click once to see more information about the room.&#10;Double-click to start the game.&#10;&#10;&#10;"/>
             <Text fx:id="usernameText" layoutX="29.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0"
                   styleClass="item-title" text="Username:" wrappingWidth="368.9921875"/>
-            <ImageView fx:id="userAvatar" fitHeight="150.0" fitWidth="200.0" layoutX="130.0" layoutY="22.0"
+            <ImageView fx:id="userAvatar" fitHeight="150.0" fitWidth="200.0" layoutX="110.0" layoutY="22.0"
                        pickOnBounds="true" preserveRatio="true">
                 <Image url="@images/no_avatar.jpg"/>
             </ImageView>
@@ -74,10 +74,10 @@
                     <Image url="@images/baseline_people_white_18dp.png"/>
                 </ImageView>
             </AnchorPane>
-            <TextArea fx:id="rankingText" editable="false" layoutX="5.0" layoutY="56.0" prefHeight="443.0"
+            <TextArea fx:id="rankingText" editable="false" layoutX="5.0" layoutY="56.0" prefHeight="445.0"
                       prefWidth="200.0" styleClass="text" text="Player's ranking:"/>
             <TextArea fx:id="helpText" styleClass="text" editable="false" layoutX="5.0" layoutY="56.0"
-                      prefHeight="439.0"
+                      prefHeight="445.0"
                       prefWidth="200.0"
                       text="----------------------------&#10;Welcome to KillerChess!&#10;----------------------------&#10;&#10;Rules:&#10; - capturing is compulsory,&#10; - the king has no royal power,&#10; - a player wins by losing &#10;   all his pieces.&#10;&#10;To play create a room&#10;and wait for the opponent&#10;or choose a room, that&#10;already exists.&#10;&#10;Good luck!"/>
             <Text fx:id="choosePawnText" layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0"
