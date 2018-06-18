@@ -2,11 +2,14 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
-
 <?import javafx.scene.layout.HBox?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="254.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.killerchess.view.pawnpromotion.PawnPromotionController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="254.0" prefWidth="640.0" stylesheets="style/JMetroLightTheme.css"
+            xmlns="http://javafx.com/javafx/8.0.121"
+            fx:controller="com.killerchess.view.pawnpromotion.PawnPromotionController">
     <top>
-        <Label prefHeight="62.0" prefWidth="304.0" text="Pawn promotion, choose a new chess:" BorderPane.alignment="CENTER" />
+        <Label prefHeight="62.0" prefWidth="437.0" styleClass="item-title" text="Pawn promotion, choose a new chess:"
+               BorderPane.alignment="CENTER"/>
     </top>
    <center>
         <HBox fx:id="chessmenHbox" prefHeight="172.0" prefWidth="640.0" BorderPane.alignment="CENTER" />

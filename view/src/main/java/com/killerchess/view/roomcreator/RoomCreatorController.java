@@ -19,6 +19,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class RoomCreatorController {
     public Button createRoomButton;
     public TextField roomNameTextField;
     public VBox gameSchemasRadioButtonsVBox;
+    public Button cancelButton;
 
     private ToggleGroup toggleGroupForSchemasRadioButtons;
     private Service hostJoinedListenerService = new Service<Void>() {
@@ -83,6 +85,18 @@ public class RoomCreatorController {
         createNewGame(roomName, roomDatabaseId, scenarioId);
         try {
             new GameBoard().start(View.getInstance().getStage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleCancelButtonClick() {
+        try {
+            View.getInstance().changeScene("/main_screen.fxml");
+        } catch (HttpStatusCodeException e) {
+            if (e.getStatusCode().is4xxClientError()) {
+                CustomAlert.showAndWait(e.getResponseBodyAsString(), Alert.AlertType.ERROR);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -165,6 +179,5 @@ public class RoomCreatorController {
         RadioButton firstButton = (RadioButton) vBoxChildren.get(0);
         firstButton.fire();
     }
-
-
+    
 }
