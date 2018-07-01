@@ -16,7 +16,7 @@
 
 ## Technology stack
 ##### Main language: *Java X version*
-###### Database: *PosgreSQL*
+###### Database: *PostgreSQL*
 ###### Server communication: *REST pattern*
 ###### Client view: *JavaFX*
 ###### Frameworks: *SPRING, JavaFX*
