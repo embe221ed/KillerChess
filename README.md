@@ -13,3 +13,19 @@
 ## How to run the game?
 ###### Simply download *KillerChess.jar* file from "**game jar file**" folder and run it. Installed java required.
 ###### Logging may take some time, because after longer period of being hibernate, the server needs few seconds to wake up.
+
+## Technology stack
+##### Main language: *Java X version*
+###### Database: *PosgreSQL*
+###### Server communication: *REST pattern*
+###### Client view: *JavaFX*
+###### Frameworks: *SPRING, JavaFX*
+###### Design patterns: *MVC, Singletons Entity/Controller/Service/Repo in SPRING*
+###### **Maven, Multithread, Session state, XML, Json,**
+###### *More details in **doc** folder (some documents in Polish language)*
+
+## Contributors:
+[Artur Kawala](https://github.com/Prim07)
+[Piotr Marszałek](https://github.com/piotrmarszalek)
+[Michał Bochnak](https://github.com/embchnk)
+[Paula Palcowska](https://github.com/ppaula)
