@@ -29,3 +29,4 @@
 [Piotr Marszałek](https://github.com/piotrmarszalek)
 [Michał Bochnak](https://github.com/embchnk)
 [Paula Palcowska](https://github.com/ppaula)
+[Michał Matuszewski](https://github.com/rxrt8)
