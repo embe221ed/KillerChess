@@ -1,6 +1,5 @@
 # KillerChess
-
-![Logo](https://github.com/embchnk/KillerChess/blob/master/view/src/main/resources/images/killer_chess_logo.jpg =100x400)
+<img src="https://github.com/embchnk/KillerChess/blob/master/view/src/main/resources/images/killer_chess_logo.jpg" width="80" height="300">
 
 ## Brief description
 ###### KillerChess is an awesome desktop app, which allows you to **play Killer Chess (also knows as Losing Chess) online**!
